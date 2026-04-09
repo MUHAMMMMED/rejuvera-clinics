@@ -1,0 +1,384 @@
+.finalCtaSection {
+  padding: 5rem 1.5rem;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.02));
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.finalCtaWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.finalCtaContent h2 {
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.finalCtaContent p {
+  color: #b0b0b0;
+  margin-bottom: 1.5rem;
+}
+
+.finalCtaBenefits {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+}
+
+.finalCtaBenefits div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #c0c0c0;
+  font-size: 0.85rem;
+}
+
+.finalCtaBenefits svg {
+  color: #d4af37;
+}
+
+.bookingForm {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 24px;
+  padding: 2rem;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.formGroup input,
+.formGroup textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #d4af37;
+}
+
+.submitBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  color: #0a0a0a;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submitBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+}
+
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.successMessage {
+  text-align: center;
+  padding: 2rem;
+}
+
+.successMessage svg {
+  color: #d4af37;
+  margin-bottom: 1rem;
+}
+
+.successMessage h3 {
+  color: #d4af37;
+  margin-bottom: 0.5rem;
+}
+
+.successMessage p {
+  color: #b0b0b0;
+}
+
+/* Centered Modal Popup - Professional with Animation */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modalContainer {
+  animation: modalPopIn 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+  max-width: 90%;
+  width: 450px;
+  margin: 20px;
+}
+
+.modalContent {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 28px;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.2);
+}
+
+.modalClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #888;
+  transition: all 0.2s ease;
+}
+
+.modalClose:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+.modalIcon {
+  margin-bottom: 1.5rem;
+}
+
+.checkmarkCircle {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulseCheckmark 0.6s ease-out;
+}
+
+.checkmarkCircle svg {
+  color: #d4af37;
+  animation: scaleIn 0.4s cubic-bezier(0.34, 1.2, 0.64, 1) 0.2s both;
+}
+
+.modalTitle {
+  color: #d4af37;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  animation: slideUp 0.4s ease 0.1s both;
+}
+
+.modalMessage {
+  color: #c0c0c0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  animation: slideUp 0.4s ease 0.2s both;
+}
+
+.modalMessage strong {
+  color: #d4af37;
+  font-weight: 600;
+}
+
+.modalDetails {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  animation: slideUp 0.4s ease 0.3s both;
+}
+
+.modalDetailItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(212, 175, 55, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  color: #d4af37;
+}
+
+.modalDetailItem svg {
+  color: #d4af37;
+}
+
+.modalButton {
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  color: #0a0a0a;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;
+  animation: slideUp 0.4s ease 0.4s both;
+}
+
+.modalButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+}
+
+/* Error message style */
+.errorMsg {
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  margin: 0.5rem 0 0;
+  text-align: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(-50px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pulseCheckmark {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .finalCtaWrapper {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .finalCtaBenefits {
+    grid-template-columns: 1fr;
+  }
+
+  .finalCtaContent h2 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .modalContent {
+    padding: 1.5rem;
+  }
+  
+  .modalTitle {
+    font-size: 1.25rem;
+  }
+  
+  .modalMessage {
+    font-size: 0.85rem;
+  }
+  
+  .modalDetails {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .modalDetailItem {
+    justify-content: center;
+  }
+  
+  .checkmarkCircle {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .checkmarkCircle svg {
+    width: 44px;
+    height: 44px;
+  }
+}

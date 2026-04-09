@@ -1,0 +1,65 @@
+/* EmptyState.css - كلاسز فريدة بدون تداخل */
+.empty-state-root {
+    min-height: 400px;
+    width: 100%;
+    background: #1a0c2f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .empty-state-inner {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .empty-state-icon {
+    color: #c5a028;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .empty-state-text {
+    color: #ffffff;
+    font-size: 18px;
+    margin: 0 0 24px 0;
+    font-weight: 500;
+  }
+  
+  .empty-state-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    background: #c5a028;
+    color: #1a0c2f;
+    border: none;
+    font-family: inherit;
+    transition: all 0.2s ease;
+  }
+  
+  .empty-state-btn:hover {
+    background: #d4af37;
+    transform: translateY(-1px);
+  }
+  
+  @media (max-width: 640px) {
+    .empty-state-icon svg {
+      width: 48px;
+      height: 48px;
+    }
+    
+    .empty-state-text {
+      font-size: 16px;
+    }
+    
+    .empty-state-btn {
+      padding: 8px 20px;
+      font-size: 13px;
+    }
+  }

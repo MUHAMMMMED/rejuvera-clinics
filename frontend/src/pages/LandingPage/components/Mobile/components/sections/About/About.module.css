@@ -1,0 +1,92 @@
+.aboutSection {
+  margin: 1rem 0;
+}
+
+.problemCard, .solutionCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 0.8rem;
+}
+
+.problemCard {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem;
+}
+
+.problemText {
+  flex: 1;
+}
+
+.problemText h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem; /* المسافة بين الأيقونة والعنوان */
+  font-size: 0.75rem; /* تصغير حجم العنوان قليلاً */
+  color: #ff6b6b;
+  margin-bottom: 0.2rem;
+}
+
+.problemText h3 svg {
+  flex-shrink: 0; /* يمنع الأيقونة من التصغير */
+}
+
+.problemText p {
+  color: #b0b0b0;
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
+.problemImage {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.problemImage img, .solutionImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.solutionCard {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem;
+}
+
+.solutionImage {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.solutionText {
+  flex: 1;
+}
+
+.solutionText h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem; /* المسافة بين الأيقونة والعنوان */
+  font-size: 0.75rem; /* تصغير حجم العنوان قليلاً */
+  color: #51cf66;
+  margin-bottom: 0.2rem;
+}
+
+.solutionText h3 svg {
+  flex-shrink: 0; /* يمنع الأيقونة من التصغير */
+}
+
+.solutionText p {
+  color: #b0b0b0;
+  font-size: 0.7rem;
+  line-height: 1.4;
+}

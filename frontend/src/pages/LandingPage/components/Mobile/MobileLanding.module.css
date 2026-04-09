@@ -1,0 +1,52 @@
+.mobileApp {
+  max-width: 450px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #0a0515 0%, #0f081f 100%);
+  min-height: 100vh;
+  position: relative;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+  overflow-x: hidden;
+  direction: rtl;
+}
+
+.mainContent {
+  padding: 0 1rem 1rem;
+  overflow-y: auto;
+  height: calc(100vh - 100px);
+  padding-bottom: 70px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bottomSpacing {
+  height: 70px;
+}
+
+.floatingBookBtn {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  border: none;
+  color: #0a0a0a;
+  padding: 0.6rem 1rem;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  z-index: 99;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .bottomSpacing {
+    height: calc(70px + env(safe-area-inset-bottom));
+  }
+  
+  .floatingBookBtn {
+    bottom: calc(70px + env(safe-area-inset-bottom));
+  }
+}

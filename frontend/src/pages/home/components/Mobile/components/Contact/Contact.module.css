@@ -1,0 +1,598 @@
+/* === BASE STYLES (Mobile First) === */
+.contact {
+  padding: 1rem;
+  background: rgba(26, 11, 46, 0.9);
+  position: relative;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* === FORM AREA (Mobile Style) === */
+.formArea {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 24px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.formArea::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #d4af37, transparent);
+}
+
+.formHeader {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.sectionBadge {
+  display: inline-block;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 0.25rem 1rem;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  color: #d4af37;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.formHeader h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.goldText {
+  background: linear-gradient(135deg, #e8c547, #d4af37, #b8941f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.formHeader p {
+  color: #a0a0a0;
+  font-size: 0.85rem;
+}
+
+/* Input Groups */
+.formRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.inputGroup {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.inputGroup input,
+.inputGroup select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.inputGroup input:focus,
+.inputGroup select:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
+}
+
+.inputGroup label {
+  position: absolute;
+  right: 1rem;
+  top: 0.9rem;
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  background: rgb(45, 30, 64);
+  padding: 0 0.3rem;
+  border-radius: 30px;
+}
+
+.inputGroup input:focus + label,
+.inputGroup input:not(:placeholder-shown) + label,
+.inputGroup select:focus + label,
+.inputGroup select:valid + label {
+  top: -0.6rem;
+  font-size: 0.7rem;
+  color: #d4af37;
+}
+
+/* Service Dropdown (Mobile Optimized) */
+.serviceSelectGroup {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.selectWrapper {
+  position: relative;
+}
+
+.serviceInput {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  padding: 0.9rem 2.5rem 0.9rem 1rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.serviceInput:focus {
+  outline: none;
+  border-color: #d4af37;
+}
+
+.dropdownToggle {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #d4af37;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.servicesDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #1a0f2e;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  margin-top: 0.5rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.dropdownContent {
+  padding: 0.5rem;
+}
+
+.dropdownSearchResult {
+  padding: 0.5rem;
+  background: rgba(212, 175, 55, 0.1);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  color: #d4af37;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.categoryGroup {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.categoryHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(212, 175, 55, 0.08);
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(8px);
+}
+
+.categoryName {
+  color: #d4af37;
+  font-size: 0.8rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+.categoryCount {
+  color: #a0a0a0;
+  font-size: 0.7rem;
+}
+
+.categoryServices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.serviceItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.serviceItem:hover {
+  background: rgba(212, 175, 55, 0.08);
+  transform: translateX(-4px);
+}
+
+.serviceItem.selected {
+  background: rgba(212, 175, 55, 0.12);
+  border-color: #d4af37;
+}
+
+.serviceIcon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background: rgba(212, 175, 55, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d4af37;
+}
+
+.serviceInfo {
+  flex: 1;
+}
+
+.serviceName {
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.serviceDesc {
+  color: #a0a0a0;
+  font-size: 0.7rem;
+  display: none; /* Hidden on mobile to save space */
+}
+
+.selectedBadge {
+  flex-shrink: 0;
+}
+
+.dropdownEmpty {
+  padding: 2rem;
+  text-align: center;
+  color: #a0a0a0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.selectedService {
+  margin: 0.5rem 0 1rem;
+}
+
+.selectedServiceContent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+}
+
+.selectedLabel {
+  color: #d4af37;
+  font-size: 0.7rem;
+}
+
+.selectedName {
+  color: #ffffff;
+  font-size: 0.85rem;
+  flex: 1;
+}
+
+.clearService {
+  background: none;
+  border: none;
+  color: #a0a0a0;
+  cursor: pointer;
+  display: flex;
+}
+
+/* Buttons */
+.submitBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  color: #0a0a0a;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.whatsappBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #25D366;
+  color: white;
+  text-decoration: none;
+  padding: 0.9rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.whatsappBtn img {
+  width: 22px;
+  height: 22px;
+}
+
+/* Info Area */
+.infoArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.infoContent h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: #ffffff;
+}
+
+.infoContent > p {
+  color: #a0a0a0;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.buttonsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.contactBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 16px;
+  padding: 0.8rem;
+  text-decoration: none;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.btnIcon {
+  width: 40px;
+  height: 40px;
+  background: rgba(212, 175, 55, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btnIcon svg, .btnIcon img {
+  width: 20px;
+  height: 20px;
+}
+
+.btnText {
+  display: flex;
+  flex-direction: column;
+}
+
+.btnText .label {
+  font-size: 0.7rem;
+  color: #a0a0a0;
+}
+
+.btnText .value {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #a0a0a0;
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+
+.detailIcon {
+  width: 36px;
+  height: 36px;
+  background: rgba(212, 175, 55, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.detailIcon svg {
+  width: 18px;
+  height: 18px;
+  color: #d4af37;
+}
+
+.hoursText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+/* Success & Error */
+.successMessage {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.successIcon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.successIcon svg {
+  width: 40px;
+  height: 40px;
+  color: #d4af37;
+}
+
+.successMessage h3 {
+  color: #d4af37;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.successMessage p {
+  color: #a0a0a0;
+  font-size: 0.8rem;
+}
+
+.errorMsg {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  padding: 0.7rem;
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.spinnerSmall {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top-color: #0a0a0a;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* === DESKTOP STYLES (Media Query) === */
+@media (min-width: 768px) {
+  .contact {
+    padding: 5rem 2rem;
+  }
+
+  .wrapper {
+    flex-direction: row;
+    gap: 4rem;
+  }
+
+  .formArea {
+    padding: 3rem;
+  }
+
+  .formRow {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .formHeader h2 {
+    font-size: 2rem;
+  }
+
+  /* Show description on desktop */
+  .serviceDesc {
+    display: block;
+  }
+
+  .buttonsRow {
+    flex-direction: row;
+  }
+
+  .contactBtn {
+    flex: 1;
+    padding: 1.25rem;
+  }
+
+  .btnIcon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .detailItem {
+    font-size: 0.9rem;
+  }
+  
+  .serviceItem {
+    padding: 0.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .wrapper {
+    gap: 5rem;
+  }
+}

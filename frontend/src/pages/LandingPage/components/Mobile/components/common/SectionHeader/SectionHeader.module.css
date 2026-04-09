@@ -1,0 +1,80 @@
+.sectionHeader {
+    margin-bottom: 1rem;
+  }
+  
+  /* Alignment Options */
+  .center {
+    text-align: center;
+  }
+  
+  .right {
+    text-align: right;
+  }
+  
+  .left {
+    text-align: left;
+  }
+  
+  /* Badge Style */
+  .sectionBadge {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 0.2rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    color: #d4af37;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Title Style */
+  .sectionTitle {
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    line-height: 1.3;
+  }
+  
+  /* Subtitle Style */
+  .sectionSubtitle {
+    color: #b0b0b0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Left/Right alignment overrides */
+  .left .sectionSubtitle,
+  .right .sectionSubtitle {
+    max-width: 100%;
+  }
+  
+  .left .sectionSubtitle {
+    margin-left: 0;
+  }
+  
+  .right .sectionSubtitle {
+    margin-right: 0;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    .sectionTitle {
+      font-size: 1.1rem;
+    }
+    
+    .sectionSubtitle {
+      font-size: 0.75rem;
+    }
+    
+    .sectionBadge {
+      font-size: 0.6rem;
+      padding: 0.15rem 0.6rem;
+    }
+  }

@@ -1,0 +1,218 @@
+/* Packages.module.css - Mobile App Style */
+.packages {
+  padding: 0.5rem;
+  background: transparent;
+  position: relative;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.sectionBadge {
+  display: inline-block;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 0.25rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.6rem;
+  color: #d4af37;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.goldText {
+  background: linear-gradient(135deg, #e8c547, #d4af37, #b8941f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sectionSubtitle {
+  color: #a0a0a0;
+  font-size: 0.7rem;
+}
+
+/* Packages List */
+.packagesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Package Card */
+.packageCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 16px;
+  padding: 0.8rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.packageCard.popular {
+  border: 1px solid #d4af37;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.02));
+}
+
+.popularBadge {
+  position: absolute;
+  top: -8px;
+  right: 12px;
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  color: #0a0a0a;
+  padding: 0.15rem 0.5rem;
+  border-radius: 50px;
+  font-size: 0.55rem;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Right Section */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.iconWrapper {
+  flex-shrink: 0;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.08));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #d4af37;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.infoWrapper {
+  text-align: right;
+  flex: 1;
+}
+
+.name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 0.2rem 0;
+}
+
+.price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #d4af37;
+  margin: 0;
+}
+
+/* Middle Section */
+.middleSection {
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  padding: 0.5rem 0;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.features li {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #b0b0b0;
+  font-size: 0.65rem;
+}
+
+.features svg {
+  width: 10px;
+  height: 10px;
+  color: #d4af37;
+}
+
+.moreFeatures {
+  font-size: 0.6rem;
+  color: #d4af37;
+  margin-top: 0.3rem;
+}
+
+/* Left Section */
+.leftSection {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.bookBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  border: none;
+  color: #0a0a0a;
+  padding: 0.4rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.bookBtn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Show More */
+.showMore {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.showMoreBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #d4af37;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  cursor: pointer;
+}

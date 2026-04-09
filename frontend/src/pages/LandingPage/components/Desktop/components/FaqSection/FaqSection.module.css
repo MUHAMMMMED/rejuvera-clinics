@@ -1,0 +1,93 @@
+.faqSection {
+    padding: 5rem 0;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  
+  .sectionHeader {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .sectionBadge {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 0.3rem 1rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    color: #d4af37;
+    margin-bottom: 1rem;
+  }
+  
+  .sectionHeader h2 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+  
+  .gold {
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .sectionHeader p {
+    color: #b0b0b0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .faqGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .faqCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    border-radius: 16px;
+    padding: 1.2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .faqCard:hover {
+    border-color: rgba(212, 175, 55, 0.4);
+  }
+  
+  .faqQuestion {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .faqQuestion svg {
+    color: #d4af37;
+    flex-shrink: 0;
+  }
+  
+  .faqQuestion h3 {
+    color: #fff;
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  .faqCard p {
+    color: #b0b0b0;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    padding-right: 2rem;
+  }
+  
+  @media (max-width: 1024px) {
+    .faqGrid {
+      grid-template-columns: 1fr;
+    }
+  }

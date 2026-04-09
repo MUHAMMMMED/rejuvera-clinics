@@ -1,0 +1,120 @@
+.hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .heroBackground {
+    position: absolute;
+    inset: 0;
+  }
+  
+  .heroBgImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.05);
+    animation: zoom 20s ease infinite alternate;
+  }
+  
+  @keyframes zoom {
+    from {
+      transform: scale(1.05);
+    }
+    to {
+      transform: scale(1.15);
+    }
+  }
+  
+  .heroOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(10, 5, 21, 0.85), rgba(26, 11, 46, 0.9));
+  }
+  
+  .heroContent {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 800px;
+    padding: 2rem;
+  }
+  
+  .heroBadge {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    color: #d4af37;
+    margin-bottom: 1.5rem;
+  }
+  
+  .heroTitle {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+  
+  .heroSubtitle {
+    font-size: 1.2rem;
+    color: #d4af37;
+    margin-bottom: 1rem;
+  }
+  
+  .heroDescription {
+    font-size: 1rem;
+    color: #c0c0c0;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  
+  .heroButtons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .heroCta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    color: #0a0a0a;
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+  }
+  
+  .heroCta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+  }
+  
+  .heroSecondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: #fff;
+    padding: 0.9rem 1.8rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .heroSecondary:hover {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: #d4af37;
+    transform: translateY(-2px);
+  }

@@ -1,0 +1,624 @@
+ 
+.services {
+  padding: 0.5rem;
+  position: relative;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* ==================== Header ==================== */
+.header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.sectionBadge {
+  display: inline-block;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 0.25rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.6rem;
+  color: #d4af37;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  color: #ffffff;
+}
+
+.goldText {
+  background: linear-gradient(135deg, #f3e5ab, #d4af37, #c5a028);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sectionSubtitle {
+  color: #b0b0b0;
+  font-size: 0.7rem;
+  max-width: 100%;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+
+/* ==================== Tabs Section ==================== */
+.tabsSection {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.3rem;
+  position: relative;
+}
+
+.navBtn {
+  width: 28px;
+  height: 28px;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #d4af37;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.navBtn:hover {
+  background: #d4af37;
+  color: #0a0a0a;
+  transform: scale(1.05);
+}
+
+.tabsWrapper {
+  flex: 1;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  position: relative;
+}
+
+.tabsWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.2rem 0;
+  min-width: max-content;
+}
+
+.tabButton {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  color: #c0c0c0;
+  padding: 0.35rem 0.8rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.65rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.tabButton:hover {
+  border-color: rgba(212, 175, 55, 0.6);
+  color: #d4af37;
+  transform: translateY(-1px);
+}
+
+.tabButton.active {
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  color: #0a0a0a !important;
+  border-color: #d4af37;
+  font-weight: 600;
+}
+
+.tabIcon {
+  display: flex;
+  align-items: center;
+}
+
+.tabIcon svg {
+  width: 9px;
+  height: 9px;
+}
+
+/* Scroll Indicator */
+.scrollIndicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.indicatorLine {
+  width: 50px;
+  height: 2px;
+  background: rgba(212, 175, 55, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.indicatorProgress {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, #d4af37, #b8941f);
+  border-radius: 2px;
+  animation: slideProgress 20s linear infinite;
+}
+
+@keyframes slideProgress {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.scrollHint {
+  font-size: 0.5rem;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+/* ==================== Services Scroll Section ==================== */
+.servicesScrollSection {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.serviceNavBtn {
+  width: 32px;
+  height: 32px;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #d4af37;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.serviceNavBtn:hover {
+  background: #d4af37;
+  color: #0a0a0a;
+  transform: scale(1.05);
+}
+
+.servicesScrollWrapper {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.servicesScroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  gap: 1rem;
+  padding: 0.2rem 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.servicesScroll::-webkit-scrollbar {
+  display: none;
+}
+
+.servicesGroup {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Grid layout for 5 cards */
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.8rem;
+  width: 100%;
+}
+
+/* ==================== Card ==================== */
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 18px;
+  padding: 0.8rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card.popular {
+  border: 1px solid #d4af37;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.02));
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(212, 175, 55, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Popular Badge */
+.popularBadge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  padding: 0.15rem 0.4rem;
+  border-radius: 50px;
+  font-size: 0.5rem;
+  font-weight: 600;
+  color: #0a0a0a;
+  z-index: 2;
+}
+
+/* Card Inner */
+.cardInner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Header Row - Icon on right, Title on left */
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.6rem;
+}
+
+.iconWrapper {
+  flex-shrink: 0;
+  order: 2;
+  margin-right: auto;
+}
+
+.icon {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #d4af37;
+  transition: all 0.3s ease;
+}
+
+.card:hover .icon {
+  transform: scale(1.02);
+  border-color: #d4af37;
+}
+
+.icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.name {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
+  margin: 0;
+  text-align: right;
+  order: 1;
+}
+
+/* Description */
+.description {
+  font-size: 0.65rem;
+  color: #a0a0a0;
+  line-height: 1.4;
+  margin: 0;
+  text-align: right;
+}
+
+/* Details */
+.details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  border-top: 1px solid rgba(212, 175, 55, 0.1);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  margin: 0.2rem 0;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.55rem;
+  color: #b0b0b0;
+}
+
+.detailItem svg {
+  width: 9px;
+  height: 9px;
+  color: #d4af37;
+}
+
+.detailDivider {
+  width: 1px;
+  height: 10px;
+  background: rgba(212, 175, 55, 0.3);
+}
+
+/* Buttons Group */
+.buttonsGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.bookBtn {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  border: none;
+  color: #0a0a0a;
+  padding: 0.4rem 0;
+  border-radius: 50px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.bookBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+}
+
+.bookBtn svg {
+  width: 10px;
+  height: 10px;
+  transition: transform 0.3s ease;
+}
+
+.bookBtn:hover svg {
+  transform: translateX(3px);
+}
+
+.moreBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: #d4af37;
+  padding: 0.4rem 0;
+  border-radius: 50px;
+  font-size: 0.6rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.moreBtn:hover {
+  background: rgba(212, 175, 55, 0.2);
+  transform: translateY(-1px);
+}
+
+.moreBtn svg {
+  width: 9px;
+  height: 9px;
+}
+
+/* Slide Indicators */
+.slideIndicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.slideDot {
+  width: 6px;
+  height: 6px;
+  background: rgba(212, 175, 55, 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.slideDot.active {
+  background: #d4af37;
+  transform: scale(1.2);
+}
+
+/* View All Button */
+.viewAllContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.viewAllBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #d4af37;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.viewAllBtn:hover {
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateY(-2px);
+}
+
+.viewAllBtn svg {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.3s ease;
+}
+
+.viewAllBtn:hover svg {
+  transform: translateX(3px);
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: fadeInUp 0.3s ease-out both;
+}
+
+/* ==================== Responsive ==================== */
+/* For screens that can fit 5 cards in a row */
+@media (min-width: 1600px) {
+  .servicesGrid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* For tablets and smaller desktops - show 3 cards */
+@media (min-width: 1024px) and (max-width: 1599px) {
+  .servicesGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* For tablets - show 2 cards */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .servicesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* For mobile devices - show 1 card */
+@media (max-width: 767px) {
+  .servicesGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .name {
+    font-size: 0.85rem;
+  }
+  
+  .description {
+    font-size: 0.6rem;
+  }
+  
+  .detailItem {
+    font-size: 0.5rem;
+  }
+  
+  .bookBtn {
+    padding: 0.35rem 0;
+    font-size: 0.6rem;
+  }
+  
+  .moreBtn {
+    padding: 0.35rem 0;
+    font-size: 0.55rem;
+  }
+  
+  .serviceNavBtn {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 400px) {
+  .headerRow {
+    gap: 0.4rem;
+  }
+  
+  .icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .name {
+    font-size: 0.8rem;
+  }
+  
+  .description {
+    font-size: 0.55rem;
+  }
+  
+  .detailItem {
+    font-size: 0.45rem;
+  }
+  
+  .details {
+    gap: 0.3rem;
+  }
+  
+  .buttonsGroup {
+    gap: 0.3rem;
+  }
+}

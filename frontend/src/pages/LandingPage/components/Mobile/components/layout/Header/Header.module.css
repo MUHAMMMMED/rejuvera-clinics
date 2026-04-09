@@ -1,0 +1,39 @@
+.appHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  background: rgba(10, 5, 21, 0.95);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.menuBtn, .phoneBtn {
+  background: none;
+  border: none;
+  color: #d4af37;
+  cursor: pointer;
+  padding: 0.4rem 0.6rem;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  gap: 0.2rem; /* المسافة بين الأيقونة والنص */
+  transition: background 0.2s ease;
+}
+
+.menuBtn:hover, .phoneBtn:hover {
+  background: rgba(212, 175, 55, 0.15);
+}
+
+.backText {
+  font-size: 0.65rem; /* حجم صغير لكلمة "عودة" */
+  color: #d4af37;
+  font-weight: 600;
+}
+
+.logo {
+  height: 32px;
+}

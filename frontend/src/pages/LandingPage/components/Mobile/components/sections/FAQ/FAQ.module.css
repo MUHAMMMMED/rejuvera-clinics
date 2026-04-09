@@ -1,0 +1,64 @@
+.faqSection {
+    margin: 1rem 0;
+  }
+  
+  .sectionHeader {
+    text-align: center;
+    margin-bottom: 0.8rem;
+  }
+  
+  .sectionBadge {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 0.2rem 0.6rem;
+    border-radius: 50px;
+    font-size: 0.6rem;
+    color: #d4af37;
+  }
+  
+  .faqList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .faqItem {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  
+  .faqQuestion {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0.7rem;
+    color: #fff;
+    font-size: 0.75rem;
+    cursor: pointer;
+    text-align: right;
+  }
+  
+  .faqQuestion svg:first-child {
+    color: #d4af37;
+  }
+  
+  .faqQuestion span {
+    flex: 1;
+  }
+  
+  .faqAnswer {
+    padding: 0 0.7rem 0.7rem 0.7rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+  }
+  
+  .faqAnswer p {
+    color: #b0b0b0;
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }

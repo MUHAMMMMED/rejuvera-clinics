@@ -1,0 +1,85 @@
+.processSection {
+    padding: 5rem 0;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  
+  .processGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+  
+  .processCard {
+    position: relative;
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(15, 8, 31, 0.8), rgba(10, 5, 21, 0.8));
+    border-radius: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .processCard:hover {
+    transform: translateY(-5px);
+    border-color: rgba(212, 175, 55, 0.3);
+  }
+  
+  .processNumber {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #0a0515;
+    font-size: 1.25rem;
+  }
+  
+  .processIcon {
+    margin-bottom: 1rem;
+  }
+  
+  .processIcon svg {
+    color: #d4af37;
+  }
+  
+  .processCard h3 {
+    color: #fff;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .processCard p {
+    color: #b0b0b0;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+  
+  .processDuration {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    color: #d4af37;
+  }
+  
+  @media (max-width: 768px) {
+    .processGrid {
+      gap: 1.5rem;
+    }
+    
+    .processCard {
+      padding: 1.5rem;
+    }
+  }

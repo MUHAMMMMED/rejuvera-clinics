@@ -1,0 +1,147 @@
+.hero {
+  min-height: 60vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0a0515, #1a0b2e);
+  border-radius: 24px;
+  margin: 0.5rem;
+}
+
+/* Background */
+.heroBackground {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.backgroundVideo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(10, 5, 21, 0.85),
+    rgba(26, 11, 46, 0.9)
+  );
+}
+
+/* Content */
+.heroContent {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 1rem;
+  width: 100%;
+}
+
+/* Badge */
+.heroBadge {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  color: #d4af37;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  margin-bottom: 1rem;
+}
+
+/* Title */
+.heroTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.8rem;
+}
+
+.goldText {
+  background: linear-gradient(135deg, #f3e5ab, #d4af37);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtitle */
+.heroSubtitle {
+  font-size: 0.8rem;
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+/* 🔥 Buttons Layout */
+.heroActions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Primary */
+.heroCta {
+  flex: 1;
+  max-width: 180px;
+  padding: 0.3rem;
+  border-radius: 50px;
+  border: none;
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Secondary */
+.heroApp {
+  flex: 1;
+  max-width: 180px;
+  padding: 0.6rem;
+  border-radius: 50px;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+
+/* Hover */
+.heroCta:hover,
+.heroApp:hover {
+  transform: translateY(-2px);
+}
+
+/* Stats */
+.heroStats {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.statNumber {
+  color: #d4af37;
+  font-weight: bold;
+}
+
+.statLabel {
+  font-size: 0.7rem;
+  color: #aaa;
+}
+
+/* Responsive */
+@media (max-width: 350px) {
+  .heroActions {
+    flex-direction: column;
+  }
+
+  .heroCta,
+  .heroApp {
+    max-width: 100%;
+  }
+}

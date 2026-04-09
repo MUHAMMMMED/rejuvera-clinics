@@ -1,0 +1,584 @@
+.hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .heroBackground {
+    position: absolute;
+    inset: 0;
+  }
+  
+  .heroBgImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.05);
+    animation: zoom 20s ease infinite alternate;
+  }
+  
+  @keyframes zoom {
+    from {
+      transform: scale(1.05);
+    }
+    to {
+      transform: scale(1.15);
+    }
+  }
+  
+  .heroOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(10, 5, 21, 0.85), rgba(26, 11, 46, 0.9));
+  }
+  
+  .heroContent {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 800px;
+    padding: 2rem;
+  }
+  
+  .heroBadge {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    color: #d4af37;
+    margin-bottom: 1.5rem;
+  }
+  
+  .heroTitle {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+  
+  .heroSubtitle {
+    font-size: 1.2rem;
+    color: #d4af37;
+    margin-bottom: 1rem;
+  }
+  
+  .heroDescription {
+    font-size: 1rem;
+    color: #c0c0c0;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  
+  .heroButtons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .heroCta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    color: #0a0a0a;
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+  }
+  
+  .heroCta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+  }
+  
+  .heroSecondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: #fff;
+    padding: 0.9rem 1.8rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .heroSecondary:hover {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: #d4af37;
+    transform: translateY(-2px);
+  }
+
+  /* أزرار التعديل */
+.editButton {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(212, 175, 55, 0.9);
+  color: #0a0a0a;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.editButton:hover {
+  background: #d4af37;
+  transform: translateY(-2px);
+}
+
+.editActions {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.saveButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #10b981;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.saveButton:hover {
+  background: #059669;
+}
+
+.cancelButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ef4444;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancelButton:hover {
+  background: #dc2626;
+}
+
+/* حقول الإدخال */
+.editInput {
+  width: 100%;
+  max-width: 500px;
+  margin: 0.5rem auto;
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  direction: rtl;
+}
+
+.editInputTitle {
+  width: 100%;
+  max-width: 500px;
+  margin: 0.5rem auto;
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 12px;
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  direction: rtl;
+}
+
+.editTextarea {
+  width: 100%;
+  max-width: 500px;
+  margin: 0.5rem auto;
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  direction: rtl;
+  resize: vertical;
+}
+
+.editInput:focus,
+.editInputTitle:focus,
+.editTextarea:focus {
+  outline: none;
+  border-color: #d4af37;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.errorMessage {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #ef4444;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  z-index: 20;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.saveButton:disabled,
+.cancelButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==================== Image Upload Styles ==================== */
+.imageUploadWrapper {
+  margin: 1rem auto;
+  text-align: center;
+}
+
+.imageUploadLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  color: #d4af37;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+}
+
+.imageUploadLabel:hover {
+  background: rgba(212, 175, 55, 0.3);
+  transform: translateY(-2px);
+}
+
+.imageInput {
+  display: none;
+}
+
+.imagePreview {
+  max-width: 300px;
+  max-height: 150px;
+  margin: 0.5rem auto;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* ==================== Toast Notification Styles ==================== */
+.notification {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  z-index: 9999;
+  animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+.notification.success {
+  background: #10b981;
+  color: white;
+}
+
+.notification.error {
+  background: #ef4444;
+  color: white;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateX(-50%) translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (max-width: 768px) {
+  .notification {
+    white-space: normal;
+    text-align: center;
+    max-width: 90%;
+    font-size: 0.75rem;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
+/* إضافة للـ CSS الموجود */
+
+/* حقل الإدخال مع Hint */
+.fieldWrapper {
+  width: 100%;
+  max-width: 500px;
+  margin: 0.8rem auto;
+  position: relative;
+}
+
+.fieldHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0 0.5rem;
+}
+
+.fieldLabel {
+  color: #d4af37;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.hintButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 0.25rem 0.6rem;
+  border-radius: 50px;
+  color: #d4af37;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hintButton:hover {
+  background: rgba(212, 175, 55, 0.3);
+  transform: scale(1.02);
+}
+
+/* لوحة الأمثلة */
+.hintPanel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 0.5rem;
+  background: rgba(10, 5, 21, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 12px;
+  padding: 0.8rem;
+  z-index: 100;
+  animation: fadeInDown 0.2s ease;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hintTitle {
+  color: #d4af37;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.hintExamples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.exampleButton {
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  color: #e0e0e0;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.exampleButton:hover {
+  background: rgba(212, 175, 55, 0.3);
+  color: #d4af37;
+  transform: translateY(-1px);
+}
+
+.hintNote {
+  color: #888;
+  font-size: 0.65rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.fieldNote {
+  color: #888;
+  font-size: 0.65rem;
+  margin-top: 0.3rem;
+  padding-right: 0.5rem;
+  text-align: right;
+}
+
+/* تحسين شكل الحقول */
+.editForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.editForm::-webkit-scrollbar {
+  width: 5px;
+}
+
+.editForm::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.editForm::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 10px;
+}
+
+/* فيديو مودال */
+.videoModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.videoModalContent {
+  position: relative;
+  width: 90%;
+  max-width: 800px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.closeModal {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  transition: all 0.2s;
+}
+
+.closeModal:hover {
+  color: #d4af37;
+  transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .fieldWrapper {
+    max-width: 95%;
+  }
+  
+  .hintPanel {
+    position: fixed;
+    bottom: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 320px;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  
+  .exampleButton {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.6rem;
+  }
+}

@@ -1,0 +1,549 @@
+.doctorsSection {
+    padding: 5rem 0;
+    background: rgba(212, 175, 55, 0.02);
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  
+  .sectionHeader {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .sectionBadge {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 0.3rem 1rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    color: #d4af37;
+    margin-bottom: 1rem;
+  }
+  
+  .sectionHeader h2 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+  
+  .gold {
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .sectionHeader p {
+    color: #b0b0b0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .doctorsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  
+  .doctorCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    border-radius: 20px;
+    overflow: hidden;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  
+  .doctorCard:hover {
+    transform: translateY(-5px);
+    border-color: rgba(212, 175, 55, 0.4);
+  }
+  
+  .doctorCard img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+  }
+  
+  .doctorCard h3 {
+    color: #fff;
+    margin: 1rem 0 0.5rem;
+  }
+  
+  .doctorCard p {
+    color: #d4af37;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .doctorExperience {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.15);
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    color: #b0b0b0;
+    margin-bottom: 1rem;
+  }
+  
+  @media (max-width: 1024px) {
+    .doctorsGrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .doctorsGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ==================== Edit Header Styles ==================== */
+.editHeader {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.editButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(212, 175, 55, 0.9);
+  color: #0a0a0a;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.editButton:hover {
+  background: #d4af37;
+  transform: translateY(-2px);
+}
+
+.editActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.saveButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #10b981;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.saveButton:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+.cancelButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ef4444;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+.saveButton:disabled,
+.cancelButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==================== Edit Header Fields ==================== */
+.editBadge {
+  background: transparent;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 50px;
+  padding: 0.2rem 0.8rem;
+  color: #d4af37;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.editTitle {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  padding: 0.3rem;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  width: auto;
+  display: inline-block;
+}
+
+.editHighlight {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  padding: 0.3rem;
+  color: #d4af37;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  width: auto;
+  display: inline-block;
+}
+
+.editDescription {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  padding: 0.5rem;
+  color: #b0b0b0;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: inherit;
+  resize: vertical;
+}
+
+/* ==================== Doctor Edit Styles ==================== */
+.doctorActions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.editDoctorBtn,
+.removeDoctorBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.editDoctorBtn {
+  background: rgba(212, 175, 55, 0.15);
+  color: #d4af37;
+}
+
+.editDoctorBtn:hover {
+  background: #d4af37;
+  color: #0a0a0a;
+}
+
+.removeDoctorBtn {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.removeDoctorBtn:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* ==================== Edit Doctor Fields ==================== */
+.editDoctorName,
+.editDoctorTitle,
+.editDoctorExperience {
+  width: 90%;
+  margin: 0.3rem auto;
+  padding: 0.3rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  color: #fff;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.doctorEditActions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 0.5rem;
+}
+
+.saveDoctorBtn,
+.cancelDoctorBtn {
+  padding: 0.3rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border: none;
+}
+
+.saveDoctorBtn {
+  background: #10b981;
+  color: white;
+}
+
+.cancelDoctorBtn {
+  background: #6b7280;
+  color: white;
+}
+
+/* ==================== Modal Styles ==================== */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #1a1a2e;
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.modalContent h3 {
+  color: #d4af37;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.doctorList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.doctorOption {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.doctorOption:hover {
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateX(-5px);
+}
+
+.doctorOption img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.doctorOption strong {
+  color: #fff;
+}
+
+.doctorOption p {
+  color: #d4af37;
+  font-size: 0.8rem;
+}
+
+.closeModal {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.5rem;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 8px;
+  color: #d4af37;
+  cursor: pointer;
+}
+
+/* ==================== Image Upload ==================== */
+.imageUploadWrapper {
+  position: relative;
+}
+
+.imageUploadLabel {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  font-size: 0.6rem;
+  color: #d4af37;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.imageInput {
+  display: none;
+}
+
+/* ==================== Add Button ==================== */
+.addButtonWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.addButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #d4af37;
+  padding: 0.6rem 1.5rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.addButton:hover {
+  background: rgba(212, 175, 55, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ==================== Error Message ==================== */
+.errorMessage {
+  background: #ef4444;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ==================== Responsive ==================== */
+@media (max-width: 768px) {
+  .editHeader {
+    justify-content: center;
+  }
+  
+  .editTitle,
+  .editHighlight {
+    font-size: 1.5rem;
+    display: block;
+    margin: 0.2rem auto;
+  }
+  
+  .modalContent {
+    padding: 1rem;
+  }
+}
+
+/* ==================== Notification Styles ==================== */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  z-index: 10000;
+  animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.notification.success {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border-right: 4px solid #34d399;
+}
+
+.notification.error {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  border-right: 4px solid #f87171;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.noDoctors {
+  text-align: center;
+  color: #888;
+  padding: 1rem;
+}
+
+/* للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    text-align: center;
+    font-size: 0.8rem;
+    padding: 0.8rem 1rem;
+  }
+}

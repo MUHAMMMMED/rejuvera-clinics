@@ -1,0 +1,63 @@
+.servicePage {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0a0515 0%, #0f081f 100%);
+}
+
+.errorContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0a0515, #0f081f);
+}
+
+.errorContainer p {
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+/* Process Section - سيتم إضافتها كملف منفصل أيضاً */
+.processSection {
+  padding: 5rem 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sectionBadge {
+  display: inline-block;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 0.3rem 1rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  color: #d4af37;
+  margin-bottom: 1rem;
+}
+
+.sectionHeader h2 {
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.gold {
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sectionHeader p {
+  color: #b0b0b0;
+  max-width: 600px;
+  margin: 0 auto;
+}

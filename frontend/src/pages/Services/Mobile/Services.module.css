@@ -1,0 +1,338 @@
+.services {
+    padding: 1rem;
+    position: relative;
+  }
+  
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  /* ==================== Header ==================== */
+  .header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .sectionBadge {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 0.3rem 1rem;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    color: #d4af37;
+    margin-bottom: 0.8rem;
+    letter-spacing: 1px;
+  }
+  
+  .sectionTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+  }
+  
+  .goldText {
+    background: linear-gradient(135deg, #f3e5ab, #d4af37, #c5a028);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .sectionSubtitle {
+    color: #b0b0b0;
+    font-size: 0.85rem;
+    max-width: 100%;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  
+  /* ==================== Services List (Vertical) ==================== */
+  .servicesList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .serviceItem {
+    position: relative;
+    animation: fadeInUp 0.4s ease-out both;
+  }
+  
+  /* ==================== Service Card ==================== */
+  .serviceCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 20px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .serviceCard:hover {
+    transform: translateY(-3px);
+    border-color: rgba(212, 175, 55, 0.5);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Popular Badge */
+  .popularBadge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    padding: 0.2rem 0.6rem;
+    border-radius: 50px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: #0a0a0a;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Header Row - Icon on right, Title on left */
+  .headerRow {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .iconWrapper {
+    flex-shrink: 0;
+  }
+  
+  .icon {
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid rgba(212, 175, 55, 0.4);
+    color: #d4af37;
+    transition: all 0.3s ease;
+  }
+  
+  .serviceCard:hover .icon {
+    transform: scale(1.05);
+    border-color: #d4af37;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+  }
+  
+  .icon svg {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .name {
+    flex: 1;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.4;
+    margin: 0;
+    text-align: right;
+  }
+  
+  /* Description */
+  .description {
+    font-size: 0.85rem;
+    color: #b0b0b0;
+    line-height: 1.6;
+    margin: 0 0 0.8rem 0;
+    text-align: right;
+  }
+  
+  /* Details */
+  .details {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    margin: 0.5rem 0;
+  }
+  
+  .detailItem {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    color: #c0c0c0;
+  }
+  
+  .detailItem svg {
+    width: 12px;
+    height: 12px;
+    color: #d4af37;
+  }
+  
+  /* Buttons Group */
+  .buttonsGroup {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+  }
+  
+  .bookBtn {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    border: none;
+    color: #0a0a0a;
+    padding: 0.7rem 0;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .bookBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  }
+  
+  .bookBtn svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+  }
+  
+  .bookBtn:hover svg {
+    transform: translateX(4px);
+  }
+  
+  .moreBtn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: #d4af37;
+    padding: 0.7rem 0;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .moreBtn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: translateY(-2px);
+    border-color: rgba(212, 175, 55, 0.6);
+  }
+  
+  .moreBtn svg {
+    width: 12px;
+    height: 12px;
+    transition: transform 0.3s ease;
+  }
+  
+  .moreBtn:hover svg {
+    transform: translateX(3px);
+  }
+  
+  /* Animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* ==================== Responsive ==================== */
+  @media (max-width: 480px) {
+    .services {
+      padding: 0.8rem;
+    }
+    
+    .sectionTitle {
+      font-size: 1.3rem;
+    }
+    
+    .sectionSubtitle {
+      font-size: 0.75rem;
+    }
+    
+    .icon {
+      width: 48px;
+      height: 48px;
+    }
+    
+    .icon svg {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .name {
+      font-size: 1rem;
+    }
+    
+    .description {
+      font-size: 0.8rem;
+    }
+    
+    .bookBtn {
+      padding: 0.6rem 0;
+      font-size: 0.8rem;
+    }
+    
+    .moreBtn {
+      padding: 0.6rem 0;
+      font-size: 0.75rem;
+    }
+    
+    .detailItem {
+      font-size: 0.65rem;
+    }
+  }
+  
+  @media (max-width: 380px) {
+    .headerRow {
+      gap: 0.6rem;
+    }
+    
+    .icon {
+      width: 42px;
+      height: 42px;
+    }
+    
+    .icon svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .name {
+      font-size: 0.9rem;
+    }
+    
+    .description {
+      font-size: 0.75rem;
+    }
+    
+    .buttonsGroup {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .bookBtn, .moreBtn {
+      width: 100%;
+    }
+  }

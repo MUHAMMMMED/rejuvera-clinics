@@ -1,0 +1,342 @@
+.mapWrapper {
+    position: relative;
+    width: 100%;
+    background: #0a0a0a;
+  }
+  
+  /* أزرار تبديل نوع الخريطة */
+  .mapTypeButtons {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    display: flex;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    padding: 6px;
+    border-radius: 50px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+  
+  .mapTypeBtn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    color: #e0e0e0;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  
+  .mapTypeBtn svg {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .mapTypeBtn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    color: #d4af37;
+  }
+  
+  .mapTypeBtn.active {
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    color: #0a0a0a;
+  }
+  
+  .mapContainer {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .map {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* تنسيق النافذة المنبثقة */
+  .popupContent {
+    text-align: right;
+    direction: rtl;
+    padding: 5px;
+    min-width: 200px;
+  }
+  
+  .popupContent h4 {
+    color: #d4af37;
+    font-size: 1rem;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+  }
+  
+  .popupContent p {
+    color: #333;
+    font-size: 0.8rem;
+    margin: 5px 0;
+    line-height: 1.4;
+  }
+  
+  /* تخصيص مظهر النافذة المنبثقة */
+  :global(.leaflet-popup-content-wrapper) {
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.2);
+  }
+  
+  :global(.leaflet-popup-tip) {
+    background: white;
+  }
+  
+  /* بطاقة المعلومات */
+  .infoCard {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    padding: 1rem;
+    margin: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .infoCard:hover {
+    transform: translateY(-3px);
+    border-color: rgba(212, 175, 55, 0.6);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+  
+  .infoHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  }
+  
+  .infoHeader h3 {
+    color: #d4af37;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .infoRow {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    align-items: flex-start;
+  }
+  
+  .infoIcon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d4af37;
+  }
+  
+  .infoText {
+    flex: 1;
+  }
+  
+  .infoLabel {
+    display: block;
+    font-size: 0.65rem;
+    color: #888;
+    margin-bottom: 2px;
+  }
+  
+  .infoValue {
+    font-size: 0.8rem;
+    color: #e0e0e0;
+    line-height: 1.4;
+    margin: 0;
+  }
+  
+  .directionsBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    border: none;
+    color: #0a0a0a;
+    padding: 8px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+  }
+  
+  .directionsBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  }
+  
+  /* ==================== تصميم الموبايل ==================== */
+  @media (max-width: 768px) {
+    .mapContainer {
+      height: 350px;
+    }
+    
+    .mapTypeButtons {
+      top: 10px;
+      left: 10px;
+      padding: 4px;
+    }
+    
+    .mapTypeBtn {
+      padding: 4px 10px;
+      font-size: 0.7rem;
+    }
+    
+    .mapTypeBtn svg {
+      width: 12px;
+      height: 12px;
+    }
+    
+    .infoCard {
+      margin: 12px;
+      padding: 0.9rem;
+    }
+    
+    .infoHeader h3 {
+      font-size: 0.9rem;
+    }
+    
+    .infoIcon {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .infoIcon svg {
+      width: 14px;
+      height: 14px;
+    }
+    
+    .infoValue {
+      font-size: 0.75rem;
+    }
+    
+    .directionsBtn {
+      padding: 7px 10px;
+      font-size: 0.75rem;
+    }
+  }
+  
+  /* للأجهزة الصغيرة جداً */
+  @media (max-width: 480px) {
+    .mapContainer {
+      height: 280px;
+    }
+    
+    .mapTypeButtons {
+      top: 8px;
+      left: 8px;
+      gap: 4px;
+    }
+    
+    .mapTypeBtn {
+      padding: 3px 8px;
+      font-size: 0.65rem;
+    }
+    
+    .mapTypeBtn svg {
+      width: 10px;
+      height: 10px;
+    }
+    
+    .infoCard {
+      margin: 10px;
+      padding: 0.8rem;
+    }
+    
+    .infoRow {
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    
+    .infoIcon {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .infoIcon svg {
+      width: 12px;
+      height: 12px;
+    }
+    
+    .infoLabel {
+      font-size: 0.6rem;
+    }
+    
+    .infoValue {
+      font-size: 0.7rem;
+    }
+    
+    .directionsBtn {
+      padding: 6px 8px;
+      font-size: 0.7rem;
+    }
+    
+    .directionsBtn svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+  
+  /* للأجهزة اللوحية */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .mapContainer {
+      height: 380px;
+    }
+    
+    .infoCard {
+      max-width: 350px;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      margin: 0;
+      min-width: 280px;
+    }
+    
+    .mapWrapper {
+      min-height: 450px;
+    }
+  }
+  
+  /* للشاشات الكبيرة (ديسكتوب) */
+  @media (min-width: 1025px) {
+    .mapContainer {
+      height: 450px;
+    }
+    
+    .infoCard {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      max-width: 320px;
+      min-width: 280px;
+      margin: 0;
+      z-index: 1000;
+    }
+    
+    .mapWrapper {
+      min-height: 500px;
+    }
+  }

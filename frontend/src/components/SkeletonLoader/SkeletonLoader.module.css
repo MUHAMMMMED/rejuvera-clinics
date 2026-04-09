@@ -1,0 +1,346 @@
+/* ============================================ */
+/* SKELETON LOADER - UNIQUE STYLES */
+/* ============================================ */
+
+.skeletonWrapper {
+    width: 100%;
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  /* ============================================ */
+  /* CARD SKELETON (للكاردات) */
+  /* ============================================ */
+  
+  .skeletonGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+  
+  .skeletonCard {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+  }
+  
+  .skeletonImage {
+    height: 180px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+  }
+  
+  .skeletonContent {
+    padding: 1.2rem;
+  }
+  
+  .skeletonTitle {
+    height: 20px;
+    width: 70%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  
+  .skeletonText {
+    height: 14px;
+    width: 100%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  
+  .skeletonTextShort {
+    height: 14px;
+    width: 50%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 4px;
+  }
+  
+  /* ============================================ */
+  /* LIST SKELETON (للقوائم) */
+  /* ============================================ */
+  
+  .skeletonListContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+  
+  .skeletonListItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #ffffff;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .skeletonAvatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+  }
+  
+  .skeletonListContent {
+    flex: 1;
+  }
+  
+  .skeletonListTitle {
+    height: 18px;
+    width: 60%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  
+  .skeletonListSubtitle {
+    height: 14px;
+    width: 40%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 4px;
+  }
+  
+  .skeletonListAction {
+    width: 80px;
+    height: 32px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 8px;
+  }
+  
+  /* ============================================ */
+  /* TABLE SKELETON (للجداول) */
+  /* ============================================ */
+  
+  .skeletonTableContainer {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    padding: 1rem;
+  }
+  
+  .skeletonTableHeader {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+  }
+  
+  .skeletonTableHeaderCell {
+    height: 20px;
+    background: linear-gradient(90deg, #e0e0e0 25%, #d0d0d0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 4px;
+  }
+  
+  .skeletonTableRow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .skeletonTableCell {
+    height: 16px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 4px;
+  }
+  
+  /* ============================================ */
+  /* DETAILS SKELETON (للتفاصيل) */
+  /* ============================================ */
+  
+  .skeletonDetailsContainer {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    padding: 1.5rem;
+  }
+  
+  .skeletonDetailsHeader {
+    height: 32px;
+    width: 40%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+  
+  .skeletonDetailsSection {
+    margin-bottom: 1.5rem;
+  }
+  
+  .skeletonDetailsTitle {
+    height: 20px;
+    width: 30%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  
+  .skeletonDetailsText {
+    height: 14px;
+    width: 100%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+  }
+  
+  .skeletonDetailsTextShort {
+    height: 14px;
+    width: 60%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 4px;
+  }
+  
+  /* ============================================ */
+  /* ANIMATIONS */
+  /* ============================================ */
+  
+  @keyframes skeletonLoading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* ============================================ */
+  /* RESPONSIVE DESIGN */
+  /* ============================================ */
+  
+  @media (max-width: 768px) {
+    .skeletonGrid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 0.75rem;
+    }
+    
+    .skeletonImage {
+      height: 150px;
+    }
+    
+    .skeletonListItem {
+      padding: 0.75rem;
+    }
+    
+    .skeletonAvatar {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .skeletonTableHeader,
+    .skeletonTableRow {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    
+    .skeletonTableHeaderCell:nth-child(3),
+    .skeletonTableHeaderCell:nth-child(4),
+    .skeletonTableCell:nth-child(3),
+    .skeletonTableCell:nth-child(4) {
+      display: none;
+    }
+    
+    .skeletonDetailsContainer {
+      padding: 1rem;
+    }
+    
+    .skeletonDetailsHeader {
+      height: 28px;
+      width: 60%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .skeletonGrid {
+      gap: 0.75rem;
+      padding: 0.5rem;
+    }
+    
+    .skeletonImage {
+      height: 120px;
+    }
+    
+    .skeletonContent {
+      padding: 0.8rem;
+    }
+    
+    .skeletonTitle {
+      height: 18px;
+    }
+    
+    .skeletonText {
+      height: 12px;
+    }
+    
+    .skeletonListItem {
+      flex-direction: column;
+      text-align: center;
+      gap: 0.75rem;
+    }
+    
+    .skeletonListContent {
+      width: 100%;
+    }
+    
+    .skeletonListTitle {
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .skeletonListSubtitle {
+      width: 60%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .skeletonListAction {
+      width: 100%;
+    }
+  }

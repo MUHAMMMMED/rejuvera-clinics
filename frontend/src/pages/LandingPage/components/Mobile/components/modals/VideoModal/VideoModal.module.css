@@ -1,0 +1,49 @@
+.videoModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullVideoContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.fullVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.closeFullVideo {
+  position: absolute;
+  top: 40px; /* أقرب إلى أعلى */
+  right: 20px;
+  background: #d4af37; /* لون ذهبي */
+  border: none;
+  color: #0a0a0a; /* لون الأيقونة داخل الزر */
+  cursor: pointer;
+  padding: 0.7rem; /* مساحة أكبر للضغط */
+  border-radius: 50%;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* ظل لتحديد الزر */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 10;
+}
+
+.closeFullVideo:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+}
+
+.closeFullVideo:active {
+  transform: scale(0.95);
+}

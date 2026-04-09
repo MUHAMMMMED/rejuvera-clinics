@@ -1,0 +1,103 @@
+/* NotFound.css - صفحة 404 بسيطة ونظيفة */
+.notfound-root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #1a0c2f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  
+  .notfound-inner {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .notfound-icon {
+    color: #c5a028;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .notfound-code {
+    color: #c5a028;
+    font-size: 72px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    letter-spacing: 4px;
+  }
+  
+  .notfound-text {
+    color: #ffffff;
+    font-size: 18px;
+    margin: 0 0 32px 0;
+    font-weight: 500;
+  }
+  
+  .notfound-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .notfound-btn-home,
+  .notfound-btn-search {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    border: none;
+  }
+  
+  .notfound-btn-home {
+    background: #c5a028;
+    color: #1a0c2f;
+  }
+  
+  .notfound-btn-home:hover {
+    background: #d4af37;
+    transform: translateY(-1px);
+  }
+  
+  .notfound-btn-search {
+    background: transparent;
+    color: #c5a028;
+    border: 1px solid #c5a028;
+  }
+  
+  .notfound-btn-search:hover {
+    background: rgba(197, 160, 40, 0.1);
+  }
+  
+  @media (max-width: 640px) {
+    .notfound-icon svg {
+      width: 60px;
+      height: 60px;
+    }
+    
+    .notfound-code {
+      font-size: 56px;
+    }
+    
+    .notfound-text {
+      font-size: 16px;
+    }
+    
+    .notfound-btn-home,
+    .notfound-btn-search {
+      padding: 8px 20px;
+      font-size: 13px;
+    }
+  }

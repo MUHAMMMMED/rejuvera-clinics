@@ -1,0 +1,283 @@
+/* ProcessSteps.module.css - نسخة محسنة للموبايل */
+
+.processSection {
+  margin: 1rem 0;
+  padding: 1rem 0;
+  background: linear-gradient(180deg, rgba(212, 175, 55, 0.02), transparent);
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ==================== Header Styles ==================== */
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.sectionBadge {
+  display: inline-block;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 0.3rem 1rem;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  color: #d4af37;
+  margin-bottom: 0.8rem;
+}
+
+.sectionTitle {
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.gold {
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sectionDescription {
+  color: #b0b0b0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+/* ==================== Grid Styles ==================== */
+.processGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+}
+
+/* ==================== Card Styles ==================== */
+.processCard {
+  position: relative;
+  text-align: center;
+  padding: 1.2rem 0.8rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  transition: all 0.3s ease;
+  
+  /* Animation */
+  opacity: 0;
+  transform: translateY(15px);
+  animation: fadeUp 0.5s ease forwards;
+}
+
+/* Animation Delays */
+.processCard:nth-child(1) { animation-delay: 0.1s; }
+.processCard:nth-child(2) { animation-delay: 0.2s; }
+.processCard:nth-child(3) { animation-delay: 0.3s; }
+.processCard:nth-child(4) { animation-delay: 0.4s; }
+
+.processCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.1);
+}
+
+/* ==================== Number Badge ==================== */
+.processNumber {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #0a0515;
+  font-size: 0.7rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* ==================== Icon Styles ==================== */
+.processIcon {
+  margin-bottom: 0.6rem;
+}
+
+.processIcon svg {
+  width: 28px;
+  height: 28px;
+  color: #d4af37;
+  transition: transform 0.3s ease;
+}
+
+.processCard:hover .processIcon svg {
+  transform: scale(1.1);
+}
+
+/* ==================== Text Styles ==================== */
+.processCard h3 {
+  color: #fff;
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.processCard p {
+  color: #b0b0b0;
+  font-size: 0.65rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+  padding: 0 0.2rem;
+}
+
+/* ==================== Duration Badge ==================== */
+.processDuration {
+  display: inline-block;
+  background: rgba(212, 175, 55, 0.12);
+  padding: 0.2rem 0.5rem;
+  border-radius: 50px;
+  font-size: 0.55rem;
+  color: #d4af37;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.processCard:hover .processDuration {
+  background: rgba(212, 175, 55, 0.2);
+}
+
+/* ==================== Animation Keyframes ==================== */
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== Tablet Styles ==================== */
+@media (min-width: 600px) and (max-width: 768px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.6rem;
+  }
+  
+  .sectionDescription {
+    font-size: 0.85rem;
+    max-width: 400px;
+  }
+  
+  .processGrid {
+    gap: 1rem;
+  }
+  
+  .processCard {
+    padding: 1.3rem 1rem;
+  }
+  
+  .processCard h3 {
+    font-size: 0.9rem;
+  }
+  
+  .processCard p {
+    font-size: 0.7rem;
+  }
+  
+  .processIcon svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* ==================== Small Mobile Styles ==================== */
+@media (max-width: 480px) {
+  .processSection {
+    margin: 0.5rem 0;
+    padding: 0.5rem 0;
+  }
+  
+  .container {
+    padding: 0 0.8rem;
+  }
+  
+  .sectionHeader {
+    margin-bottom: 1rem;
+  }
+  
+  .sectionBadge {
+    padding: 0.2rem 0.8rem;
+    font-size: 0.65rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.2rem;
+  }
+  
+  .sectionDescription {
+    font-size: 0.7rem;
+  }
+  
+  .processGrid {
+    gap: 0.6rem;
+  }
+  
+  .processCard {
+    padding: 1rem 0.6rem;
+  }
+  
+  .processNumber {
+    width: 22px;
+    height: 22px;
+    font-size: 0.6rem;
+    top: -6px;
+    right: -6px;
+  }
+  
+  .processIcon svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .processCard h3 {
+    font-size: 0.75rem;
+  }
+  
+  .processCard p {
+    font-size: 0.6rem;
+  }
+  
+  .processDuration {
+    font-size: 0.5rem;
+    padding: 0.15rem 0.4rem;
+  }
+}
+
+/* ==================== Very Small Mobile ==================== */
+@media (max-width: 360px) {
+  .processCard h3 {
+    font-size: 0.7rem;
+  }
+  
+  .processCard p {
+    font-size: 0.55rem;
+  }
+  
+  .processIcon svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .processDuration {
+    font-size: 0.45rem;
+  }
+}

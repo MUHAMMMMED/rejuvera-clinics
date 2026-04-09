@@ -1,0 +1,117 @@
+.dashboardHeader {
+    background: linear-gradient(135deg, #0a0515 0%, #120c24 100%);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    padding: 1rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+  }
+  
+  .headerContainer {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  
+  .headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 1;
+  }
+  
+  .backButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: #d4af37;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+  
+  .backButton:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: translateX(-2px);
+    border-color: rgba(212, 175, 55, 0.5);
+  }
+  
+  .backButton svg {
+    transition: transform 0.3s ease;
+  }
+  
+  .backButton:hover svg {
+    transform: translateX(-2px);
+  }
+  
+  .headerInfo {
+    flex: 1;
+  }
+  
+  .title {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  
+  .subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    margin: 0.25rem 0 0 0;
+  }
+  
+  .headerRight {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  /* ==================== Responsive ==================== */
+  @media (max-width: 768px) {
+    .dashboardHeader {
+      padding: 0.75rem 1rem;
+    }
+  
+    .headerLeft {
+      gap: 0.75rem;
+    }
+  
+    .backButton span {
+      display: none; /* إخفاء نص "رجوع" في الموبايل */
+    }
+  
+    .backButton {
+      padding: 0.5rem;
+      border-radius: 8px;
+    }
+  
+    .title {
+      font-size: 1.2rem;
+    }
+  
+    .subtitle {
+      font-size: 0.75rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .dashboardHeader {
+      padding: 0.6rem 0.75rem;
+    }
+  
+    .title {
+      font-size: 1rem;
+    }
+  }

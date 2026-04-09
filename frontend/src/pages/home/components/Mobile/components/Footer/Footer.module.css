@@ -1,0 +1,444 @@
+/* Footer.module.css - Mobile App Style with React Icons */
+.footer {
+  background: linear-gradient(180deg, rgba(10, 5, 21, 0.98), rgba(26, 11, 46, 0.98));
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  position: relative;
+  margin-top: 0.5rem;
+  padding: 0;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* ==================== Tabs Navigation ==================== */
+.tabsNav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: rgba(10, 5, 21, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  padding: 0.5rem 1rem;
+}
+
+.tabBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+}
+
+.tabIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.tabLabel {
+  font-size: 0.6rem;
+  font-weight: 500;
+}
+
+.tabBtn.active {
+  color: #d4af37;
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.tabBtn:hover {
+  color: #d4af37;
+  transform: translateY(-2px);
+}
+
+/* ==================== Tab Content ==================== */
+.tabContent {
+  padding: 1rem;
+  min-height: 280px;
+}
+
+/* Common Brand Section */
+.brand {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.logo {
+  height: 40px;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  color: #b0b0b0;
+  line-height: 1.5;
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+/* ==================== Quick Links Tab ==================== */
+.quickLinksTab {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.linksGrid {
+  display: flex;
+  justify-content: center;
+}
+
+.linkGroup {
+  text-align: center;
+  width: 100%;
+}
+
+.linkGroup h4 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  color: #d4af37;
+  display: inline-block;
+  position: relative;
+}
+
+.linkGroup h4::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  right: 50%;
+  transform: translateX(50%);
+  width: 30px;
+  height: 2px;
+  background: linear-gradient(90deg, #d4af37, transparent);
+  border-radius: 2px;
+}
+
+.linkGroup ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.linkGroup li {
+  margin-bottom: 0;
+}
+
+.linkGroup button {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: #b0b0b0;
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.linkGroup button svg {
+  width: 12px;
+  height: 12px;
+}
+
+.linkGroup button:hover {
+  background: rgba(212, 175, 55, 0.1);
+  color: #d4af37;
+  transform: translateY(-2px);
+}
+
+/* ==================== Services Tab ==================== */
+.servicesTab {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.servicesGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.serviceItem {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.serviceItem button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: transparent;
+  border: none;
+  color: #b0b0b0;
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 0.7rem;
+  text-align: right;
+  transition: all 0.3s ease;
+}
+
+.serviceEmoji {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.serviceIcon {
+  width: 14px;
+  height: 14px;
+  color: #d4af37;
+  flex-shrink: 0;
+}
+
+.serviceName {
+  flex: 1;
+  text-align: right;
+}
+
+.serviceArrow {
+  width: 14px;
+  height: 14px;
+  color: #d4af37;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.serviceItem:hover {
+  background: rgba(212, 175, 55, 0.05);
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateX(-3px);
+}
+
+.serviceItem:hover button {
+  color: #d4af37;
+}
+
+.serviceItem:hover .serviceArrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+/* ==================== Social Tab ==================== */
+.socialTab {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  padding: 0.7rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.contactIcon {
+  width: 36px;
+  height: 36px;
+  background: rgba(212, 175, 55, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contactIcon svg {
+  width: 18px;
+  height: 18px;
+  color: #d4af37;
+}
+
+.contactDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.contactLabel {
+  font-size: 0.6rem;
+  color: #888;
+}
+
+.contactValue {
+  font-size: 0.7rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+.contactArrow {
+  width: 14px;
+  height: 14px;
+  color: #d4af37;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.contactItem:hover {
+  background: rgba(212, 175, 55, 0.05);
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateX(-3px);
+}
+
+.contactItem:hover .contactArrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+/* ==================== Payment Section ==================== */
+.paymentSection {
+  padding: 0.8rem 1rem;
+  border-top: 1px solid rgba(212, 175, 55, 0.1);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.paymentMethods {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.paymentBadge {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.paymentBadge img {
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 10px;
+  height: 32px;
+  filter: brightness(0.95);
+}
+
+.paymentBadge:hover {
+  transform: translateY(-2px);
+}
+
+.paymentBadge:hover img {
+  filter: brightness(1);
+}
+
+/* ==================== Bottom Section ==================== */
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: center;
+  padding: 1rem;
+  color: #888888;
+  font-size: 0.55rem;
+}
+
+.bottom p {
+  margin: 0;
+}
+
+.legal {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.legal button {
+  background: transparent;
+  border: none;
+  color: #888888;
+  cursor: pointer;
+  font-size: 0.55rem;
+  padding: 0;
+  transition: color 0.3s ease;
+}
+
+.legal button:hover {
+  color: #d4af37;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== Responsive ==================== */
+@media (max-width: 480px) {
+  .tabLabel {
+    font-size: 0.55rem;
+  }
+  
+  .tabBtn {
+    padding: 0.2rem 0.6rem;
+  }
+  
+  .serviceItem button {
+    font-size: 0.7rem;
+    padding: 0.6rem;
+  }
+  
+  .contactItem {
+    padding: 0.6rem;
+  }
+  
+  .contactIcon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .contactIcon svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .contactValue {
+    font-size: 0.65rem;
+  }
+  
+  .paymentBadge img {
+    height: 28px;
+  }
+}
+
+@media (max-width: 360px) {
+  .linkGroup ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .linkGroup button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .serviceItem button {
+    flex-wrap: wrap;
+  }
+}

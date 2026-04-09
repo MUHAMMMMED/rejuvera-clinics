@@ -1,0 +1,38 @@
+.statsSection {
+    margin: 0.8rem 0;
+  }
+  
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    border-radius: 16px;
+    padding: 0.6rem;
+  }
+  
+  .statCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .statCard svg {
+    color: #d4af37;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .statNumber {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0.2rem 0;
+  }
+  
+  .statLabel {
+    font-size: 0.55rem;
+    color: #b0b0b0;
+  }

@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap');
+
+.desktop-clinic-container {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #0d0d0d;
+  --bg-card: rgba(20, 20, 20, 0.8);
+  --bg-glass: rgba(255, 255, 255, 0.03);
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-muted: #666666;
+  --accent: #d4af37;
+  --accent-light: #e8c547;
+  --accent-dark: #b8941f;
+  --accent-glow: rgba(212, 175, 55, 0.3);
+  --border: rgba(212, 175, 55, 0.2);
+  --border-light: rgba(255, 255, 255, 0.08);
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --shadow-luxury: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(212, 175, 55, 0.1);
+  --shadow-gold: 0 0 40px rgba(212, 175, 55, 0.15);
+  --transition: all 0.4s cubic-bezier(0.2, 0.8, 0.4, 1);
+  --transition-slow: all 0.6s cubic-bezier(0.2, 0.8, 0.4, 1);
+  
+  font-family: 'Cairo', sans-serif;
+  background: #1a0b2e;
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Luxury Scrollbar */
+.desktop-clinic-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.desktop-clinic-container::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+.desktop-clinic-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent), var(--accent-dark));
+  border-radius: 4px;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(212, 175, 55, 0.3);
+  color: var(--text-primary);
+}

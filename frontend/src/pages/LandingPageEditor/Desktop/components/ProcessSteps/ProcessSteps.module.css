@@ -1,0 +1,390 @@
+.processSection {
+    padding: 5rem 0;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  
+  .processGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+  
+  .processCard {
+    position: relative;
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(15, 8, 31, 0.8), rgba(10, 5, 21, 0.8));
+    border-radius: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .processCard:hover {
+    transform: translateY(-5px);
+    border-color: rgba(212, 175, 55, 0.3);
+  }
+  
+  .processNumber {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #0a0515;
+    font-size: 1.25rem;
+  }
+  
+  .processIcon {
+    margin-bottom: 1rem;
+  }
+  
+  .processIcon svg {
+    color: #d4af37;
+  }
+  
+  .processCard h3 {
+    color: #fff;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .processCard p {
+    color: #b0b0b0;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+  
+  .processDuration {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    color: #d4af37;
+  }
+  
+  @media (max-width: 768px) {
+    .processGrid {
+      gap: 1.5rem;
+    }
+    
+    .processCard {
+      padding: 1.5rem;
+    }
+  }
+
+
+  /* ==================== Edit Header Styles ==================== */
+.editHeader {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.editButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(212, 175, 55, 0.9);
+  color: #0a0a0a;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.editButton:hover {
+  background: #d4af37;
+  transform: translateY(-2px);
+}
+
+.editActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.saveButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #10b981;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.saveButton:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+.cancelButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ef4444;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+.saveButton:disabled,
+.cancelButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==================== Edit Header Section ==================== */
+.editHeaderSection {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.editBadge {
+  display: inline-block;
+  width: auto;
+  text-align: center;
+  font-size: 0.85rem;
+  padding: 0.3rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 50px;
+  color: #d4af37;
+  margin: 0 auto 0.5rem;
+  font-family: inherit;
+}
+
+.editMainTitle {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 12px;
+  color: #fff;
+  margin: 0 auto 0.5rem;
+}
+
+.editDescription {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 12px;
+  color: #fff;
+  margin: 0 auto;
+  font-family: inherit;
+  resize: vertical;
+}
+
+/* ==================== Edit Step Fields ==================== */
+.iconSelect {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  color: #d4af37;
+  padding: 0.3rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  width: 100%;
+  max-width: 150px;
+}
+
+.iconSelect option {
+  background: #1a0f2e;
+  color: #fff;
+}
+
+.iconPreview {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.editStepTitle {
+  width: 100%;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.editStepDesc {
+  width: 100%;
+  text-align: center;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  color: #fff;
+  font-family: inherit;
+  resize: vertical;
+  margin-bottom: 0.5rem;
+}
+
+.editDuration {
+  width: 100%;
+  text-align: center;
+  padding: 0.4rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  color: #d4af37;
+  font-size: 0.85rem;
+}
+
+.editBadge:focus,
+.editMainTitle:focus,
+.editDescription:focus,
+.editStepTitle:focus,
+.editStepDesc:focus,
+.editDuration:focus,
+.iconSelect:focus {
+  outline: none;
+  border-color: #d4af37;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* ==================== Error Message ==================== */
+.errorMessage {
+  background: #ef4444;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ==================== Responsive ==================== */
+@media (max-width: 768px) {
+  .editHeader {
+    justify-content: center;
+  }
+  
+  .editMainTitle {
+    font-size: 1.5rem;
+  }
+  
+  .editBadge {
+    font-size: 0.75rem;
+  }
+  
+  .iconSelect {
+    max-width: 120px;
+    font-size: 0.7rem;
+  }
+  
+  .editStepTitle {
+    font-size: 1rem;
+  }
+}
+
+/* ==================== Notification Styles ==================== */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  z-index: 10000;
+  animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.notification.success {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border-right: 4px solid #34d399;
+}
+
+.notification.error {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  border-right: 4px solid #f87171;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    text-align: center;
+    font-size: 0.8rem;
+    padding: 0.8rem 1rem;
+  }
+}

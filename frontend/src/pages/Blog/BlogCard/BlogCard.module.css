@@ -1,0 +1,278 @@
+/* pages/Blog/BlogCard/BlogCard.module.css */
+
+.card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 24px;
+    padding: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.4, 1);
+    animation: fadeInUp 0.6s ease-out both;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  
+  .cardGlow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  
+  .cardBorder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 24px;
+    transition: all 0.4s ease;
+    pointer-events: none;
+  }
+  
+  .card:hover {
+    transform: translateY(-6px);
+  }
+  
+  .card:hover .cardBorder {
+    border-color: rgba(212, 175, 55, 0.6);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(212, 175, 55, 0.2);
+  }
+  
+  .card:hover .cardGlow {
+    opacity: 1;
+  }
+  
+  .cardHovered {
+    transform: translateY(-6px);
+  }
+  
+  /* شارة الأحدث */
+  .newBadge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    padding: 0.25rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #0a0a0a;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* المحتوى الرئيسي */
+  .cardContent {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  /* الأيقونة */
+  .iconWrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid rgba(212, 175, 55, 0.4);
+    color: #d4af37;
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover .icon {
+    transform: scale(1.05);
+    border-color: #d4af37;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+  }
+  
+  .icon svg {
+    width: 32px;
+    height: 32px;
+  }
+  
+  /* النص */
+  .textWrapper {
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: #ffffff;
+    transition: color 0.3s ease;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .card:hover .title {
+    color: #d4af37;
+  }
+  
+  .summary {
+    font-size: 0.85rem;
+    color: #a0a0a0;
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  /* تفاصيل إضافية */
+  .details {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid rgba(212, 175, 55, 0.15);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    margin: 0.25rem 0;
+  }
+  
+  .date, .readTime {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    color: #b0b0b0;
+  }
+  
+  .date svg, .readTime svg {
+    color: #d4af37;
+  }
+  
+  /* زر القراءة الرئيسي */
+  .readMoreBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    border: none;
+    color: #0a0a0a;
+    padding: 0.7rem 1rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  
+  .readMoreBtn svg {
+    transition: transform 0.3s ease;
+  }
+  
+  .readMoreBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+  }
+  
+  .readMoreBtn:hover svg {
+    transform: translateX(5px);
+  }
+  
+  /* تأثيرات hover إضافية */
+  .hoverEffect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+  
+  .hoverGlow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.05), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  
+  .card:hover .hoverGlow {
+    opacity: 1;
+  }
+  
+  /* Animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .card {
+      padding: 1.2rem;
+    }
+    
+    .icon {
+      width: 60px;
+      height: 60px;
+    }
+    
+    .icon svg {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .title {
+      font-size: 1.1rem;
+    }
+    
+    .summary {
+      font-size: 0.8rem;
+    }
+    
+    .readMoreBtn {
+      padding: 0.6rem 1rem;
+      font-size: 0.85rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .details {
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .icon {
+      width: 55px;
+      height: 55px;
+    }
+  }

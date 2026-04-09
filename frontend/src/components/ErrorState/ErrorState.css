@@ -1,0 +1,105 @@
+/* ErrorState.css - كلاسز فريدة بدون تداخل */
+.error-state-root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #1a0c2f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  
+  .error-state-inner {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .error-state-icon {
+    color: #c5a028;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .error-state-text {
+    color: #ffffff;
+    font-size: 18px;
+    margin: 0 0 32px 0;
+    font-weight: 500;
+  }
+  
+  .error-state-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .error-state-btn-retry,
+  .error-state-btn-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    border: none;
+  }
+  
+  .error-state-btn-retry {
+    background: #c5a028;
+    color: #1a0c2f;
+  }
+  
+  .error-state-btn-retry:hover:not(:disabled) {
+    background: #d4af37;
+    transform: translateY(-1px);
+  }
+  
+  .error-state-btn-retry:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .error-state-btn-home {
+    background: transparent;
+    color: #c5a028;
+    border: 1px solid #c5a028;
+  }
+  
+  .error-state-btn-home:hover {
+    background: rgba(197, 160, 40, 0.1);
+  }
+  
+  .error-state-spin {
+    animation: error-state-spin-animation 1s linear infinite;
+  }
+  
+  @keyframes error-state-spin-animation {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  @media (max-width: 640px) {
+    .error-state-icon svg {
+      width: 48px;
+      height: 48px;
+    }
+    
+    .error-state-text {
+      font-size: 16px;
+    }
+    
+    .error-state-btn-retry,
+    .error-state-btn-home {
+      padding: 8px 20px;
+      font-size: 13px;
+    }
+  }

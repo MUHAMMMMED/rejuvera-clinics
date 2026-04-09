@@ -1,0 +1,121 @@
+.hero {
+  padding: 0.8rem 0;
+}
+
+.heroCard {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.02));
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 20px;
+  padding: 1.2rem;
+  text-align: center;
+}
+
+.heroBadge {
+  display: inline-block;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  font-size: 0.65rem;
+  color: #d4af37;
+  margin-bottom: 0.6rem;
+}
+
+.heroCard h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+
+.heroSubtitle {
+  font-size: 0.75rem;
+  color: #d4af37;
+  margin-bottom: 0.5rem;
+}
+
+.heroDescription {
+  color: #b0b0b0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin-bottom: 0.8rem;
+  padding: 0 0.5rem;
+}
+
+.heroMedia {
+  margin: 0.8rem 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.videoContainer {
+  position: relative;
+  cursor: pointer;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.videoThumbnail {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.playButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(212, 175, 55, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0a0a0a;
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+  transition: transform 0.2s ease;
+}
+
+.playButton:active {
+  transform: translate(-50%, -50%) scale(0.95);
+}
+
+.heroImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.heroButtons {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+.heroCta, .heroSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.8rem; /* تصغير padding */
+  border-radius: 50px;
+  font-size: 0.65rem; /* تصغير حجم الخط */
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap; /* منع الالتفاف */
+}
+
+.heroCta {
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  color: #0a0a0a;
+}
+
+.heroSecondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: #fff;
+}

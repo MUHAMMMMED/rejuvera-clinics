@@ -1,0 +1,492 @@
+/* Base Modal Styles */
+.bookingModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .bookingModal.open {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Mobile Styles - Bottom Sheet */
+  .bookingModal.mobile {
+    align-items: flex-end;
+  }
+  
+  .mobileSheet {
+    background: linear-gradient(180deg, #0a0515, #0f081f);
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+    width: 100%;
+    max-width: 500px;
+    padding: 0.8rem 1rem 1.5rem;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+  }
+  
+  .bookingModal.mobile.open .mobileSheet {
+    transform: translateY(0);
+  }
+  
+  .sheetHandle {
+    width: 50px;
+    height: 4px;
+    background: rgba(212, 175, 55, 0.3);
+    border-radius: 2px;
+    margin: 0 auto 1rem;
+  }
+  
+  /* Desktop Styles - Centered Modal */
+  .bookingModal.desktop {
+    align-items: center;
+  }
+  
+  .desktopSheet {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 28px;
+    width: 90%;
+    max-width: 500px;
+    padding: 1.5rem;
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.2);
+  }
+  
+  .bookingModal.desktop.open .desktopSheet {
+    transform: scale(1);
+  }
+  
+  /* Header Styles */
+  .sheetHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  
+  .headerIcon {
+    width: 48px;
+    height: 48px;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d4af37;
+  }
+  
+  .headerText {
+    flex: 1;
+  }
+  
+  .headerText h3 {
+    color: #d4af37;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+  }
+  
+  .headerText p {
+    color: #b0b0b0;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+  
+  .closeBtn {
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #d4af37;
+    transition: all 0.2s ease;
+  }
+  
+  .closeBtn:hover,
+  .closeBtn:active {
+    transform: scale(0.95);
+    background: rgba(212, 175, 55, 0.1);
+  }
+  
+  /* Form Styles */
+  .bookingForm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .inputGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 14px;
+    padding: 0 1rem;
+    transition: all 0.2s ease;
+  }
+  
+  .inputGroup:focus-within {
+    border-color: #d4af37;
+    background: rgba(212, 175, 55, 0.05);
+  }
+  
+  .inputGroup svg {
+    color: #d4af37;
+    flex-shrink: 0;
+  }
+  
+  .inputGroup input,
+  .inputGroup textarea {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 0.9rem 0;
+    color: #fff;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+  
+  .inputGroup input::placeholder,
+  .inputGroup textarea::placeholder {
+    color: #666;
+  }
+  
+  .inputGroup input:focus,
+  .inputGroup textarea:focus {
+    outline: none;
+  }
+  
+  .inputGroup textarea {
+    resize: none;
+    min-height: 80px;
+  }
+  
+  .errorMsg {
+    color: #ff6b6b;
+    font-size: 0.75rem;
+    text-align: center;
+    margin: 0;
+  }
+  
+  .submitBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    color: #0a0a0a;
+    border: none;
+    padding: 1rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 0.5rem;
+  }
+  
+  .submitBtn:hover:not(:disabled),
+  .submitBtn:active:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+  }
+  
+  .submitBtn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  .submitBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .waitingMessage {
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 1rem;
+    border: 3px solid rgba(212, 175, 55, 0.2);
+    border-top-color: #d4af37;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .waitingMessage p {
+    color: #b0b0b0;
+    font-size: 0.85rem;
+  }
+  
+  /* Success Modal - Centered Popup (Same for both) */
+  .successModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .successModalContainer {
+    animation: modalPopIn 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+    max-width: 90%;
+    width: 400px;
+    margin: 20px;
+  }
+  
+  .successModalContent {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 28px;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.2);
+  }
+  
+  .successModalClose {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #888;
+    transition: all 0.2s ease;
+  }
+  
+  .successModalClose:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transform: rotate(90deg);
+  }
+  
+  .successModalIcon {
+    margin-bottom: 1.5rem;
+  }
+  
+  .checkmarkCircle {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulseCheckmark 0.6s ease-out;
+  }
+  
+  .checkmarkCircle svg {
+    color: #d4af37;
+    animation: scaleIn 0.4s cubic-bezier(0.34, 1.2, 0.64, 1) 0.2s both;
+  }
+  
+  .successModalTitle {
+    color: #d4af37;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    animation: slideUp 0.4s ease 0.1s both;
+  }
+  
+  .successModalMessage {
+    color: #c0c0c0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    animation: slideUp 0.4s ease 0.2s both;
+  }
+  
+  .successModalMessage strong {
+    color: #d4af37;
+    font-weight: 600;
+  }
+  
+  .successModalDetails {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    animation: slideUp 0.4s ease 0.3s both;
+  }
+  
+  .successModalDetailItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(212, 175, 55, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    color: #d4af37;
+  }
+  
+  .successModalDetailItem svg {
+    color: #d4af37;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes modalPopIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.7) translateY(-30px);
+    }
+    60% {
+      opacity: 1;
+      transform: scale(1.05) translateY(5px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  
+  @keyframes pulseCheckmark {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes scaleIn {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideUp {
+    0% {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .desktopSheet {
+      max-width: 90%;
+      margin: 1rem;
+      padding: 1rem;
+    }
+    
+    .successModalContent {
+      padding: 1.5rem;
+    }
+    
+    .checkmarkCircle {
+      width: 80px;
+      height: 80px;
+    }
+    
+    .successModalTitle {
+      font-size: 1.1rem;
+    }
+    
+    .successModalMessage {
+      font-size: 0.85rem;
+    }
+    
+    .successModalDetails {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .successModalDetailItem {
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .mobileSheet {
+      padding: 0.6rem 0.8rem 1.2rem;
+    }
+    
+    .headerIcon {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .headerText h3 {
+      font-size: 1rem;
+    }
+    
+    .headerText p {
+      font-size: 0.8rem;
+    }
+    
+    .inputGroup {
+      padding: 0 0.8rem;
+    }
+    
+    .inputGroup input,
+    .inputGroup textarea {
+      padding: 0.8rem 0;
+      font-size: 0.85rem;
+    }
+    
+    .submitBtn {
+      padding: 0.85rem;
+      font-size: 0.9rem;
+    }
+  }

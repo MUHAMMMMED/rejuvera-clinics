@@ -1,0 +1,189 @@
+.sidebar-desktop {
+  width: 280px;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  transition: all 0.2s;
+}
+
+.sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  flex-shrink: 0; /* منع تقليص حجم الهيدر */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-icon {
+  font-size: 1.8rem;
+}
+
+.logo h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #d4af37;
+}
+
+/* منطقة الـ Navigation مع Scroll */
+.sidebar-nav {
+  flex: 1;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto; /* إضافة scroll عمودي */
+  overflow-x: hidden; /* إخفاء scroll أفقي */
+  scrollbar-width: thin; /* تصغير عرض الـ scrollbar في Firefox */
+  scrollbar-color: #d4af37 #1e293b; /* لون الـ scrollbar في Firefox */
+}
+
+/* تخصيص الـ scrollbar في Chrome, Safari, Edge */
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: #b8912c;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  text-align: right;
+  font-family: inherit;
+  flex-shrink: 0; /* منع تقليص حجم عناصر القائمة */
+}
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0; /* منع تقليص حجم الأيقونة */
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.05);
+  color: white;
+}
+
+.nav-item.active {
+  background: rgba(212,175,55,0.15);
+  color: #d4af37;
+  border-right: 3px solid #d4af37;
+}
+
+.sidebar-footer {
+  padding: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.75rem;
+  color: #64748b;
+  text-align: center;
+  flex-shrink: 0; /* منع تقليص حجم الفوتر */
+}
+
+/* Mobile Bottom Navigation - مع Scroll أفقي */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #0f172a;
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 0.5rem 0.25rem;
+  z-index: 100;
+  overflow-x: auto; /* إضافة scroll أفقي للجوال */
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch; /* تحسين الـ scroll في iOS */
+  scrollbar-width: thin;
+}
+
+/* تخصيص الـ scrollbar للـ bottom-nav في Chrome/Safari/Edge */
+.bottom-nav::-webkit-scrollbar {
+  height: 3px;
+}
+
+.bottom-nav::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+.bottom-nav::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 3px;
+}
+
+.bottom-nav-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.7rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 65px;
+  white-space: nowrap;
+}
+
+.bottom-nav-item svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.bottom-nav-item.active {
+  color: #d4af37;
+  background: rgba(212,175,55,0.1);
+}
+
+/* للشاشات المتوسطة - لو عايز الـ sidebar ياخد عرض أقل */
+@media (max-width: 1024px) {
+  .sidebar-desktop {
+      width: 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-desktop {
+      display: none;
+  }
+  .bottom-nav {
+      display: flex;
+  }
+}
