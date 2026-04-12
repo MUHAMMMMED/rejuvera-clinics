@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import AxiosInstance from '../../../../../../components/Authentication/AxiosInstance';
 import styles from './Contact.module.css';
 
 const Contact = ({ data, onBookingSuccess }) => {
@@ -98,22 +99,26 @@ const Contact = ({ data, onBookingSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.phone.trim()) {
+  
+    if (
+      !formData.firstName.trim() ||
+      !formData.lastName.trim() ||
+      !formData.phone.trim()
+    ) {
       setError('يرجى ملء جميع الحقول المطلوبة');
       return;
     }
-
+  
     if (!formData.serviceId) {
       setError('يرجى اختيار الخدمة المطلوبة');
       return;
     }
-
+  
     setLoading(true);
     setError('');
-
+  
     const { source, campaign } = getUrlParams();
-
+  
     const payload = {
       name: `${formData.firstName} ${formData.lastName}`.trim(),
       phone: formData.phone,
@@ -122,31 +127,35 @@ const Contact = ({ data, onBookingSuccess }) => {
       ...(source && { source }),
       ...(campaign && { campaign }),
     };
-
+  
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/home/appointments/new/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+      await AxiosInstance.post('home/appointments/new/', payload);
+  
+      setSubmitted(true);
+  
+      setFormData({
+        firstName: '',
+        lastName: '',
+        phone: '',
+        serviceId: '',
+        serviceName: ''
       });
-
-      if (response.ok) {
-        setSubmitted(true);
-        setFormData({ firstName: '', lastName: '', phone: '', serviceId: '', serviceName: '' });
-        setSearchTerm('');
-        if (onBookingSuccess) onBookingSuccess();
-        setTimeout(() => setSubmitted(false), 5000);
-      } else {
-        const errorData = await response.json();
-        setError(errorData?.error || 'حدث خطأ، حاول مرة أخرى');
-      }
+  
+      setSearchTerm('');
+  
+      if (onBookingSuccess) onBookingSuccess();
+  
+      setTimeout(() => setSubmitted(false), 5000);
+  
     } catch (err) {
-      setError('تعذر الاتصال بالخادم، حاول مرة أخرى');
+      setError(
+        err?.response?.data?.error ||
+        'تعذر الاتصال بالخادم، حاول مرة أخرى'
+      );
     } finally {
       setLoading(false);
     }
   };
-
   const getServicesByCategory = () => {
     const grouped = {};
     filteredServices.forEach(service => {

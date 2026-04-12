@@ -38,14 +38,13 @@ const FinalCtaSection = ({ data }) => {
       document.body.style.overflow = 'unset';
     };
   }, [showModal]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-
+  
     const { source, campaign } = getUrlParams();
-
+  
     const payload = {
       name: formData.name,
       phone: formData.phone,
@@ -55,23 +54,21 @@ const FinalCtaSection = ({ data }) => {
       ...(source && { source }),
       ...(campaign && { campaign }),
     };
-
+  
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/home/appointments/new/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        setSubmitted(true);
-        setShowModal(true); // Show centered modal popup
-      } else {
-        const err = await res.json();
-        setError(err?.error || 'حدث خطأ، حاولي مرة أخرى');
-      }
-    } catch {
-      setError('تعذر الاتصال بالخادم، حاولي مرة أخرى');
+      await AxiosInstance.post(
+        'home/appointments/new/',
+        payload
+      );
+  
+      setSubmitted(true);
+      setShowModal(true);
+  
+    } catch (err) {
+      setError(
+        err?.response?.data?.error ||
+        'تعذر الاتصال بالخادم، حاولي مرة أخرى'
+      );
     } finally {
       setLoading(false);
     }

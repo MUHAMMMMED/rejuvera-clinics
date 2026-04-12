@@ -6,7 +6,7 @@ const BookingModal = ({
   isOpen, 
   onClose, 
   itemId, 
-  itemType, // 's' for service, 'p' for package
+  itemType, 
   itemName,
   onSuccess 
 }) => {

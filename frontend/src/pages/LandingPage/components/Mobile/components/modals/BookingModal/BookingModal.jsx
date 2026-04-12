@@ -1,5 +1,6 @@
 import { Calendar, CheckCircle2, MessageCircle, Phone, Sparkles, User, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import AxiosInstance from '../../../../../../../components/Authentication/AxiosInstance';
 import styles from './BookingModal.module.css';
 
 const BookingModal = ({ isOpen, onClose, serviceId, onSuccess }) => {
@@ -49,14 +50,16 @@ const BookingModal = ({ isOpen, onClose, serviceId, onSuccess }) => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+ 
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-
+  
     const { source, campaign } = getUrlParams();
-
+  
     const payload = {
       name: formData.name,
       phone: formData.phone,
@@ -66,28 +69,25 @@ const BookingModal = ({ isOpen, onClose, serviceId, onSuccess }) => {
       ...(source && { source }),
       ...(campaign && { campaign }),
     };
-
+  
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/home/appointments/new/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        setSubmitted(true);
-        setShowSuccessModal(true); // Show centered success popup
-      } else {
-        const err = await res.json();
-        setError(err?.error || 'حدث خطأ، حاولي مرة أخرى');
-      }
-    } catch {
-      setError('تعذر الاتصال بالخادم، حاولي مرة أخرى');
+      await AxiosInstance.post(
+        'home/appointments/new/',
+        payload
+      );
+  
+      setSubmitted(true);
+      setShowSuccessModal(true);
+  
+    } catch (err) {
+      setError(
+        err?.response?.data?.error ||
+        'تعذر الاتصال بالخادم، حاولي مرة أخرى'
+      );
     } finally {
       setLoading(false);
     }
   };
-
   if (!isOpen && !showSuccessModal) return null;
 
   return (

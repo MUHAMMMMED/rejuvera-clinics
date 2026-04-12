@@ -16,7 +16,7 @@ const ServicesDesktop = ({ data }) => {
     name: '' 
   });
 
-  // البيانات هي مصفوفة خدمات مباشرة
+ 
   const services = Array.isArray(data) ? data : [];
 
   // أيقونات مميزة لكل خدمة (اختيارية)
