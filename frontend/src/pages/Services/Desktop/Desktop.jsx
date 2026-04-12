@@ -5,7 +5,7 @@ import BookingModal from '../../home/components/Desktop/components/BookingModal/
 import { createServiceSlug } from '../../LandingPage/components/utils/slugify';
 import styles from './Services.module.css';
 
-const ServicesDesktop = ({ data }) => {  // إزالة selectedService و setSelectedService
+const ServicesDesktop = ({ data }) => {  
   const navigate = useNavigate();
   
   const [hoveredCard, setHoveredCard] = useState(null);
