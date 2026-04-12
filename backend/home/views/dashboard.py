@@ -5,7 +5,6 @@ from django.db.models import Count
 from django.utils import timezone
 from datetime import timedelta
 from rest_framework.permissions import IsAuthenticated
-   
 from service.models import ServiceCategory,Doctor
 from ..models import SiteInfo, FAQ, Package, GalleryImage,Appointment,Package, Source 
 from device.models import Device

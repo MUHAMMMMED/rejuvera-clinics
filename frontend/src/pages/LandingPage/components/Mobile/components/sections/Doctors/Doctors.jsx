@@ -1,5 +1,5 @@
-import { Award, Instagram } from 'lucide-react';
 import React from 'react';
+import { FaAward, FaInstagram } from 'react-icons/fa';
 import styles from './Doctors.module.css';
 
 const Doctors = ({ doctor }) => {
@@ -22,7 +22,7 @@ const Doctors = ({ doctor }) => {
           <p className={styles.doctorTitle}>{doctor.title}</p>
           {doctor.experience && (
             <p className={styles.doctorExperience}>
-              <Award size={14} />
+              <FaAward size={14} />
               {doctor.experience} سنوات خبرة
             </p>
           )}
@@ -33,7 +33,7 @@ const Doctors = ({ doctor }) => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Instagram size={16} />
+              <FaInstagram size={16} />
               @{doctor.instagram}
             </a>
           )}

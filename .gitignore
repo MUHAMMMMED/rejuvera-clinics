@@ -15,6 +15,7 @@ backend/.env
 
 # Environment folder
 environment/
+.env
 
 # Mac / System
 .DS_Store

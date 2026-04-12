@@ -1,5 +1,5 @@
 import {
-  Award, Check, Edit2, Instagram,
+  Award, Check, Edit2,
   Plus, Search, Trash2, UserPlus, X
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
@@ -7,6 +7,15 @@ import Config from '../../../../../components/Authentication/config';
 import { doctorsApi } from '../../../api';
 import Modal from '../../common/Modal/Modal';
 import './DoctorsSection.css';
+
+// Custom Instagram icon component
+const InstagramIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
 
 const DoctorsSection = ({ doctors: initialDoctors, showToast, onRefresh }) => {
   const [doctors, setDoctors] = useState(initialDoctors || []);
@@ -265,9 +274,10 @@ const DoctorsSection = ({ doctors: initialDoctors, showToast, onRefresh }) => {
                     <a
                       href={`https://instagram.com/${doctor.instagram.replace('@', '')}`}
                       target="_blank" rel="noopener noreferrer"
-                      className="ds-doctors-section-contact-btn ds-doctors-section-contact-insta" title={doctor.instagram}
+                      className="ds-doctors-section-contact-btn ds-doctors-section-contact-insta" 
+                      title={doctor.instagram}
                     >
-                      <Instagram size={13} />
+                      <InstagramIcon />
                     </a>
                   </div>
                 )}
@@ -359,7 +369,7 @@ const DoctorsSection = ({ doctors: initialDoctors, showToast, onRefresh }) => {
           <div className="ds-doctors-section-form-group">
             <label>Instagram</label>
             <div className="ds-doctors-section-input-wrap">
-              <Instagram size={15} className="ds-doctors-section-input-icon" />
+              <InstagramIcon />
               <input type="text" value={formData.instagram}
                 onChange={e => setFormData(f => ({ ...f, instagram: e.target.value }))}
                 placeholder="@username" disabled={isLoading} />

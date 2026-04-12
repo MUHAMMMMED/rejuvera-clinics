@@ -35,7 +35,7 @@ const LoadingSpinner = ({
             />
             {/* Ripple Effects */}
             <div className="ripple-ring ring-1"></div>
-            <div class="ripple-ring ring-2"></div>
+            <div className="ripple-ring ring-2"></div> {/* Fixed: changed 'class' to 'className' */}
             <div className="ripple-ring ring-3"></div>
           </div>
           

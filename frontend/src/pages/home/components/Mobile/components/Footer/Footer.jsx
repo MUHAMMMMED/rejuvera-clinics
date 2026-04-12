@@ -4,21 +4,36 @@ import {
   Heart,
   Home,
   Image,
-  Instagram,
   Link2,
   MapPin,
   MessageCircle,
   Package,
   Phone,
   Sparkles,
-  Twitter,
   Users,
   Zap
 } from 'lucide-react';
 import React, { useState } from 'react';
 import styles from './Footer.module.css';
 import logo from './logo.png';
-const Footer = ({ scrollToSection, setSelectedService,data }) => {
+
+// Custom Instagram icon component
+const InstagramIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
+// Custom Twitter/X icon component
+const TwitterIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+  </svg>
+);
+
+const Footer = ({ scrollToSection, setSelectedService, data }) => {
   const [activeTab, setActiveTab] = useState('quickLinks');
 
   const tabs = [
@@ -37,8 +52,8 @@ const Footer = ({ scrollToSection, setSelectedService,data }) => {
   const socialLinks = [
     { id: 'phone', label: 'اتصل بنا', value: '+966 11 499 9959', icon: Phone, href: 'tel:+966114999959' },
     { id: 'whatsapp', label: 'واتساب', value: 'تواصل عبر واتساب', icon: MessageCircle, href: 'https://wa.me/966114999959' },
-    { id: 'instagram', label: 'انستقرام', value: '@rejuveracenter', icon: Instagram, href: 'https://www.instagram.com/rejuveracenter/' },
-    { id: 'twitter', label: 'تويتر', value: '@rejuveraclinics', icon: Twitter, href: 'https://x.com/rejuveraclinics' },
+    { id: 'instagram', label: 'انستقرام', value: '@rejuveracenter', icon: InstagramIcon, href: 'https://www.instagram.com/rejuveracenter/' },
+    { id: 'twitter', label: 'تويتر', value: '@rejuveraclinics', icon: TwitterIcon, href: 'https://x.com/rejuveraclinics' },
     { id: 'location', label: 'الموقع', value: 'الرياض، حي الرحمانية', icon: MapPin, href: 'https://maps.app.goo.gl/QmnDGj3QMrL7sFDT6' }
   ];
 
@@ -115,7 +130,7 @@ const Footer = ({ scrollToSection, setSelectedService,data }) => {
           {activeTab === 'services' && (
             <div className={styles.servicesTab}>
               <div className={styles.brand}>
-              <img src={logo} alt="Rejuvera" className={styles.logo} />
+                <img src={logo} alt="Rejuvera" className={styles.logo} />
                 <p className={styles.description}>
                   نقدم أحدث التقنيات الطبية التجميلية بأعلى معايير الجودة والسلامة.
                 </p>
@@ -143,7 +158,7 @@ const Footer = ({ scrollToSection, setSelectedService,data }) => {
           {activeTab === 'social' && (
             <div className={styles.socialTab}>
               <div className={styles.brand}>
-              <img src={logo} alt="Rejuvera" className={styles.logo} />
+                <img src={logo} alt="Rejuvera" className={styles.logo} />
                 <p className={styles.description}>
                   تواصل معنا عبر قنوات التواصل الاجتماعي أو اتصل بنا مباشرة.
                 </p>

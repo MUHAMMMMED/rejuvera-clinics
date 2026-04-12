@@ -1,14 +1,37 @@
 import {
   Building2, Check, CheckCircle2, Clock, Copy, Edit2,
-  ExternalLink, Facebook, Globe, Instagram, Mail,
-  MapPin, MapPinned, MessageCircle, Phone, Youtube
+  ExternalLink, Globe, Mail,
+  MapPin, MapPinned, MessageCircle, Phone
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
- 
 import { siteInfoApi } from '../../../api';
 import Modal from '../../common/Modal/Modal';
 import './SiteInfoSection.css';
+
+// Custom Instagram icon component
+const InstagramIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
+// Custom Facebook icon component
+const FacebookIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+  </svg>
+);
+
+// Custom YouTube icon component
+const YoutubeIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+  </svg>
+);
 
 const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
   const [siteInfo, setSiteInfo] = useState(initialInfo || null);
@@ -43,8 +66,10 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
     }
   }, [initialInfo]);
 
+  
   const isValidUrl = (url) =>
-    !!url && !url.includes('/api/admin/') && url !== 'http://127.0.0.1:8000/api/admin/home/siteinfo/add/';
+    !!url &&
+    !url.includes('/api/admin/');
 
   const handleEdit = () => {
     setFormData(fromInfo(siteInfo));
@@ -115,9 +140,9 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
     { id: 'phone', icon: Phone, label: 'اتصال', url: siteInfo.phone ? `tel:${siteInfo.phone}` : null, cls: 'phone' },
     { id: 'whatsapp', icon: MessageCircle, label: 'واتساب', url: siteInfo.whatsapp ? `https://wa.me/${siteInfo.whatsapp.replace(/[^0-9]/g, '')}` : null, cls: 'whatsapp' },
     { id: 'email', icon: Mail, label: 'بريد', url: siteInfo.email ? `mailto:${siteInfo.email}` : null, cls: 'email' },
-    { id: 'instagram', icon: Instagram, label: 'انستقرام', url: isValidUrl(siteInfo.instagram) ? siteInfo.instagram : null, cls: 'insta' },
-    { id: 'facebook', icon: Facebook, label: 'فيسبوك', url: isValidUrl(siteInfo.facebook) ? siteInfo.facebook : null, cls: 'facebook' },
-    { id: 'youtube', icon: Youtube, label: 'يوتيوب', url: isValidUrl(siteInfo.youtube) ? siteInfo.youtube : null, cls: 'youtube' },
+    { id: 'instagram', icon: InstagramIcon, label: 'انستقرام', url: isValidUrl(siteInfo.instagram) ? siteInfo.instagram : null, cls: 'insta' },
+    { id: 'facebook', icon: FacebookIcon, label: 'فيسبوك', url: isValidUrl(siteInfo.facebook) ? siteInfo.facebook : null, cls: 'facebook' },
+    { id: 'youtube', icon: YoutubeIcon, label: 'يوتيوب', url: isValidUrl(siteInfo.youtube) ? siteInfo.youtube : null, cls: 'youtube' },
   ].filter(l => l.url);
 
   return (
@@ -166,9 +191,9 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
 
         {/* Social */}
         {[
-          { key: 'instagram', icon: Instagram, label: 'Instagram' },
-          { key: 'facebook', icon: Facebook, label: 'Facebook' },
-          { key: 'youtube', icon: Youtube, label: 'YouTube' },
+          { key: 'instagram', icon: InstagramIcon, label: 'Instagram' },
+          { key: 'facebook', icon: FacebookIcon, label: 'Facebook' },
+          { key: 'youtube', icon: YoutubeIcon, label: 'YouTube' },
         ].map(({ key, icon, label }) => {
           const val = siteInfo[key];
           const valid = isValidUrl(val);
@@ -247,18 +272,18 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
           </FormField>
 
           <div className="si-form-row">
-            <FormField label="Instagram" icon={Instagram}>
+            <FormField label="Instagram" icon={InstagramIcon}>
               <input type="url" value={formData.instagram} onChange={set('instagram')}
                 placeholder="https://instagram.com/..." disabled={isLoading} />
             </FormField>
-            <FormField label="Facebook" icon={Facebook}>
+            <FormField label="Facebook" icon={FacebookIcon}>
               <input type="url" value={formData.facebook} onChange={set('facebook')}
                 placeholder="https://facebook.com/..." disabled={isLoading} />
             </FormField>
           </div>
 
           <div className="si-form-row">
-            <FormField label="YouTube" icon={Youtube}>
+            <FormField label="YouTube" icon={YoutubeIcon}>
               <input type="url" value={formData.youtube} onChange={set('youtube')}
                 placeholder="https://youtube.com/..." disabled={isLoading} />
             </FormField>

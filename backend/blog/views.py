@@ -111,7 +111,7 @@ class BlogViewSet(ModelViewSet):
         serializer = self.get_serializer(data=data)
         
         if serializer.is_valid():
-            blog = serializer.save()  # ✅ احصل على كائن المقال
+            blog = serializer.save()   
             print("Created successfully with ID:", blog.id)
             
             # ✅ أعد البيانات كاملة مع التأكد من وجود الـ ID
