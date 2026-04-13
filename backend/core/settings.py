@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-f@is+3@n1%(hpliljyjatjms!)6tn*$k8^%nkxd+m#v7@4*lxg"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
  
  
 
@@ -113,29 +113,29 @@ CORS_ALLOW_ALL_ORIGINS=True
 
 
 
-# CORS_ALLOWED_ORIGINS = [
-#     "https://rejuveracenter.com",
-#     "https://www.rejuveracenter.com",
-#     "http://104.248.45.81",
-#     "https://104.248.45.81",
-# ]
-
-# CSRF_TRUSTED_ORIGINS = [
-#     "https://rejuveracenter.com",
-#     "https://www.rejuveracenter.com",
-#     "http://104.248.45.81",
-#     "https://104.248.45.81",
-# ]
- 
-
- 
- 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
+    "https://rejuveracenter.com",
+    "https://www.rejuveracenter.com",
+    "http://104.248.45.81",
+    "https://104.248.45.81",
 ]
+
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
+    "https://rejuveracenter.com",
+    "https://www.rejuveracenter.com",
+    "http://104.248.45.81",
+    "https://104.248.45.81",
 ]
+ 
+
+ 
+ 
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3000',
+# ]
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://localhost:3000',
+# ]
 
 
 
