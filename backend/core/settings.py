@@ -7,17 +7,21 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
+ 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-f@is+3@n1%(hpliljyjatjms!)6tn*$k8^%nkxd+m#v7@4*lxg"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+ 
+ 
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    "rejuveracenter.com",
+    "www.rejuveracenter.com",
+    "46.101.182.75",
+    "localhost",
+]
 
 # Application definition
 
@@ -99,38 +103,7 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-
-# INSTALLED_APPS = [
-#     'django.contrib.admin',
-#     'django.contrib.auth',
-#     'django.contrib.contenttypes',
-#     'django.contrib.sessions',
-#     'django.contrib.messages',
-#     'django.contrib.staticfiles',
-#     'rest_framework',  # أضف هذا
-#     'rest_framework_simplejwt',  # أضف هذا
-#     'your_app_name',  # اسم التطبيق الخاص بك
-# ]
-
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     ),
-# }
-
-# from datetime import timedelta
-
-# SIMPLE_JWT = {
-#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # وقت صلاحية التوكن
-#     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),    # وقت صلاحية الـ refresh
-#     'ROTATE_REFRESH_TOKENS': False,
-#     'BLACKLIST_AFTER_ROTATION': True,
-#     'AUTH_HEADER_TYPES': ('Bearer',),
-# }
-
-
-
-
+ 
 
 
 
@@ -141,17 +114,17 @@ CORS_ALLOW_ALL_ORIGINS=True
 
 
 # CORS_ALLOWED_ORIGINS = [
-#     "https://altaurea.com",
-#     "https://www.altaurea.com",
-#     "http://46.101.182.75",
-#     "https://46.101.182.75",
+#     "https://rejuveracenter.com",
+#     "https://www.rejuveracenter.com",
+#     "http://104.248.45.81",
+#     "https://104.248.45.81",
 # ]
 
 # CSRF_TRUSTED_ORIGINS = [
-#     "https://altaurea.com",
-#     "https://www.altaurea.com",
-#     "http://46.101.182.75",
-#     "https://46.101.182.75",
+#     "https://rejuveracenter.com",
+#     "https://www.rejuveracenter.com",
+#     "http://104.248.45.81",
+#     "https://104.248.45.81",
 # ]
  
 
