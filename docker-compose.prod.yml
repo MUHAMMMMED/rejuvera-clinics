@@ -11,7 +11,7 @@ services:
       - "5432:5432"
 
   backend:
-    image: mohamedeg/backendlanding
+    image: mohamedeg/backendclinic
     container_name: backend
     depends_on:
       - db
@@ -24,7 +24,7 @@ services:
       - ./static_media:/app/media
 
   frontend:
-    image: mohamedeg/frontendedlanding
+    image: mohamedeg/frontendclinic
     container_name: frontend
     ports:
       - "3000:3000"
