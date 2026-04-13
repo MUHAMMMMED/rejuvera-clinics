@@ -24,5 +24,5 @@ COPY . /app/
 EXPOSE 8000
 
 # 9: Set the entrypoint script to run Django commands and start Gunicorn
-ENTRYPOINT ["sh", "-c", "sleep 20 && python manage.py collectstatic --noinput && python manage.py migrate && gunicorn project.wsgi:application --bind 0.0.0.0:8000"]
+ENTRYPOINT ["sh", "-c", "sleep 20 && python manage.py collectstatic --noinput && python manage.py migrate && gunicorn core.wsgi:application --bind 0.0.0.0:8000"]
 
