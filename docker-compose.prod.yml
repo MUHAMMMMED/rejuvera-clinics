@@ -1,10 +1,50 @@
-version: "3.8"
+# services:
+#   db:
+#     image: postgres:15
+#     container_name: postgres_db
+#     environment:
+#       POSTGRES_DB: POSTGRES_DB_clinic
+#       POSTGRES_USER: Clinic
+#       POSTGRES_PASSWORD: clinic07775000
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+#     ports:
+#       - "5432:5432"
+
+#   backend:
+#     image: mohamedeg/backendclinic
+#     container_name: backend
+#     depends_on:
+#       - db
+#     environment:
+#       POSTGRES_DB: POSTGRES_DB_clinic
+#       POSTGRES_USER: Clinic
+#       POSTGRES_PASSWORD: clinic07775000
+#     ports:
+#       - "8000:8000"
+#     volumes:
+#       - ./static_backend:/app/static
+#       - ./static_media:/app/media
+
+#   frontend:
+#     image: mohamedeg/frontendclinic
+#     container_name: frontend
+#     ports:
+#       - "3000:3000"
+#     depends_on:
+#       - backend
+
+# volumes:
+#   postgres_data:
+
 services:
   db:
-    image: postgres:13
+    image: postgres:15
     container_name: postgres_db
-    env_file:
-      - ./.env
+    environment:
+      POSTGRES_DB: POSTGRES_DB_clinic
+      POSTGRES_USER: Clinic
+      POSTGRES_PASSWORD: clinic07775000
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -15,13 +55,15 @@ services:
     container_name: backend
     depends_on:
       - db
-    env_file:
-      - ./.env
+    environment:
+      POSTGRES_DB: POSTGRES_DB_clinic
+      POSTGRES_USER: Clinic
+      POSTGRES_PASSWORD: clinic07775000
     ports:
       - "8000:8000"
     volumes:
       - ./static_backend:/app/static
-      - ./static_media:/app/media
+      - ./static_media:/app/media # ✅ backend writes here
 
   frontend:
     image: mohamedeg/frontendclinic
@@ -30,6 +72,23 @@ services:
       - "3000:3000"
     depends_on:
       - backend
+
+  # ✅ ADD: nginx as a service with access to the same media volume
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./static_backend:/app/static # ✅ same volume as backend static
+      - ./static_media:/app/media # ✅ same volume as backend media
+      - /etc/ssl/cert.pem:/etc/ssl/cert.pem
+      - /etc/ssl/key.pem:/etc/ssl/key.pem
+    depends_on:
+      - backend
+      - frontend
 
 volumes:
   postgres_data:

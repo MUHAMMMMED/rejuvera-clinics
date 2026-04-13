@@ -10,10 +10,8 @@ urlpatterns = [
     path("api/services/", include("service.urls")),
     path("api/blog/", include("blog.urls")),
     path("api/device/", include("device.urls")),
-
- 
 ]
 
-# إضافة هذا الجزء لتشغيل ملفات الميديا أثناء التطوير
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# ✅ FIX: serve media in both DEBUG and production via Django (fallback only)
+# nginx is handling this in production, but keep as fallback
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
