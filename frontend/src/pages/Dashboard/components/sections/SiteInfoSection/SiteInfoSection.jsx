@@ -1,7 +1,7 @@
 import {
   Building2, Check, CheckCircle2, Clock, Copy, Edit2,
-  ExternalLink, Globe, Mail,
-  MapPin, MapPinned, MessageCircle, Phone
+  ExternalLink, Globe, Mail, MapPin, MapPinned,
+  MessageCircle, Phone, Plus
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
@@ -63,10 +63,12 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
     if (initialInfo) {
       setSiteInfo(initialInfo);
       setFormData(fromInfo(initialInfo));
+    } else {
+      // إذا لم توجد بيانات، تأكد من أن siteInfo = null
+      setSiteInfo(null);
     }
   }, [initialInfo]);
 
-  
   const isValidUrl = (url) =>
     !!url &&
     !url.includes('/api/admin/');
@@ -76,11 +78,25 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
     setIsModalOpen(true);
   };
 
+  const handleCreate = () => {
+    console.log("Create button clicked"); // للتأكد أن الزر يعمل
+    setFormData({
+      site_name: '', phone: '', whatsapp: '', email: '',
+      address: '', working_hours: '', instagram: '',
+      facebook: '', youtube: '', tiktok: '', latitude: '', longitude: ''
+    });
+    setIsModalOpen(true);
+  };
+
   const handleSave = async () => {
+    console.log("Save button clicked, siteInfo:", siteInfo); // للتأكد
+    console.log("Form data:", formData); // للتأكد من البيانات
+    
     if (!formData.site_name?.trim() || !formData.phone?.trim() || !formData.email?.trim()) {
       showToast('يرجى ملء جميع الحقول المطلوبة', 'error');
       return;
     }
+    
     try {
       setIsLoading(true);
       const submitData = {
@@ -94,17 +110,41 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
         facebook: formData.facebook?.trim() || '',
         youtube: formData.youtube?.trim() || '',
         tiktok: formData.tiktok?.trim() || '',
-        latitude: formData.latitude || '0',
-        longitude: formData.longitude || '0'
+        latitude: formData.latitude ? parseFloat(formData.latitude) : 0,
+        longitude: formData.longitude ? parseFloat(formData.longitude) : 0
       };
+      
+      let response;
       if (siteInfo?.id) {
-        await siteInfoApi.update(siteInfo.id, submitData);
+        // تحديث
+        console.log("Updating existing record with ID:", siteInfo.id);
+        response = await siteInfoApi.update(siteInfo.id, submitData);
         showToast('تم تحديث معلومات الموقع بنجاح', 'success');
+        setSiteInfo(response.data);
+      } else {
+        // إنشاء جديد
+        console.log("Creating new record");
+        response = await siteInfoApi.create(submitData);
+        console.log("Create response:", response);
+        showToast('تم إنشاء معلومات الموقع بنجاح', 'success');
+        setSiteInfo(response.data);
       }
+      
       setIsModalOpen(false);
-      onRefresh?.();
-    } catch {
-      showToast('حدث خطأ في حفظ البيانات', 'error');
+      
+      // تحديث البيانات في الـ Parent Component
+      if (onRefresh) {
+        await onRefresh();
+      }
+      
+    } catch (error) {
+      console.error('Save error:', error);
+      console.error('Error response:', error.response);
+      const errorMessage = error.response?.data?.message || 
+                          error.response?.data?.detail || 
+                          Object.values(error.response?.data || {}).flat()[0] ||
+                          'حدث خطأ في حفظ البيانات';
+      showToast(errorMessage, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -122,13 +162,108 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
 
   const set = (key) => (e) => setFormData(fd => ({ ...fd, [key]: e.target.value }));
 
+  const getModalTitle = () => {
+    return siteInfo?.id ? 'تعديل معلومات الموقع' : 'إنشاء معلومات الموقع';
+  };
+
+  // Show empty state if no data exists
   if (!siteInfo) {
     return (
       <div className="si-wrap">
-        <div className="si-loading">
-          <span className="si-spinner-lg" />
-          <p>جاري التحميل...</p>
+        <div className="si-empty-state">
+          <div className="si-empty-icon">
+            <Building2 size={48} strokeWidth={1.5} />
+          </div>
+          <h3>لا توجد بيانات</h3>
+          <p>لم يتم إعداد معلومات الموقع بعد</p>
+          <button 
+            className="si-btn-primary" 
+            onClick={handleCreate}
+            style={{ cursor: 'pointer' }}
+          >
+            <Plus size={16} />
+            <span>إنشاء معلومات الموقع</span>
+          </button>
         </div>
+        
+        {/* Modal - needs to be outside the condition or rendered conditionally */}
+        <Modal isOpen={isModalOpen} onClose={() => !isLoading && setIsModalOpen(false)}
+          title={getModalTitle()} size="lg">
+          <div className="si-modal-body">
+            <FormField label="اسم الموقع" required icon={Building2}>
+              <input type="text" value={formData.site_name} onChange={set('site_name')}
+                placeholder="اسم العيادة" disabled={isLoading} />
+            </FormField>
+
+            <div className="si-form-row">
+              <FormField label="الهاتف" required icon={Phone}>
+                <input type="tel" value={formData.phone} onChange={set('phone')}
+                  placeholder="05xxxxxxxx" disabled={isLoading} />
+              </FormField>
+              <FormField label="WhatsApp" icon={MessageCircle}>
+                <input type="text" value={formData.whatsapp} onChange={set('whatsapp')}
+                  placeholder="05xxxxxxxx" disabled={isLoading} />
+              </FormField>
+            </div>
+
+            <FormField label="البريد الإلكتروني" required icon={Mail}>
+              <input type="email" value={formData.email} onChange={set('email')}
+                placeholder="example@clinic.com" disabled={isLoading} />
+            </FormField>
+
+            <FormField label="العنوان" icon={MapPin}>
+              <input type="text" value={formData.address} onChange={set('address')}
+                placeholder="عنوان العيادة الكامل" disabled={isLoading} />
+            </FormField>
+
+            <FormField label="مواعيد العمل" icon={Clock}>
+              <textarea value={formData.working_hours} onChange={set('working_hours')} rows="3"
+                placeholder={'السبت - الخميس: 9:00 ص - 9:00 م\nالجمعة: مغلق'} disabled={isLoading} />
+            </FormField>
+
+            <div className="si-form-row">
+              <FormField label="Instagram" icon={InstagramIcon}>
+                <input type="url" value={formData.instagram} onChange={set('instagram')}
+                  placeholder="https://instagram.com/..." disabled={isLoading} />
+              </FormField>
+              <FormField label="Facebook" icon={FacebookIcon}>
+                <input type="url" value={formData.facebook} onChange={set('facebook')}
+                  placeholder="https://facebook.com/..." disabled={isLoading} />
+              </FormField>
+            </div>
+
+            <div className="si-form-row">
+              <FormField label="YouTube" icon={YoutubeIcon}>
+                <input type="url" value={formData.youtube} onChange={set('youtube')}
+                  placeholder="https://youtube.com/..." disabled={isLoading} />
+              </FormField>
+              <FormField label="TikTok" icon={Globe}>
+                <input type="url" value={formData.tiktok} onChange={set('tiktok')}
+                  placeholder="https://tiktok.com/@..." disabled={isLoading} />
+              </FormField>
+            </div>
+
+            <div className="si-form-row">
+              <FormField label="خط العرض (Latitude)" icon={MapPinned}>
+                <input type="number" step="any" value={formData.latitude} onChange={set('latitude')}
+                  placeholder="23.000000" disabled={isLoading} />
+              </FormField>
+              <FormField label="خط الطول (Longitude)" icon={MapPinned}>
+                <input type="number" step="any" value={formData.longitude} onChange={set('longitude')}
+                  placeholder="22.999998" disabled={isLoading} />
+              </FormField>
+            </div>
+          </div>
+
+          <div className="si-modal-footer">
+            <button className="si-btn-secondary" onClick={() => setIsModalOpen(false)} disabled={isLoading}>
+              إلغاء
+            </button>
+            <button className="si-btn-primary" onClick={handleSave} disabled={isLoading}>
+              {isLoading ? <span className="si-spinner" /> : <><Check size={15} /><span>حفظ التغييرات</span></>}
+            </button>
+          </div>
+        </Modal>
       </div>
     );
   }
@@ -163,33 +298,26 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
 
       {/* Info Grid */}
       <div className="si-grid">
-        {/* Site name */}
         <InfoRow icon={Building2} label="اسم الموقع" value={f(siteInfo.site_name)}
           onCopy={() => handleCopy(siteInfo.site_name, 'site_name')} copied={copiedField === 'site_name'} />
 
-        {/* Phone */}
         <InfoRow icon={Phone} label="الهاتف" value={f(siteInfo.phone)}
           link={siteInfo.phone ? `tel:${siteInfo.phone}` : null} linkLabel="اتصال"
           onCopy={() => handleCopy(siteInfo.phone, 'phone')} copied={copiedField === 'phone'} />
 
-        {/* WhatsApp */}
         <InfoRow icon={MessageCircle} label="WhatsApp" value={f(siteInfo.whatsapp)}
           link={siteInfo.whatsapp ? `https://wa.me/${siteInfo.whatsapp.replace(/[^0-9]/g, '')}` : null} linkLabel="مراسلة"
           onCopy={() => handleCopy(siteInfo.whatsapp, 'whatsapp')} copied={copiedField === 'whatsapp'} />
 
-        {/* Email */}
         <InfoRow icon={Mail} label="البريد الإلكتروني" value={f(siteInfo.email)}
           link={siteInfo.email ? `mailto:${siteInfo.email}` : null} linkLabel="إرسال"
           onCopy={() => handleCopy(siteInfo.email, 'email')} copied={copiedField === 'email'} />
 
-        {/* Address — full width */}
         <InfoRow icon={MapPin} label="العنوان" value={f(siteInfo.address)} fullWidth
           onCopy={() => handleCopy(siteInfo.address, 'address')} copied={copiedField === 'address'} />
 
-        {/* Working hours — full width */}
         <InfoRow icon={Clock} label="مواعيد العمل" value={f(siteInfo.working_hours)} fullWidth multiline />
 
-        {/* Social */}
         {[
           { key: 'instagram', icon: InstagramIcon, label: 'Instagram' },
           { key: 'facebook', icon: FacebookIcon, label: 'Facebook' },
@@ -204,7 +332,6 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
           );
         })}
 
-        {/* TikTok */}
         {siteInfo.tiktok && (
           <InfoRow icon={Globe} label="TikTok" value={f(siteInfo.tiktok)}
             isLink={isValidUrl(siteInfo.tiktok)}
@@ -212,7 +339,6 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
             copied={copiedField === 'tiktok'} />
         )}
 
-        {/* Location */}
         <InfoRow icon={MapPinned} label="الموقع (خريطة)" fullWidth
           value={hasLocation ? `${siteInfo.latitude}, ${siteInfo.longitude}` : 'غير محدد'}
           onCopy={hasLocation ? () => handleCopy(`${siteInfo.latitude}, ${siteInfo.longitude}`, 'location') : null}
@@ -236,9 +362,9 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
         </div>
       )}
 
-      {/* Modal */}
+      {/* Modal for edit */}
       <Modal isOpen={isModalOpen} onClose={() => !isLoading && setIsModalOpen(false)}
-        title="تعديل معلومات الموقع" size="lg">
+        title={getModalTitle()} size="lg">
         <div className="si-modal-body">
           <FormField label="اسم الموقع" required icon={Building2}>
             <input type="text" value={formData.site_name} onChange={set('site_name')}
@@ -295,18 +421,20 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
 
           <div className="si-form-row">
             <FormField label="خط العرض (Latitude)" icon={MapPinned}>
-              <input type="text" value={formData.latitude} onChange={set('latitude')}
+              <input type="number" step="any" value={formData.latitude} onChange={set('latitude')}
                 placeholder="23.000000" disabled={isLoading} />
             </FormField>
             <FormField label="خط الطول (Longitude)" icon={MapPinned}>
-              <input type="text" value={formData.longitude} onChange={set('longitude')}
+              <input type="number" step="any" value={formData.longitude} onChange={set('longitude')}
                 placeholder="22.999998" disabled={isLoading} />
             </FormField>
           </div>
         </div>
 
         <div className="si-modal-footer">
-          <button className="si-btn-secondary" onClick={() => setIsModalOpen(false)} disabled={isLoading}>إلغاء</button>
+          <button className="si-btn-secondary" onClick={() => setIsModalOpen(false)} disabled={isLoading}>
+            إلغاء
+          </button>
           <button className="si-btn-primary" onClick={handleSave} disabled={isLoading}>
             {isLoading ? <span className="si-spinner" /> : <><Check size={15} /><span>حفظ التغييرات</span></>}
           </button>

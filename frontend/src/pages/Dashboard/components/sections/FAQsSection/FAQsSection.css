@@ -445,3 +445,48 @@
   .fq-modal-footer button { width: 100%; justify-content: center; }
   .fq-answer { padding-right: 14px; }
 }
+
+/* Empty State Styles */
+.fq-empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: #f8fafc;
+  border-radius: 1rem;
+  border: 1px dashed #cbd5e1;
+  margin-top: 1rem;
+}
+
+.fq-empty-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: #94a3b8;
+}
+
+.fq-empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.fq-empty-state p {
+  color: #64748b;
+  margin-bottom: 1.5rem;
+  font-size: 13px;
+}
+
+.fq-empty-state .fq-btn-primary {
+  margin-top: 0.5rem;
+  padding: 0.625rem 1.5rem;
+  font-size: 0.875rem;
+}
+
+.fq-empty-state .fq-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(201, 162, 39, 0.25);
+}
+
+.modal-footer:empty {
+  display: none;
+}

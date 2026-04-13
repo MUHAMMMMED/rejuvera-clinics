@@ -14,8 +14,8 @@ SECRET_KEY = "django-insecure-f@is+3@n1%(hpliljyjatjms!)6tn*$k8^%nkxd+m#v7@4*lxg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
  
- 
 
+ 
 ALLOWED_HOSTS = [
     "rejuveracenter.com",
     "www.rejuveracenter.com",
@@ -81,9 +81,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.wsgi.application"
 
 
-CORS_ALLOW_ALL_ORIGINS = True
-
-
 
 
 
@@ -95,6 +92,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     )
 }
+
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
@@ -111,7 +109,7 @@ SIMPLE_JWT = {
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS=True
 
-
+ 
 
 CORS_ALLOWED_ORIGINS = [
     "https://rejuveracenter.com",
@@ -126,25 +124,18 @@ CSRF_TRUSTED_ORIGINS = [
     "http://104.248.45.81",
     "https://104.248.45.81",
 ]
- 
-
- 
+  
  
 # CORS_ALLOWED_ORIGINS = [
-#     'http://localhost:3000',
+#     "http://localhost:5173"
 # ]
+
 # CSRF_TRUSTED_ORIGINS = [
-#     'http://localhost:3000',
+#     "http://localhost:5173"
 # ]
 
 
-
-
-
-
-
-
-
+ 
 
 # DATABASES = {
 #     'default': {
@@ -172,18 +163,7 @@ DATABASES = {
     }
 }
 
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv('POSTGRES_DB'),
-#         'USER': os.getenv('POSTGRES_USER'),
-#         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-#         'HOST': 'db',
-#         'PORT': '5432',
-#     }
-# }
-
+ 
 
 
 
@@ -222,17 +202,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 
-# ملفات ثابتة
+# # ملفات ثابتة
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = "/app/static"
 
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = "/app/media"
+ 
+ 
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
  

@@ -18,6 +18,8 @@ from home.serializers import (
 
 
 
+
+
 class HomeAPIView(APIView):
 
     def get(self, request):
