@@ -66,17 +66,10 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
     }
   }, [initialInfo]);
 
+  
   const isValidUrl = (url) =>
     !!url &&
     !url.includes('/api/admin/');
-
-  // Check if no data exists
-  const hasNoData = !siteInfo || (!siteInfo.id && !siteInfo.site_name && !siteInfo.phone);
-
-  const handleAddNew = () => {
-    setFormData(fromInfo(null));
-    setIsModalOpen(true);
-  };
 
   const handleEdit = () => {
     setFormData(fromInfo(siteInfo));
@@ -104,21 +97,13 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
         latitude: formData.latitude || '0',
         longitude: formData.longitude || '0'
       };
-      
       if (siteInfo?.id) {
-        // Update existing
         await siteInfoApi.update(siteInfo.id, submitData);
         showToast('تم تحديث معلومات الموقع بنجاح', 'success');
-      } else {
-        // Create new
-        await siteInfoApi.create(submitData);
-        showToast('تم إنشاء معلومات الموقع بنجاح', 'success');
       }
-      
       setIsModalOpen(false);
       onRefresh?.();
-    } catch (error) {
-      console.error(error);
+    } catch {
       showToast('حدث خطأ في حفظ البيانات', 'error');
     } finally {
       setIsLoading(false);
@@ -137,101 +122,18 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
 
   const set = (key) => (e) => setFormData(fd => ({ ...fd, [key]: e.target.value }));
 
-  // Show empty state when no data exists
-  if (hasNoData) {
+  if (!siteInfo) {
     return (
       <div className="si-wrap">
-        <div className="si-empty-state">
-          <div className="si-empty-icon">
-            <Globe size={48} strokeWidth={1.5} />
-          </div>
-          <h3>لا توجد معلومات للموقع</h3>
-          <p>لم يتم إعداد بيانات العيادة بعد. يمكنك إضافتها الآن.</p>
-          <button className="si-btn-primary" onClick={handleAddNew}>
-            <Edit2 size={15} />
-            <span>إضافة معلومات الموقع</span>
-          </button>
+        <div className="si-loading">
+          <span className="si-spinner-lg" />
+          <p>جاري التحميل...</p>
         </div>
-
-        {/* Modal for adding new site info */}
-        <Modal isOpen={isModalOpen} onClose={() => !isLoading && setIsModalOpen(false)}
-          title="إضافة معلومات الموقع" size="lg">
-          <div className="si-modal-body">
-            <FormField label="اسم الموقع" required icon={Building2}>
-              <input type="text" value={formData.site_name} onChange={set('site_name')}
-                placeholder="اسم العيادة" disabled={isLoading} />
-            </FormField>
-
-            <div className="si-form-row">
-              <FormField label="الهاتف" required icon={Phone}>
-                <input type="tel" value={formData.phone} onChange={set('phone')}
-                  placeholder="05xxxxxxxx" disabled={isLoading} />
-              </FormField>
-              <FormField label="WhatsApp" icon={MessageCircle}>
-                <input type="text" value={formData.whatsapp} onChange={set('whatsapp')}
-                  placeholder="05xxxxxxxx" disabled={isLoading} />
-              </FormField>
-            </div>
-
-            <FormField label="البريد الإلكتروني" required icon={Mail}>
-              <input type="email" value={formData.email} onChange={set('email')}
-                placeholder="example@clinic.com" disabled={isLoading} />
-            </FormField>
-
-            <FormField label="العنوان" icon={MapPin}>
-              <input type="text" value={formData.address} onChange={set('address')}
-                placeholder="عنوان العيادة الكامل" disabled={isLoading} />
-            </FormField>
-
-            <FormField label="مواعيد العمل" icon={Clock}>
-              <textarea value={formData.working_hours} onChange={set('working_hours')} rows="3"
-                placeholder={'السبت - الخميس: 9:00 ص - 9:00 م\nالجمعة: مغلق'} disabled={isLoading} />
-            </FormField>
-
-            <div className="si-form-row">
-              <FormField label="Instagram" icon={InstagramIcon}>
-                <input type="url" value={formData.instagram} onChange={set('instagram')}
-                  placeholder="https://instagram.com/..." disabled={isLoading} />
-              </FormField>
-              <FormField label="Facebook" icon={FacebookIcon}>
-                <input type="url" value={formData.facebook} onChange={set('facebook')}
-                  placeholder="https://facebook.com/..." disabled={isLoading} />
-              </FormField>
-            </div>
-
-            <div className="si-form-row">
-              <FormField label="YouTube" icon={YoutubeIcon}>
-                <input type="url" value={formData.youtube} onChange={set('youtube')}
-                  placeholder="https://youtube.com/..." disabled={isLoading} />
-              </FormField>
-              <FormField label="TikTok" icon={Globe}>
-                <input type="url" value={formData.tiktok} onChange={set('tiktok')}
-                  placeholder="https://tiktok.com/@..." disabled={isLoading} />
-              </FormField>
-            </div>
-
-            <div className="si-form-row">
-              <FormField label="خط العرض (Latitude)" icon={MapPinned}>
-                <input type="text" value={formData.latitude} onChange={set('latitude')}
-                  placeholder="23.000000" disabled={isLoading} />
-              </FormField>
-              <FormField label="خط الطول (Longitude)" icon={MapPinned}>
-                <input type="text" value={formData.longitude} onChange={set('longitude')}
-                  placeholder="22.999998" disabled={isLoading} />
-              </FormField>
-            </div>
-          </div>
-
-          <div className="si-modal-footer">
-            <button className="si-btn-secondary" onClick={() => setIsModalOpen(false)} disabled={isLoading}>إلغاء</button>
-            <button className="si-btn-primary" onClick={handleSave} disabled={isLoading}>
-              {isLoading ? <span className="si-spinner" /> : <><Check size={15} /><span>إنشاء وحفظ</span></>}
-            </button>
-          </div>
-        </Modal>
       </div>
     );
   }
+
+  const hasLocation = siteInfo.latitude && siteInfo.longitude;
 
   // Build quick social links
   const socialLinks = [
@@ -242,8 +144,6 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
     { id: 'facebook', icon: FacebookIcon, label: 'فيسبوك', url: isValidUrl(siteInfo.facebook) ? siteInfo.facebook : null, cls: 'facebook' },
     { id: 'youtube', icon: YoutubeIcon, label: 'يوتيوب', url: isValidUrl(siteInfo.youtube) ? siteInfo.youtube : null, cls: 'youtube' },
   ].filter(l => l.url);
-
-  const hasLocation = siteInfo.latitude && siteInfo.longitude;
 
   return (
     <div className="si-wrap">
@@ -336,7 +236,7 @@ const SiteInfoSection = ({ info: initialInfo, showToast, onRefresh }) => {
         </div>
       )}
 
-      {/* Modal for editing */}
+      {/* Modal */}
       <Modal isOpen={isModalOpen} onClose={() => !isLoading && setIsModalOpen(false)}
         title="تعديل معلومات الموقع" size="lg">
         <div className="si-modal-body">
