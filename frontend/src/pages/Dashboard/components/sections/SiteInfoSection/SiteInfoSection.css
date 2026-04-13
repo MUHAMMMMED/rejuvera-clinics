@@ -386,3 +386,33 @@
   .si-modal-footer button { width: 100%; justify-content: center; }
   .si-quick-bar { flex-direction: column; align-items: flex-start; }
 }
+
+
+/* Empty State Styles */
+.si-empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: #f8fafc;
+  border-radius: 1rem;
+  border: 1px dashed #cbd5e1;
+}
+
+.si-empty-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: #94a3b8;
+}
+
+.si-empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.si-empty-state p {
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+ 
