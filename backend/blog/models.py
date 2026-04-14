@@ -5,10 +5,7 @@ from service.models import Service
 
 
 def arabic_slugify(text):
-    """
-    إنشاء slug يدعم الحروف العربية.
-    يستبدل المسافات بـ '-' ويحذف الرموز غير المرغوب فيها.
-    """
+  
     text = text.strip().lower()
     text = re.sub(r'[\s_]+', '-', text)
     text = re.sub(r'[^\w\-ء-ي0-9]', '', text)

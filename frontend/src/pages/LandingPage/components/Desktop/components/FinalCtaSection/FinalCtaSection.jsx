@@ -1,5 +1,6 @@
 import { Calendar, CheckCircle2, Sparkles, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import AxiosInstance from '../../../../../../components/Authentication/AxiosInstance';
 import styles from './FinalCtaSection.module.css';
 
 const FinalCtaSection = ({ data }) => {

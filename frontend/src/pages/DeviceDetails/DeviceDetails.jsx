@@ -1,4 +1,3 @@
- 
 import DOMPurify from "dompurify";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -39,10 +38,19 @@ export default function DeviceDetails() {
     setError(null);
     
     try {
-      const response = await AxiosInstance.get(`/device/devices/${id}/`);
+      const response = await AxiosInstance.get(`/device/device/${id}/detail`);
       const data = response.data;
-      setDevice(data.device);
-      setAllServices(data.services || []);
+      
+      // Handle both possible API response structures
+      if (data.device) {
+        // Case: API returns { device: {...}, services: [...] }
+        setDevice(data.device);
+        setAllServices(data.services || []);
+      } else {
+        // Case: API returns the device object directly
+        setDevice(data);
+        setAllServices([]);
+      }
     } catch (err) {
       console.error("Error fetching device:", err);
       setError(err);
@@ -163,11 +171,18 @@ export default function DeviceDetails() {
     );
   }
 
+  const formattedDate = device.created_at ? new Date(device.created_at).toLocaleDateString('ar-EG', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }) : '';
+
   return (
     <>
       <Helmet>
         <title>{device.name} | ريجوفيرا كلينك</title>
         <meta name="description" content={device.summary} />
+        <meta name="keywords" content={`جهاز ${device.name}, تكنولوجيا ${device.technology}, علاجات`} />
       </Helmet>
 
       <Navbar />
@@ -208,6 +223,15 @@ export default function DeviceDetails() {
                   </svg>
                   <span>{device.treatments}+ علاج</span>
                 </div>
+                {formattedDate && (
+                  <div className={styles.deviceStatUnique}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    <span>تاريخ الإضافة: {formattedDate}</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -215,6 +239,10 @@ export default function DeviceDetails() {
           {/* Content and Services */}
           <div className={styles.deviceContentWrapperUnique}>
             <div className={styles.deviceMainContentUnique}>
+              <div className={styles.deviceSectionTitleUnique}>
+                <h2>عن الجهاز</h2>
+                <div className={styles.deviceTitleUnderlineUnique}></div>
+              </div>
               <div 
                 className={styles.deviceDescriptionUnique}
                 dangerouslySetInnerHTML={{ 
@@ -236,7 +264,7 @@ export default function DeviceDetails() {
                 <div className={styles.deviceServicesGridUnique}>
                   {relatedServices.map((service) => (
                     <div key={service.id} className={styles.deviceServiceCardUnique}>
-                      {/* القسم 1: أيقونة + المحتوى (العنوان والوصف) */}
+                      {/* Section 1: Icon + Content (title and description) */}
                       <div className={styles.deviceServiceCardContentUnique}>
                         <div className={styles.deviceServiceIconUnique}>
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -247,11 +275,10 @@ export default function DeviceDetails() {
                         <div className={styles.deviceServiceInfoUnique}>
                           <h3>{service.name}</h3>
                           <p>{service.description || "خدمة متكاملة باستخدام أحدث التقنيات"}</p>
-                        
                         </div>
                       </div>
                       
-                      {/* القسم 2: زر الحجز */}
+                      {/* Section 2: Booking Button */}
                       <div className={styles.deviceServiceCardActionUnique}>
                         <button 
                           className={styles.deviceBookServiceBtnUnique}
@@ -266,6 +293,13 @@ export default function DeviceDetails() {
                     </div>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {/* If no related services */}
+            {relatedServices.length === 0 && device.related_services && (
+              <div className={styles.deviceNoServicesUnique}>
+                <p>لا توجد خدمات مرتبطة بهذا الجهاز حالياً.</p>
               </div>
             )}
           </div>

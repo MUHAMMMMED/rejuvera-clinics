@@ -22,7 +22,7 @@ class BlogListAPIView(APIView):
 class BlogDetailAPIView(APIView):
     def get(self, request, id):
         blog = get_object_or_404(Blog, id=id)
-        serializer = BlogReadSerializer(blog)
+        serializer = BlogReadSerializer(blog, context={'request': request} )
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -56,11 +56,7 @@ class BlogDetailAPIView(APIView):
  
  
 def _parse_related_services(data):
-    """
-    يحوّل related_services من JSON string إلى list of ints.
-    FormData لا تدعم nested arrays مباشرةً، لذلك الـ Frontend
-    يُرسلها كـ JSON.stringify([1, 2, 3]).
-    """
+ 
     mutable = data.copy()
     raw = mutable.get('related_services')
     if isinstance(raw, str):
@@ -100,53 +96,34 @@ class BlogViewSet(ModelViewSet):
         )
         return Response(serializer.data)
 
-    # ── create ────────────────────────────────
+ 
     def create(self, request, *args, **kwargs):
-        print("\n===== CREATE BLOG =====")
-        print("Request data:", request.data)
-        
         data = _parse_related_services(request.data)
-        print("Parsed data:", data)
-        
         serializer = self.get_serializer(data=data)
         
         if serializer.is_valid():
             blog = serializer.save()   
-            print("Created successfully with ID:", blog.id)
-            
-            # ✅ أعد البيانات كاملة مع التأكد من وجود الـ ID
             response_data = BlogReadSerializer(
                 blog, context={'request': request}
             ).data
             
             return Response(response_data, status=status.HTTP_201_CREATED)
-        
-        print("Create serializer errors:", serializer.errors)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # ── update (PUT / PATCH) ──────────────────
     def update(self, request, *args, **kwargs):
-        print("\n===== UPDATE BLOG =====")
-        print("Request data:", request.data)
-        
         data = _parse_related_services(request.data)
-        print("Parsed data:", data)
-        
-        partial = kwargs.pop('partial', True)  # ✅ خليها True دايمًا
+        partial = kwargs.pop('partial', True) 
         instance = self.get_object()
         
         serializer = self.get_serializer(instance, data=data, partial=partial)
         
         if serializer.is_valid():
-            blog = serializer.save()  # ✅ احصل على الكائن المحدث
-            print("Updated successfully with ID:", blog.id)
-            
-            # ✅ أعد البيانات كاملة
+            blog = serializer.save()  
             response_data = BlogReadSerializer(
                 blog, context={'request': request}
             ).data
             
             return Response(response_data)
-        
-        print("Update serializer errors:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

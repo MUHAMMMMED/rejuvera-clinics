@@ -1,24 +1,33 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
 from service.models import Service
-from ..models import  Package, Appointment, Service, Package, Source, Campaign
- 
+from ..models import (
+    Package,
+    Appointment,
+    Service,
+    Source,
+    Campaign
+)
+
+
 class NewAppointmentView(APIView):
 
     def post(self, request):
         data = request.data
-        print("Received appointment data:", data)
 
         name       = data.get('name', '').strip()
         phone      = data.get('phone', '').strip()
         item_type  = data.get('item_type', 's')
         service_id = data.get('service_id')
         package_id = data.get('package_id')
-        source_val = data.get('source', '')
-        camp_val   = data.get('campaign', '')
+        source_val = data.get('source', '').strip()
+        camp_val   = data.get('campaign', '').strip()
 
-        # Validation أساسي
+        # --------------------
+        # Validation
+        # --------------------
         if not name or not phone:
             return Response(
                 {'error': 'الاسم ورقم الجوال مطلوبان'},
@@ -28,12 +37,16 @@ class NewAppointmentView(APIView):
         service = None
         package = None
 
+        # --------------------
+        # Service flow
+        # --------------------
         if item_type == 's':
             if not service_id:
                 return Response(
                     {'error': 'service_id مطلوب'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
+
             try:
                 service = Service.objects.get(id=service_id)
             except Service.DoesNotExist:
@@ -42,12 +55,16 @@ class NewAppointmentView(APIView):
                     status=status.HTTP_404_NOT_FOUND
                 )
 
+        # --------------------
+        # Package flow
+        # --------------------
         elif item_type == 'p':
             if not package_id:
                 return Response(
                     {'error': 'package_id مطلوب'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
+
             try:
                 package = Package.objects.get(id=package_id)
             except Package.DoesNotExist:
@@ -58,13 +75,33 @@ class NewAppointmentView(APIView):
 
         else:
             return Response(
-                {'error': 'item_type غير صحيح، يجب أن يكون s أو p'},
+                {'error': 'item_type غير صحيح (s أو p فقط)'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        source   = Source.objects.filter(name=source_val).first()   if source_val else None
-        campaign = Campaign.objects.filter(name=camp_val).first()   if camp_val   else None
+        # --------------------
+        # Source + Campaign (AUTO CREATE)
+        # --------------------
+        source = None
+        campaign = None
 
+        if source_val:
+            source, _ = Source.objects.get_or_create(
+                name=source_val
+            )
+
+        if camp_val:
+            campaign, _ = Campaign.objects.get_or_create(
+                name=camp_val
+            )
+
+            # ربط campaign مع source (ManyToMany)
+            if source:
+                source.campaign.add(campaign)
+
+        # --------------------
+        # Create appointment
+        # --------------------
         appointment = Appointment.objects.create(
             name=name,
             phone=phone,
@@ -76,11 +113,9 @@ class NewAppointmentView(APIView):
         )
 
         return Response(
-            {'success': True, 'appointment_id': appointment.id},
+            {
+                'success': True,
+                'appointment_id': appointment.id
+            },
             status=status.HTTP_201_CREATED
         )
-    
-
-
-
- 

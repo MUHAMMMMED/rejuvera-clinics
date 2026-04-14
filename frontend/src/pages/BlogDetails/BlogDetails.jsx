@@ -38,10 +38,19 @@ export default function BlogDetails() {
     setError(null);
     
     try {
-      const response = await AxiosInstance.get(`/blog/dashboard/blog/${id}/`);
+      const response = await AxiosInstance.get(`/blog/blog/${id}/detail`);
       const data = response.data;
-      setBlog(data.blog);
-      setAllServices(data.services || []);
+      
+      // Handle both possible API response structures
+      if (data.blog) {
+        // Case: API returns { blog: {...}, services: [...] }
+        setBlog(data.blog);
+        setAllServices(data.services || []);
+      } else {
+        // Case: API returns the blog object directly
+        setBlog(data);
+        setAllServices([]);
+      }
     } catch (err) {
       console.error("Error fetching blog:", err);
       setError(err);
@@ -250,7 +259,7 @@ export default function BlogDetails() {
               <div className={styles.blogServicesGridUnique}>
                 {relatedServices.map((service) => (
                   <div key={service.id} className={styles.blogServiceCardUnique}>
-                    {/* القسم 1: أيقونة + المحتوى (العنوان والوصف) */}
+                    {/* Section 1: Icon + Content (title and description) */}
                     <div className={styles.blogServiceCardContentUnique}>
                       <div className={styles.blogServiceIconUnique} aria-hidden="true">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -264,7 +273,7 @@ export default function BlogDetails() {
                       </div>
                     </div>
                     
-                    {/* القسم 2: زر الحجز */}
+                    {/* Section 2: Booking Button */}
                     <div className={styles.blogServiceCardActionUnique}>
                       <button 
                         className={styles.blogBookServiceBtnUnique}

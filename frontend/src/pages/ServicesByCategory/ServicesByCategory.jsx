@@ -248,17 +248,7 @@ export default function ServicesByCategory() {
       <Navbar />
       <div className="page-clinic-container" dir="rtl">
         <div className="about-content-wrapper">
-          {/* Breadcrumbs for users */}
-          <div className="breadcrumbs-container">
-            <div className="breadcrumbs">
-              <a href="/">الرئيسية</a>
-              <span className="separator">/</span>
-              <a href="/services">الخدمات</a>
-              <span className="separator">/</span>
-              <span className="current">{categoryName}</span>
-            </div>
-          </div>
-
+        
           {/* Render based on device */}
           {device === "mobile" ? (
             <ServicesMobile data={safeData} categoryName={categoryName} />

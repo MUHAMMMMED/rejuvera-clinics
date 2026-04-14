@@ -53,25 +53,14 @@ class ServiceViewSet(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        # طباعة كل عنصر في الـ queryset
-        print("=== Queryset Items ===")
+
         for item in queryset:
             print(item)
         
         serializer = self.get_serializer(queryset, many=True)
-        # طباعة البيانات بعد السيريلزر
-        print("=== Serialized Data ===")
-        print(serializer.data)
-        
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        print("=== Retrieved Object ===")
-        print(instance)
-        
-        serializer = self.get_serializer(instance)
-        print("=== Serialized Data ===")
-        print(serializer.data)
-        
+        serializer = self.get_serializer(instance)        
         return Response(serializer.data)

@@ -6,14 +6,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "django-insecure-f@is+3@n1%(hpliljyjatjms!)6tn*$k8^%nkxd+m#v7@4*lxg"
 
-DEBUG = False
-
+DEBUG = True
+ 
+ 
 ALLOWED_HOSTS = [
     "rejuveracenter.com",
     "www.rejuveracenter.com",
     "46.101.182.75",
     "localhost",
 ]
+
+
+
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -99,6 +103,15 @@ CSRF_TRUSTED_ORIGINS = [
     "https://104.248.45.81",
 ]
 
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",
+# ]
+
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:5173",
+# ]
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -109,6 +122,19 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE":   os.environ.get("DB_ENGINE",   "django.db.backends.sqlite3"),
+#         "NAME":     os.environ.get("DB_NAME",     str(BASE_DIR / "db.sqlite3")),
+#         "USER":     os.environ.get("DB_USER",     ""),
+#         "PASSWORD": os.environ.get("DB_PASSWORD", ""),
+#         "HOST":     os.environ.get("DB_HOST",     ""),
+#         "PORT":     os.environ.get("DB_PORT",     ""),
+#     }
+# }
+
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},

@@ -1,13 +1,6 @@
 from rest_framework import serializers
 from ..models import BeforeAfterImage
 
-
-# class BeforeAfterImageWriteSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = BeforeAfterImage
-#         fields = '__all__'
-
-
  
 class BeforeAfterImageWriteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,7 +12,6 @@ class BeforeAfterImageWriteSerializer(serializers.ModelSerializer):
         }
     
     def update(self, instance, validated_data):
-        # تحديث الحقول النصية فقط إذا كانت موجودة
         if 'title' in validated_data:
             instance.title = validated_data['title']
         if 'description' in validated_data:
@@ -27,7 +19,7 @@ class BeforeAfterImageWriteSerializer(serializers.ModelSerializer):
         if 'service' in validated_data:
             instance.service = validated_data['service']
         
-        # تحديث الصور فقط إذا تم إرسالها
+
         if 'before_image' in validated_data and validated_data['before_image']:
             instance.before_image = validated_data['before_image']
         if 'after_image' in validated_data and validated_data['after_image']:

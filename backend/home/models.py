@@ -9,17 +9,17 @@ class SiteInfo(models.Model):
     email = models.EmailField(blank=True, null=True)
 
     address = models.TextField(blank=True, null=True)
-    # السوشيال
+
     instagram = models.URLField(blank=True, null=True)
     tiktok = models.URLField(blank=True, null=True)
     facebook = models.URLField(blank=True, null=True)
     youtube = models.URLField(blank=True, null=True)
 
-    # 📍 الموقع على الخريطة
+
     latitude = models.DecimalField(max_digits=12, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(max_digits=12, decimal_places=6, blank=True, null=True)
 
-    # ⏰ مواعيد العمل
+
     working_hours = models.TextField(help_text="مثال: من السبت للخميس 9 صباحاً - 10 مساءً", blank=True)
 
     def __str__(self):
@@ -80,25 +80,7 @@ class Source(models.Model):
         return self.name
 
 
-      
- 
-
-# class TrackedLink(models.Model):
-#     """Represents a tracked link with source and campaign tags."""
-#     source = models.ForeignKey(Source, on_delete=models.CASCADE, verbose_name="Source")
-#     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, verbose_name="Campaign")
-#     base_url = models.URLField(verbose_name="Base URL")  # e.g., https://example.com/landing
-#     generated_url = models.URLField(blank=True, verbose_name="Generated URL")  # Final URL with tags
-#     created_at = models.DateTimeField(auto_now_add=True)
-
-#     def save(self, *args, **kwargs):
-#         """Always regenerate the tracked URL with source and campaign tags."""
-#         self.generated_url = f"{self.base_url}?utm_source={self.source.name}&utm_campaign={self.campaign.name}"
-#         super().save(*args, **kwargs)
-
-#     def __str__(self):
-#         return f"{self.campaign.name} - {self.source.name}"
-
+       
   
 
 class Appointment(models.Model):
@@ -122,5 +104,4 @@ class Appointment(models.Model):
         return f"{self.name} - {item_name}  "
 
 
-
-        # https://king-tech-eg.com/products/headphones-call-center-yes-original-h30?utm_source=chatgpt.com
+ 

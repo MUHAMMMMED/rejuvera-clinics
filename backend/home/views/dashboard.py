@@ -14,9 +14,7 @@ from blog.serializers import  BlogReadSerializer
 from service.serializers import (
     ServiceCategoryReadSerializer,
     DoctorReadSerializer,
- )
-
- 
+ ) 
 from home.serializers import (
     SiteInfoWriteSerializer,
     FAQWriteSerializer,
@@ -27,10 +25,7 @@ from home.serializers import (
     )
 
  
-# ─────────────────────────────────────────────
-#  Helper: date range boundaries
-# ─────────────────────────────────────────────
-
+ 
 def _week_boundaries():
     today = timezone.now().date()
     start = today - timedelta(days=today.weekday())          # Monday

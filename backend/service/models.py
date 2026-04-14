@@ -12,25 +12,18 @@ class ServiceCategory(models.Model):
         return self.name
 
 
-
- 
  
 
 def arabic_slugify(text):
-    """
-    تحويل النص العربي إلى slug آمن وجميل
-    """
+ 
     if not text:
         return ""
     
     text = text.strip().lower()
-    # استبدال المسافات والـ underscores بـ -
+
     text = re.sub(r'[\s_]+', '-', text)
-    # السماح بالحروف العربية + أرقام + -
     text = re.sub(r'[^\w\-ء-ي0-9]', '', text)
-    # إزالة الشرطات المتتالية
     text = re.sub(r'-+', '-', text)
-    # إزالة الشرطات من البداية والنهاية
     text = text.strip('-')
     
     return text
@@ -68,7 +61,7 @@ class ServiceHero(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='gallery/', blank=True, null=True)  
     alt_text = models.CharField(max_length=255, help_text="وصف الصورة لتحسين SEO", blank=True)
-    video_url = models.URLField(blank=True, null=True)  # ✅ لينك فيديو
+    video_url = models.URLField(blank=True, null=True)   
     badge = models.CharField(max_length=100, blank=True, null=True)
     cta_text = models.CharField(max_length=100, default="احجزي استشارتك المجانية") 
  

@@ -11,23 +11,31 @@
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
+  padding: 10px;
+ 
 }
 
 .bookingModal.open {
   opacity: 1;
   visibility: visible;
 }
-
 .bookingSheet {
+
+  width: 100%;
+  max-width: 500px;
+  height: 80vh;
+
   background: linear-gradient(180deg, #0a0515, #0f081f);
   border-top-left-radius: 28px;
   border-top-right-radius: 28px;
-  width: 100%;
-  max-width: 500px;
-  padding: 0.8rem 1rem 1.5rem;
+
+  display: flex;
+  flex-direction: column;
+
   transform: translateY(100%);
   transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+
+  overflow: hidden;
 }
 
 .bookingModal.open .bookingSheet {

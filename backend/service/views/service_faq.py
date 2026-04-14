@@ -9,7 +9,6 @@ class ServiceFAQViewSet(ModelViewSet):
     queryset = ServiceFAQ.objects.all()
     serializer_class = ServiceFAQWriteSerializer
 
-    # فلترة حسب service_id
     def get_queryset(self):
         queryset = super().get_queryset()
         service_id = self.request.query_params.get('service')

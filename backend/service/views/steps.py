@@ -8,7 +8,6 @@ class ProcessStepsViewSet(ModelViewSet):
     queryset = ProcessSteps.objects.all()
     serializer_class = ProcessStepsWriteSerializer
 
-    # فلترة حسب service_id (OneToOne)
     def get_queryset(self):
         queryset = super().get_queryset()
         service_id = self.request.query_params.get('service')

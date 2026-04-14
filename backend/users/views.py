@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import LoginSerializer, UserSerializer
+from .serializers import LoginSerializer 
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -90,8 +90,7 @@ class GetUserDataView(APIView):
             'last_name': user.last_name
         }, status=status.HTTP_200_OK)
 
-
-# مثال لبيانات محمية
+ 
 class DashboardDataView(APIView):
     permission_classes = [IsAuthenticated]
     

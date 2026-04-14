@@ -115,7 +115,7 @@ const Login = () => {
                 </button>
               </div>
 
-              <div className="login-options">
+              {/* <div className="login-options">
                 <div className="remember-me">
                   <input
                     type="checkbox"
@@ -125,7 +125,7 @@ const Login = () => {
                   />
                   <label htmlFor="rememberMe">تذكرني</label>
                 </div>
-              </div>
+              </div> */}
 
               {errorMessage && (
                 <div className="error-message">

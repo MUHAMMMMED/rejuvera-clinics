@@ -22,10 +22,10 @@ class DeviceListAPIView(APIView):
 class DeviceDetailAPIView(APIView):
     def get(self, request, id):
         device = get_object_or_404(Device, id=id)
-        serializer = DeviceReadSerializer(device)
+        serializer = DeviceReadSerializer(device, context={'request': request} )
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
+ 
 
 
 
@@ -64,7 +64,6 @@ def _parse_related_services(data):
     if isinstance(raw, str):
         try:
             parsed = json.loads(raw)
-            # QueryDict لا يقبل list مباشرة – نستبدل القيمة
             mutable.setlist('related_services', [str(pk) for pk in parsed])
         except (json.JSONDecodeError, TypeError, ValueError):
             pass
@@ -108,19 +107,11 @@ class DeviceViewSet(ModelViewSet):
 
     # ── create ────────────────────────────────
     def create(self, request, *args, **kwargs):
-        print("\n===== CREATE DEVICE =====")
-        print("Request data:", request.data)
-
         data = _parse_related_services(request.data)
-        print("Parsed data:", data)
-
         serializer = self.get_serializer(data=data)
 
         if serializer.is_valid():
-            device = serializer.save()  # ✅ احفظ الجهاز واحصل على الكائن
-            print("Created successfully with ID:", device.id)
-            
-            # ✅ أعد البيانات كاملة مع التأكد من وجود الـ ID
+            device = serializer.save() 
             response_data = DeviceReadSerializer(
                 device, context={'request': request}
             ).data
@@ -130,14 +121,8 @@ class DeviceViewSet(ModelViewSet):
         print("Create serializer errors:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # ── update (PUT / PATCH) ──────────────────
     def update(self, request, *args, **kwargs):
-        print("\n===== UPDATE DEVICE =====")
-        print("Request data:", request.data)
-
         data = _parse_related_services(request.data)
-        print("Parsed data:", data)
-
         partial = kwargs.pop('partial', True)
         instance = self.get_object()
 
@@ -148,15 +133,10 @@ class DeviceViewSet(ModelViewSet):
         )
 
         if serializer.is_valid():
-            device = serializer.save()  # ✅ احصل على الكائن المحدث
-            print("Updated successfully with ID:", device.id)
-            
-            # ✅ أعد البيانات كاملة
+            device = serializer.save()  
             response_data = DeviceReadSerializer(
                 device, context={'request': request}
             ).data
             
             return Response(response_data)
-
-        print("Update serializer errors:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

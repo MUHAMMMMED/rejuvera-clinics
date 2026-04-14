@@ -1,4 +1,3 @@
- 
 import DOMPurify from 'dompurify';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
@@ -72,9 +71,11 @@ export default function BlogDashboard() {
     const fresh = blogToForm(src);
     setFormData(fresh);
     setOriginalForm(JSON.parse(JSON.stringify(fresh)));
-    if (quillRef.current) {
+    
+    // Update editor content without reinitializing
+    if (quillRef.current && quillReady.current) {
       skipSyncRef.current = true;
-      quillRef.current.root.innerHTML = fresh.content;
+      quillRef.current.root.innerHTML = fresh.content || '';
     }
   }, [blog]);
 
@@ -160,7 +161,11 @@ export default function BlogDashboard() {
     });
 
     quillReady.current = true;
-    quillRef.current.root.innerHTML = formData.content ?? '';
+    
+    // Set initial content only
+    if (formData.content) {
+      quillRef.current.root.innerHTML = formData.content;
+    }
 
     quillRef.current.on('text-change', () => {
       if (skipSyncRef.current) {
@@ -179,7 +184,7 @@ export default function BlogDashboard() {
         if (editorRef.current) editorRef.current.innerHTML = '';
       }
     };
-  }, [isEditing, formData.content]);
+  }, [isEditing]); // Removed formData.content dependency
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -578,7 +583,7 @@ export default function BlogDashboard() {
                         </div>
                         <button
                           className={styles.bookServiceBtn}
-                 
+                          onClick={() => navigate(`/services/${s.id}`)}
                         >
                            احجز الخدمة
                         </button>

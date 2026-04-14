@@ -8,7 +8,7 @@ router.register(r'blogs', BlogViewSet, basename='blogs')
 urlpatterns = [
  
     path('list/', BlogListAPIView.as_view(), name='blog-list'),
-    path('blog/<int:id>/', BlogDetailAPIView.as_view(), name='blog-detail'),
+    path('blog/<int:id>/detail', BlogDetailAPIView.as_view(), name='blog-detail'),
     path('dashboard/blog/<int:id>/', DashboardBlogAPIView.as_view(), name='dashboard-blog-detail'),
     path('', include(router.urls)),
 ]

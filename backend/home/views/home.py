@@ -1,7 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
 from service.models import ServiceCategory,Doctor
 from ..models import SiteInfo, FAQ, Package, GalleryImage,Package 
 from service.serializers import (
@@ -15,10 +14,7 @@ from home.serializers import (
     GalleryImageReadSerializer,
  
     )
-
-
-
-
+ 
 
 class HomeAPIView(APIView):
 
@@ -54,4 +50,3 @@ class HomeAPIView(APIView):
   
  
 
- 

@@ -13,7 +13,6 @@ class ReviewWriteSerializer(serializers.ModelSerializer):
         }
     
     def update(self, instance, validated_data):
-        # تحديث الحقول فقط إذا كانت موجودة
         if 'service' in validated_data:
             instance.service = validated_data['service']
         if 'image' in validated_data and validated_data['image']:

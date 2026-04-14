@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()  # تغيير من username إلى email
+    email = serializers.EmailField()  
     password = serializers.CharField(write_only=True, style={'input_type': 'password'})
 
     def validate(self, data):
@@ -13,13 +13,10 @@ class LoginSerializer(serializers.Serializer):
         password = data.get('password')
 
         if email and password:
-            # محاولة العثور على المستخدم بالبريد الإلكتروني أولاً
             try:
                 user = User.objects.get(email=email)
             except User.DoesNotExist:
                 raise serializers.ValidationError('البريد الإلكتروني أو كلمة المرور غير صحيحة')
-
-            # المصادقة باستخدام username (لأن Django يستخدم username افتراضياً)
             user = authenticate(username=user.username, password=password)
             
             if not user:
