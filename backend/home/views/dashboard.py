@@ -266,7 +266,7 @@ def build_reports(appointments_qs):
  
 
 class DashboardAPIView(APIView):
-    # permission_classes = [IsAuthenticated]  
+    permission_classes = [IsAuthenticated]  
     def get(self, request):
         try:
             info_instance = SiteInfo.objects.first()
