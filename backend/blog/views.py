@@ -8,15 +8,23 @@ from service.models import Service
 from .serializers import BlogWriteSerializer,BlogReadSerializer,BlogListSerializer
 from service.serializers import ServiceWriteSerializer
 from rest_framework.permissions import IsAuthenticated
+from django.core.cache import cache
  
-
 class BlogListAPIView(APIView):
+
     def get(self, request):
+        cache_key = "blog_list_all"
+        cached_data = cache.get(cache_key)
+
+        if cached_data:
+            return Response(cached_data, status=status.HTTP_200_OK)
+
         blogs = Blog.objects.all()
         serializer = BlogListSerializer(blogs, many=True)
+
+        cache.set(cache_key, serializer.data, timeout=300)  # 5 minutes
+
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
 
 
 class BlogDetailAPIView(APIView):
@@ -42,12 +50,24 @@ class DashboardBlogAPIView(APIView):
             "services": services_serializer.data
         }, status=status.HTTP_200_OK)
 
+
+ 
+
 class BlogDetailAPIView(APIView):
+
     def get(self, request, id):
+        cache_key = f"blog_detail_{id}"
+        cached_data = cache.get(cache_key)
+
+        if cached_data:
+            return Response(cached_data, status=status.HTTP_200_OK)
+
         blog = get_object_or_404(Blog, id=id)
         serializer = BlogReadSerializer(blog)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
+        cache.set(cache_key, serializer.data, timeout=300)  # 5 minutes
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
  
 
 # ─────────────────────────────────────────────

@@ -14,11 +14,17 @@ from home.serializers import (
     GalleryImageReadSerializer,
  
     )
- 
+from django.core.cache import cache
 
 class HomeAPIView(APIView):
 
     def get(self, request):
+        cache_key = "home_api_data_v1"
+        cached_data = cache.get(cache_key)
+
+        if cached_data:
+            return Response(cached_data, status=status.HTTP_200_OK)
+
         try:
             info_instance = SiteInfo.objects.first()
             categories = ServiceCategory.objects.all()
@@ -36,6 +42,8 @@ class HomeAPIView(APIView):
                 "doctors": DoctorReadSerializer(doctors, many=True, context={'request': request}).data,
             }
 
+            cache.set(cache_key, data, timeout=300)  # 5 minutes
+
             return Response(data, status=status.HTTP_200_OK)
 
         except Exception as e:
@@ -43,8 +51,6 @@ class HomeAPIView(APIView):
                 {"error": str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
-
 
  
   

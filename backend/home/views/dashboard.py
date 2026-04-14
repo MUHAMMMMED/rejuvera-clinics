@@ -266,7 +266,7 @@ def build_reports(appointments_qs):
  
 
 class DashboardAPIView(APIView):
-    permission_classes = [IsAuthenticated]  
+    # permission_classes = [IsAuthenticated]  
     def get(self, request):
         try:
             info_instance = SiteInfo.objects.first()
@@ -275,7 +275,7 @@ class DashboardAPIView(APIView):
             packages = Package.objects.all()
             gallery = GalleryImage.objects.all()
             doctors=Doctor.objects.all()
-            appointments=Appointment.objects.all()
+            appointments = Appointment.objects.all().order_by('-created_at')
             source=Source.objects.all()
             devices = Device.objects.all()
             blogs = Blog.objects.all()

@@ -9,22 +9,49 @@ from service.models import Service
 from service.serializers import ServiceWriteSerializer
 import json
 from rest_framework.permissions import IsAuthenticated
-  
+from django.core.cache import cache
  
-     
+
 class DeviceListAPIView(APIView):
+
     def get(self, request):
+        cache_key = "device_list_all"
+        cached_data = cache.get(cache_key)
+
+        if cached_data:
+            return Response(cached_data, status=status.HTTP_200_OK)
+
         devices = Device.objects.all()
-        serializer = DeviceListSerializer(devices, many=True, context={'request': request})
+        serializer = DeviceListSerializer(
+            devices,
+            many=True,
+            context={'request': request}
+        )
+
+        cache.set(cache_key, serializer.data, timeout=300)  # 5 minutes
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+ 
 
 class DeviceDetailAPIView(APIView):
-    def get(self, request, id):
-        device = get_object_or_404(Device, id=id)
-        serializer = DeviceReadSerializer(device, context={'request': request} )
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def get(self, request, id):
+        cache_key = f"device_detail_{id}"
+        cached_data = cache.get(cache_key)
+
+        if cached_data:
+            return Response(cached_data, status=status.HTTP_200_OK)
+
+        device = get_object_or_404(Device, id=id)
+        serializer = DeviceReadSerializer(
+            device,
+            context={'request': request}
+        )
+
+        cache.set(cache_key, serializer.data, timeout=300)  # 5 minutes
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
  
 
 
