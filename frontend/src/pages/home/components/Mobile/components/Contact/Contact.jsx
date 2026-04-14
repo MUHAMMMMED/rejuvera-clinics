@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import AxiosInstance from '../../../../../../components/Authentication/AxiosInstance';
+ 
+import { GTMEvents } from '../../../../../../hooks/useGTM';
 import styles from './Contact.module.css';
 
 const Contact = ({ data, onBookingSuccess }) => {
@@ -19,6 +21,11 @@ const Contact = ({ data, onBookingSuccess }) => {
   const [submitted, setSubmitted] = useState(false);
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
+
+  // ✅ GTM: تتبع ظهور نموذج الاتصال
+  useEffect(() => {
+    GTMEvents.viewContent('contact_form', 'نموذج الاتصال', 'form_view');
+  }, []);
 
   useEffect(() => {
     if (data?.categories) {
@@ -62,10 +69,14 @@ const Contact = ({ data, onBookingSuccess }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // ✅ GTM: اختيار خدمة = نية حجز (openBooking)
   const handleServiceSelect = (service) => {
     setFormData({ ...formData, serviceId: service.id, serviceName: service.name });
     setSearchTerm(service.name);
     setIsDropdownOpen(false);
+
+    // GTM: اختيار خدمة = نية حجز
+    GTMEvents.openBooking(service.id, service.name, 's');
   };
 
   const handleInputChange = (e) => {
@@ -96,22 +107,22 @@ const Contact = ({ data, onBookingSuccess }) => {
       campaign: params.get('campaign') || '',
     };
   };
- 
 
+  // ✅ GTM: نجاح الحجز (bookingSuccess)
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    if (
-      !formData.firstName.trim() ||
-      !formData.lastName.trim() ||
-      !formData.phone.trim()
-    ) {
+    if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.phone.trim()) {
       setError('يرجى ملء جميع الحقول المطلوبة');
+      // ✅ GTM: محاولة حجز فاشلة - حقول ناقصة
+      GTMEvents.viewContent('booking_error', 'محاولة حجز - حقول ناقصة', 'form_error');
       return;
     }
   
     if (!formData.serviceId) {
       setError('يرجى اختيار الخدمة المطلوبة');
+      // ✅ GTM: محاولة حجز فاشلة - لم يتم اختيار خدمة
+      GTMEvents.viewContent('booking_error', 'محاولة حجز - لم يتم اختيار خدمة', 'form_error');
       return;
     }
   
@@ -130,11 +141,11 @@ const Contact = ({ data, onBookingSuccess }) => {
     };
   
     try {
-      await AxiosInstance.post(
-        'home/appointments/new/',
-        payload
-      );
+      await AxiosInstance.post('home/appointments/new/', payload);
   
+      // ✅ GTM: نجاح الحجز — Lead
+      GTMEvents.bookingSuccess(formData.serviceId, formData.serviceName, 's');
+
       setSubmitted(true);
       setFormData({
         firstName: '',
@@ -143,7 +154,6 @@ const Contact = ({ data, onBookingSuccess }) => {
         serviceId: '',
         serviceName: ''
       });
-  
       setSearchTerm('');
   
       if (onBookingSuccess) onBookingSuccess();
@@ -151,10 +161,9 @@ const Contact = ({ data, onBookingSuccess }) => {
       setTimeout(() => setSubmitted(false), 5000);
   
     } catch (err) {
-      setError(
-        err?.response?.data?.error ||
-        'تعذر الاتصال بالخادم، حاول مرة أخرى'
-      );
+      setError(err?.response?.data?.error || 'تعذر الاتصال بالخادم، حاول مرة أخرى');
+      // ✅ GTM: خطأ في الخادم أثناء الحجز
+      GTMEvents.viewContent('booking_server_error', 'خطأ في الخادم أثناء الحجز', 'server_error');
     } finally {
       setLoading(false);
     }

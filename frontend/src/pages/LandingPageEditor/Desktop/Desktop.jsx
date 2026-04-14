@@ -11,7 +11,7 @@ import TestimonialsSlider from './components/TestimonialsSlider/TestimonialsSlid
 import TrustSection from './components/TrustSection/TrustSection';
 import styles from './DesktopLanding.module.css';
 
-const DesktopLanding = ({ data }) => {
+const DesktopLanding = ({ data,fetchData }) => {
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -56,15 +56,16 @@ const DesktopLanding = ({ data }) => {
         heroData={heroData} 
         serviceName={service.name} 
         scrollToBooking={scrollToBooking} 
+        fetchData={fetchData}
       />
-      <TrustSection trust={trust} />
-      <ProblemSolution problem_solution={problem_solution}/>
-      <BenefitsSection feature={feature} />
-      <BeforeAfterSection before_after={before_after} serviceId={service?.id} />
-      <ProcessSteps process_steps={process_steps}/>    
-      <TestimonialsSlider reviews={reviews} serviceId={service?.id} />
-      <DoctorsSection doctorsData={doctorsData} serviceId={service?.id}  />
-      <FaqSection faqsData={faqsData} serviceName={service.name}  serviceId={service?.id} />
+      <TrustSection trust={trust}  fetchData={fetchData} />
+      <ProblemSolution problem_solution={problem_solution}  fetchData={fetchData}/>
+      <BenefitsSection feature={feature}   fetchData={fetchData} />
+      <BeforeAfterSection before_after={before_after} serviceId={service?.id}   fetchData={fetchData} />
+      <ProcessSteps process_steps={process_steps}   fetchData={fetchData}/>    
+      <TestimonialsSlider reviews={reviews} serviceId={service?.id}   fetchData={fetchData}/>
+      <DoctorsSection doctorsData={doctorsData} serviceId={service?.id}   fetchData={fetchData} />
+      <FaqSection faqsData={faqsData} serviceName={service.name}  serviceId={service?.id}  fetchData={fetchData} />
    
     </div>
   );

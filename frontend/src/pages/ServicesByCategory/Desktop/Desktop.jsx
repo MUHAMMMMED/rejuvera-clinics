@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
  
+import { GTMEvents } from '../../../hooks/useGTM';
 import BookingModal from '../../home/components/Desktop/components/BookingModal/BookingModal';
 import { createServiceSlug } from '../../LandingPage/components/utils/slugify';
 import styles from './Services.module.css';
 
-const ServicesDesktop = ({ data }) => {  // إزالة selectedService و setSelectedService
+const ServicesDesktop = ({ data }) => {
   const navigate = useNavigate();
   
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -15,6 +16,9 @@ const ServicesDesktop = ({ data }) => {  // إزالة selectedService و setSel
     type: 's', 
     name: '' 
   });
+
+  // ✅ تتبع hover للخدمات (مرة واحدة لكل خدمة)
+  const [hoverTracked, setHoverTracked] = useState({});
 
   // البيانات هي مصفوفة خدمات مباشرة
   const services = Array.isArray(data) ? data : [];
@@ -29,7 +33,12 @@ const ServicesDesktop = ({ data }) => {  // إزالة selectedService و setSel
     );
   };
 
+  // ============================================
+  // ✅ GTM: فتح نافذة الحجز (openBooking)
+  // ============================================
   const handleBookNow = (service) => {
+    GTMEvents.openBooking(service.id, service.name, 's');
+    
     setBookingModal({
       isOpen: true,
       id: service.id,
@@ -38,14 +47,40 @@ const ServicesDesktop = ({ data }) => {  // إزالة selectedService و setSel
     });
   };
 
+  // ============================================
+  // ✅ GTM: نجاح الحجز (bookingSuccess)
+  // ============================================
   const handleBookingSuccess = () => {
-    // يمكن إضافة أي إجراء بعد الحجز الناجح
-    console.log('تم حجز الخدمة بنجاح');
+    if (bookingModal.id && bookingModal.name) {
+      GTMEvents.bookingSuccess(bookingModal.id, bookingModal.name, 's');
+    }
+  
   };
 
+  // ============================================
+  // ✅ GTM: عرض تفاصيل الخدمة (viewContent)
+  // ============================================
   const handleServiceDetails = (service) => {
+    GTMEvents.viewContent(service.id, service.name);
+    
     const slug = createServiceSlug(service.id, service.name, false);
     navigate(`/service/${service.id}/${slug}`);
+  };
+
+  // ============================================
+  // ✅ GTM: تمرير الماوس على الخدمة (hover - اختياري)
+  // ============================================
+  const handleCardHover = (service) => {
+    setHoveredCard(service.id);
+    
+    if (!hoverTracked[service.id]) {
+      GTMEvents.viewContent(service.id, service.name, 'hover');
+      setHoverTracked(prev => ({ ...prev, [service.id]: true }));
+    }
+  };
+
+  const handleCardLeave = () => {
+    setHoveredCard(null);
   };
 
   // إذا لم توجد خدمات
@@ -86,13 +121,12 @@ const ServicesDesktop = ({ data }) => {  // إزالة selectedService و setSel
               key={service.id} 
               className={`${styles.card} ${hoveredCard === service.id ? styles.cardHovered : ''}`}
               style={{ animationDelay: `${index * 0.1}s` }}
-              onMouseEnter={() => setHoveredCard(service.id)}
-              onMouseLeave={() => setHoveredCard(null)}
+              onMouseEnter={() => handleCardHover(service)}
+              onMouseLeave={handleCardLeave}
             >
               <div className={styles.cardGlow} />
               <div className={styles.cardBorder} />
               
-              {/* يمكن إضافة شارة مميزة لأول خدمة أو حسب معيار معين */}
               {index === 0 && (
                 <div className={styles.popularBadge}>
                   <span>⭐ الأكثر طلباً</span>
@@ -118,15 +152,9 @@ const ServicesDesktop = ({ data }) => {  // إزالة selectedService و setSel
                     </svg>
                     <span>استشارة مجانية</span>
                   </div>
-                  {/* <div className={styles.duration}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <circle cx="12" cy="12" r="10" />
-                      <polyline points="12 6 12 12 16 14" />
-                    </svg>
-                    <span>جلسة واحدة</span>
-                  </div> */}
                 </div>
                 
+                {/* ✅ زر احجزي الآن -> openBooking */}
                 <button 
                   className={styles.bookBtn}
                   onClick={() => handleBookNow(service)}
@@ -137,6 +165,7 @@ const ServicesDesktop = ({ data }) => {  // إزالة selectedService و setSel
                   </svg>
                 </button>
                 
+                {/* ✅ زر تفاصيل الخدمة -> viewContent */}
                 <button 
                   className={styles.moreBtn} 
                   onClick={() => handleServiceDetails(service)}

@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GTMEvents } from '../../../../../../hooks/useGTM';
 import { createServiceSlug } from '../../../../../LandingPage/components/utils/slugify';
 import BookingModal from '../BookingModal/BookingModal';
 import styles from './Services.module.css';
+
 const Services = ({ selectedService, setSelectedService, data }) => {
   const navigate = useNavigate();
-  // استخراج التصنيفات من البيانات المستلمة
   const categories = data?.categories || [];
-  
-  // تحويل التصنيفات إلى تبويبات (tabs)
   const serviceTabs = categories.map(cat => cat.name);
   
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -19,12 +18,10 @@ const Services = ({ selectedService, setSelectedService, data }) => {
     name: '' 
   });
 
-  // الحصول على الخدمات للتصنيف المحدد
   const currentCategory = categories.find(cat => cat.name === selectedService);
   const services = currentCategory?.services || [];
 
-  // أيقونات مميزة لكل خدمة (اختيارية)
-  const getServiceIcon = (serviceName) => {
+  const getServiceIcon = () => {
     return (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
@@ -33,7 +30,13 @@ const Services = ({ selectedService, setSelectedService, data }) => {
     );
   };
 
+  // ============================================
+  // الحدث الأول: openBooking (نية حجز)
+  // ============================================
   const handleBookNow = (service) => {
+    // ✅ إرسال حدث GTM: openBooking
+    GTMEvents.openBooking(service.id, service.name, 's');
+    
     setBookingModal({
       isOpen: true,
       id: service.id,
@@ -42,18 +45,40 @@ const Services = ({ selectedService, setSelectedService, data }) => {
     });
   };
 
+  // ============================================
+  // حدث نجاح الحجز (بعد إتمام الحجز)
+  // ============================================
   const handleBookingSuccess = () => {
-    // يمكن إضافة أي إجراء بعد الحجز الناجح
-    // console.log('تم حجز الخدمة بنجاح');
+    if (bookingModal.id && bookingModal.name) {
+      // ✅ إرسال حدث GTM: bookingSuccess
+      GTMEvents.bookingSuccess(bookingModal.id, bookingModal.name, 's');
+    }
   };
 
- 
+  // ============================================
+  // الحدث الثاني: viewContent (عرض تفاصيل الخدمة)
+  // ============================================
   const handleServiceDetails = (service) => {
+    // ✅ إرسال حدث GTM: viewContent
+    GTMEvents.viewContent(service.id, service.name);
+    
     const slug = createServiceSlug(service.id, service.name, false);
     navigate(`/service/${service.id}/${slug}`);
   };
 
-  // تعيين التبويب الأول افتراضياً إذا لم يكن هناك تبويب محدد
+  // (اختياري) تتبع hover على البطاقة
+  const [hoverTracked, setHoverTracked] = useState({});
+  
+  const handleCardHover = (service) => {
+    setHoveredCard(service.id);
+    
+    if (!hoverTracked[service.id]) {
+      // ✅ اختياري: تتبع hover
+      GTMEvents.viewContent(service.id, service.name, 'hover');
+      setHoverTracked(prev => ({ ...prev, [service.id]: true }));
+    }
+  };
+
   React.useEffect(() => {
     if (serviceTabs.length > 0 && !selectedService) {
       setSelectedService(serviceTabs[0]);
@@ -97,7 +122,7 @@ const Services = ({ selectedService, setSelectedService, data }) => {
               key={service.id} 
               className={`${styles.card} ${hoveredCard === service.id ? styles.cardHovered : ''}`}
               style={{ animationDelay: `${index * 0.1}s` }}
-              onMouseEnter={() => setHoveredCard(service.id)}
+              onMouseEnter={() => handleCardHover(service)}
               onMouseLeave={() => setHoveredCard(null)}
             >
               <div className={styles.cardGlow} />
@@ -112,7 +137,7 @@ const Services = ({ selectedService, setSelectedService, data }) => {
               <div className={styles.cardContent}>
                 <div className={styles.iconWrapper}>
                   <div className={styles.icon}>
-                    {getServiceIcon(service.name)}
+                    {getServiceIcon()}
                   </div>
                 </div>
                 
@@ -130,6 +155,7 @@ const Services = ({ selectedService, setSelectedService, data }) => {
                   </div>
                 </div>
                 
+                {/* زر احجزي الآن -> حدث openBooking */}
                 <button 
                   className={styles.bookBtn}
                   onClick={() => handleBookNow(service)}
@@ -140,7 +166,11 @@ const Services = ({ selectedService, setSelectedService, data }) => {
                   </svg>
                 </button>
                 
-                <button className={styles.moreBtn}   onClick={() => handleServiceDetails(service)}>
+                {/* زر تفاصيل الخدمة -> حدث viewContent */}
+                <button 
+                  className={styles.moreBtn}   
+                  onClick={() => handleServiceDetails(service)}
+                >
                   <span>تفاصيل الخدمة</span>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path d="M5 12h14M12 5l7 7-7 7" />
@@ -156,7 +186,6 @@ const Services = ({ selectedService, setSelectedService, data }) => {
         </div>
       </div>
 
-      {/* Booking Modal */}
       <BookingModal
         isOpen={bookingModal.isOpen}
         onClose={() => setBookingModal({ isOpen: false, id: null, type: 's', name: '' })}

@@ -12,6 +12,9 @@ const PALETTE = [
   '#8b6914', '#f0dfa0', '#6b5210', '#a07820',
 ];
 
+// ✅ Safe array checker
+const safeArray = (arr) => Array.isArray(arr) ? arr : [];
+
 // ─── KPI Card ────────────────────────────────────────────────────────────────
 
 const KpiCard = ({ label, value }) => (
@@ -25,11 +28,19 @@ const KpiCard = ({ label, value }) => (
 // ─── Mini Bar Chart ───────────────────────────────────────────────────────────
 
 const MiniBarChart = ({ data, valueKey, labelKey }) => {
-  const max = Math.max(...data.map((d) => d[valueKey] || 0), 1);
+  // ✅ Safe check for data
+  const safeData = safeArray(data);
+  
+  if (safeData.length === 0) {
+    return <p className="ad-empty">لا توجد بيانات كافية</p>;
+  }
+  
+  const max = Math.max(...safeData.map((d) => d[valueKey] || 0), 1);
+  
   return (
     <div className="ad-minibar">
-      {data.map((row, i) => (
-        <div key={i} className="ad-minibar__row">
+      {safeData.map((row, i) => (
+        <div key={row.id || i} className="ad-minibar__row">
           <span className="ad-minibar__label">{row[labelKey]}</span>
           <div className="ad-minibar__track">
             <div
@@ -53,20 +64,23 @@ const MiniBarChart = ({ data, valueKey, labelKey }) => {
 // ─── Trend Chart ─────────────────────────────────────────────────────────────
 
 const TrendChart = ({ data, valueKey, labelKey }) => {
-  const max = Math.max(...data.map((d) => d[valueKey] || 0), 1);
-  const pts = data.map((d, i) => ({
-    x: (i / Math.max(data.length - 1, 1)) * 100,
+  // ✅ Safe check for data
+  const safeData = safeArray(data);
+  
+  if (safeData.length === 0) {
+    return <p className="ad-empty">لا توجد بيانات كافية للرسم البياني</p>;
+  }
+  
+  const max = Math.max(...safeData.map((d) => d[valueKey] || 0), 1);
+  const pts = safeData.map((d, i) => ({
+    x: (i / Math.max(safeData.length - 1, 1)) * 100,
     y: 100 - (d[valueKey] / max) * 88,
     label: d[labelKey],
     val: d[valueKey],
   }));
 
-  const path =
-    pts.length > 1 ? pts.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`)).join(' ') : '';
-  const area =
-    pts.length > 1
-      ? `${path} L ${pts[pts.length - 1].x} 100 L ${pts[0].x} 100 Z`
-      : '';
+  const path = pts.length > 1 ? pts.map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`)).join(' ') : '';
+  const area = pts.length > 1 ? `${path} L ${pts[pts.length - 1].x} 100 L ${pts[0].x} 100 Z` : '';
 
   return (
     <div className="ad-trend">
@@ -97,11 +111,17 @@ const TrendChart = ({ data, valueKey, labelKey }) => {
 // ─── Donut Chart ──────────────────────────────────────────────────────────────
 
 const DonutChart = ({ slices }) => {
+  // ✅ Safe check for slices
+  const safeSlices = safeArray(slices);
   let offset = 0;
   const r = 15.9;
   const circ = 2 * Math.PI * r;
-  const cleaned = slices.filter((s) => s.value > 0);
+  const cleaned = safeSlices.filter((s) => s.value > 0);
   const total = cleaned.reduce((a, s) => a + s.value, 0) || 1;
+
+  if (cleaned.length === 0) {
+    return <p className="ad-empty">لا توجد بيانات للرسم الدائري</p>;
+  }
 
   return (
     <div className="ad-donut">
@@ -140,11 +160,16 @@ const DonutChart = ({ slices }) => {
 // ─── Cross Matrix ─────────────────────────────────────────────────────────────
 
 const CrossMatrix = ({ data }) => {
-  if (!data?.length) return <p className="ad-empty">لا توجد بيانات</p>;
-  const max = Math.max(...data.map((r) => r.count), 1);
+  const safeData = safeArray(data);
+  
+  if (safeData.length === 0) {
+    return <p className="ad-empty">لا توجد بيانات للمصفوفة</p>;
+  }
+  
+  const max = Math.max(...safeData.map((r) => r.count), 1);
   return (
     <div className="ad-matrix">
-      {data.map((row, i) => (
+      {safeData.map((row, i) => (
         <div key={i} className="ad-matrix__row">
           <span className="ad-matrix__campaign">{row.campaign}</span>
           <span className="ad-matrix__source">{row.source}</span>
@@ -188,27 +213,49 @@ const RefreshIcon = () => (
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function AnalyticsDashboard({ data, showToast, onRefresh }) {
-  const [period, setPeriod] = useState('monthly');
+  const [period, setPeriod] = useState('weekly');
 
-  const reports      = data?.reports;
-  const overview     = reports?.overview        ?? {};
-  const periodStats  = reports?.period_stats    ?? {};
-  const servicesBd   = reports?.services_breakdown ?? [];
-  const packagesBd   = reports?.packages_breakdown ?? [];
-  const sourcesR     = reports?.sources         ?? {};
-  const campaignsR   = reports?.campaigns       ?? {};
-  const crossM       = reports?.campaign_x_source ?? [];
+  // ✅ Safe data extraction with fallbacks
+  const reports = data?.reports || {};
+  const overview = reports.overview ?? {
+    total_count: 0,
+    services_count: 0,
+    packages_count: 0,
+    this_week: 0,
+    this_month: 0
+  };
+  
+  const periodStats = reports.period_stats ?? {
+    this_week: { total: 0, services: 0, packages: 0 },
+    this_month: { total: 0, services: 0, packages: 0 },
+    weekly_trend: [],
+    monthly_trend: []
+  };
+  
+  const servicesBd = safeArray(reports.services_breakdown);
+  const packagesBd = safeArray(reports.packages_breakdown);
+  const sourcesR = reports.sources ?? { breakdown: [], by_period: [], no_source: 0 };
+  const campaignsR = reports.campaigns ?? { breakdown: [], by_period: [], no_campaign: 0 };
+  const crossM = safeArray(reports.campaign_x_source);
 
   const trendData = useMemo(
     () => (period === 'weekly' ? periodStats.weekly_trend : periodStats.monthly_trend) ?? [],
-    [period, periodStats]
+    [period, periodStats.weekly_trend, periodStats.monthly_trend]
   );
+  
   const trendLabelKey = period === 'weekly' ? 'week_label' : 'month_label';
   const currentPeriod = period === 'weekly' ? periodStats.this_week : periodStats.this_month;
 
+  // ✅ Safe donut slices creation
   const donutSlices = [
-    ...servicesBd.slice(0, 4).map((s) => ({ name: s.service_name, value: s.count })),
-    ...packagesBd.slice(0, 2).map((p) => ({ name: p.package_name, value: p.count })),
+    ...servicesBd.slice(0, 4).map((s) => ({ 
+      name: s.service_name || 'خدمة', 
+      value: s.count || 0 
+    })),
+    ...packagesBd.slice(0, 2).map((p) => ({ 
+      name: p.package_name || 'باقة', 
+      value: p.count || 0 
+    }))
   ];
 
   return (
@@ -263,16 +310,12 @@ export default function AnalyticsDashboard({ data, showToast, onRefresh }) {
               <span className="pill pill--dark">باقات: {fmt(currentPeriod.packages)}</span>
             </div>
           )}
-          {trendData.length > 0
-            ? <TrendChart data={trendData} valueKey="total" labelKey={trendLabelKey} />
-            : <p className="ad-empty">لا توجد بيانات كافية</p>}
+          <TrendChart data={trendData} valueKey="total" labelKey={trendLabelKey} />
         </div>
 
         <div className="ad-card">
           <h3 className="ad-card__title">توزيع الحجوزات</h3>
-          {donutSlices.length > 0
-            ? <DonutChart slices={donutSlices} />
-            : <p className="ad-empty">لا توجد بيانات</p>}
+          <DonutChart slices={donutSlices} />
         </div>
       </div>
 
@@ -280,15 +323,11 @@ export default function AnalyticsDashboard({ data, showToast, onRefresh }) {
       <div className="ad-row">
         <div className="ad-card">
           <h3 className="ad-card__title">أداء الخدمات</h3>
-          {servicesBd.length > 0
-            ? <MiniBarChart data={servicesBd} valueKey="count" labelKey="service_name" />
-            : <p className="ad-empty">لا توجد خدمات</p>}
+          <MiniBarChart data={servicesBd} valueKey="count" labelKey="service_name" />
         </div>
         <div className="ad-card">
           <h3 className="ad-card__title">أداء الباقات</h3>
-          {packagesBd.length > 0
-            ? <MiniBarChart data={packagesBd} valueKey="count" labelKey="package_name" />
-            : <p className="ad-empty">لا توجد باقات</p>}
+          <MiniBarChart data={packagesBd} valueKey="count" labelKey="package_name" />
         </div>
       </div>
 
@@ -301,11 +340,9 @@ export default function AnalyticsDashboard({ data, showToast, onRefresh }) {
             <h3 className="ad-card__title">المصادر</h3>
             <span className="ad-badge ad-badge--gray">بدون مصدر: {fmt(sourcesR.no_source)}</span>
           </div>
-          {sourcesR.breakdown?.length > 0
-            ? <MiniBarChart data={sourcesR.breakdown} valueKey="count" labelKey="source_name" />
-            : <p className="ad-empty">لا توجد مصادر</p>}
+          <MiniBarChart data={sourcesR.breakdown} valueKey="count" labelKey="source_name" />
 
-          {sourcesR.by_period?.length > 0 && (
+          {safeArray(sourcesR.by_period).length > 0 && (
             <>
               <p className="ad-sub-title">أداء المصادر</p>
               <div className="ad-period-table">
@@ -331,11 +368,9 @@ export default function AnalyticsDashboard({ data, showToast, onRefresh }) {
             <h3 className="ad-card__title">الحملات</h3>
             <span className="ad-badge ad-badge--gray">بدون حملة: {fmt(campaignsR.no_campaign)}</span>
           </div>
-          {campaignsR.breakdown?.length > 0
-            ? <MiniBarChart data={campaignsR.breakdown} valueKey="count" labelKey="campaign_name" />
-            : <p className="ad-empty">لا توجد حملات</p>}
+          <MiniBarChart data={campaignsR.breakdown} valueKey="count" labelKey="campaign_name" />
 
-          {campaignsR.by_period?.length > 0 && (
+          {safeArray(campaignsR.by_period).length > 0 && (
             <>
               <p className="ad-sub-title">أداء الحملات</p>
               <div className="ad-period-table">

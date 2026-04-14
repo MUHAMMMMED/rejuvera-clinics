@@ -1,4 +1,3 @@
- 
 import React, { useEffect, useState } from 'react';
 import { Helmet } from "react-helmet-async";
 import AxiosInstance from "../../components/Authentication/AxiosInstance";
@@ -6,10 +5,12 @@ import Navbar from '../../components/Navbar/Navbar';
 import useDevice from "../../hooks/useDevice";
 import PackagesDesktop from '../home/components/Desktop/components/Packages/Packages';
 import PackagesMobile from '../home/components/Mobile/components/Packages/Packages';
- 
+
 import EmptyState from '../../components/EmptyState/EmptyState';
 import ErrorState from '../../components/ErrorState/ErrorState';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
+ 
+import { GTMEvents } from '../../hooks/useGTM';
 import './Packages.css';
 
 export default function PackagesPage() {
@@ -21,7 +22,6 @@ export default function PackagesPage() {
 
   const clinicName = "Rejuvera Clinics";
 
-  // Get current URL safely (for client-side only)
   const [currentUrl, setCurrentUrl] = useState("");
 
   const fetchData = async () => {
@@ -31,6 +31,10 @@ export default function PackagesPage() {
     try {
       const response = await AxiosInstance.get("/home/");
       setData(response.data);
+
+      // ✅ GTM: Page View
+      GTMEvents.pageView("packages");
+
     } catch (err) {
       console.error("Error fetching packages data:", err);
       setError(err);
@@ -133,11 +137,9 @@ export default function PackagesPage() {
 
   const packagesCount = (safeData.packages?.length || 0) + (safeData.bundles?.length || 0);
 
-  // SEO for Packages Page
   const pageTitle = `باقات وعروض خاصة | ${clinicName}`;
-  const pageDescription = `استكشف باقاتنا وعروضنا الحصرية في ${clinicName}. نقدم باقات مميزة بأسعار منافسة تشمل أحدث الخدمات الطبية والتجميلية.`;
+  const pageDescription = `استكشف باقاتنا وعروضنا الحصرية في ${clinicName}. نقدم باقات مميزة بأسعار منافسة تشمل أحدث الخدمات الطبية والجلدية.`;
 
-  // Structured Data (ItemList for packages)
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -182,7 +184,6 @@ export default function PackagesPage() {
     ]
   };
 
-  // Breadcrumb structured data
   const breadcrumbData = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -210,7 +211,6 @@ export default function PackagesPage() {
         <meta name="description" content={pageDescription} />
         <meta name="keywords" content={`باقات, عروض, باقات تجميل, عروض خاصة, خصومات, ${clinicName}, باقات ${clinicName}`} />
         
-        {/* Open Graph / Social Media */}
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:url" content={currentUrl} />
@@ -218,16 +218,13 @@ export default function PackagesPage() {
         <meta property="og:site_name" content={clinicName} />
         <meta property="og:image" content={safeData.packages?.[0]?.image || safeData.bundles?.[0]?.image || ""} />
         
-        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={pageTitle} />
         <meta name="twitter:description" content={pageDescription} />
         <meta name="twitter:image" content={safeData.packages?.[0]?.image || safeData.bundles?.[0]?.image || ""} />
         
-        {/* Canonical URL */}
         <link rel="canonical" href={currentUrl} />
         
-        {/* Schema.org markup */}
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
@@ -236,12 +233,9 @@ export default function PackagesPage() {
         </script>
       </Helmet>
 
- 
       <Navbar />
       <div className="page-clinic-container" dir="rtl">
         <div className="about-content-wrapper">
-       
-          {/* Render based on device */}
           {device === "mobile" ? (
             <PackagesMobile data={safeData} />
           ) : (

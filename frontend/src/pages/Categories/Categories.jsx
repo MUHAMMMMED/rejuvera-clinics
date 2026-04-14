@@ -6,6 +6,7 @@ import ErrorState from '../../components/ErrorState/ErrorState';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import Navbar from '../../components/Navbar/Navbar';
 import useDevice from "../../hooks/useDevice";
+import { GTMEvents } from '../../hooks/useGTM';
 import CategoriesDesktop from '../home/components/Desktop/components/Categories/Categories';
 import CategoriesMobile from '../home/components/Mobile/components/Categories/Categories';
 import './categories.css';
@@ -22,6 +23,11 @@ export default function CategoriesPage() {
 
   // Get current URL safely
   const [currentUrl, setCurrentUrl] = useState("");
+
+  // ✅ إضافة useEffect لإرسال حدث pageView عند تحميل الصفحة
+  useEffect(() => {
+    GTMEvents.pageView("categories");
+  }, []);
 
   useEffect(() => {
     setCurrentUrl(window.location.href);
@@ -50,6 +56,11 @@ export default function CategoriesPage() {
     setRetryCount(prev => prev + 1);
   };
 
+  // ✅ دالة للتعامل مع النقر على التصنيف - إرسال حدث viewContent
+  const handleCategoryClick = (category) => {
+    GTMEvents.viewContent(category.id, category.name);
+  };
+
   // Get categories from data
   const categories = data?.categories || [];
   
@@ -58,6 +69,13 @@ export default function CategoriesPage() {
     category.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     category.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // ✅ إضافة دوال GTM إلى البيانات التي ستمرر للمكونات الفرعية
+  const enhancedData = {
+    ...data,
+    categories: filteredCategories,
+    onCategoryClick: handleCategoryClick
+  };
 
   // Loading State
   if (loading) {
@@ -221,14 +239,14 @@ export default function CategoriesPage() {
       <Navbar />
       <div className="page-clinic-container" dir="rtl">
         <div className="about-content-wrapper">
+      
          
- 
- 
-          { 
+          {/* Categories Grid */}
+          {
             device === "mobile" ? (
-              <CategoriesMobile data={{ ...data, categories: filteredCategories }} />
+              <CategoriesMobile data={enhancedData} />
             ) : (
-              <CategoriesDesktop data={{ ...data, categories: filteredCategories }} />
+              <CategoriesDesktop data={enhancedData} />
             )
           }
         </div>

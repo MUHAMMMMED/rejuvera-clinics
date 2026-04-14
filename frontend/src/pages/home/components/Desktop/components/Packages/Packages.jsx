@@ -1,5 +1,6 @@
- 
 import React, { useState } from 'react';
+ 
+import { GTMEvents } from '../../../../../../hooks/useGTM';
 import BookingModal from '../BookingModal/BookingModal';
 import styles from './Packages.module.css';
 
@@ -12,11 +13,18 @@ const PackagesDesktop = ({ data, scrollToSection }) => {
     name: '' 
   });
 
- 
+  // ✅ تتبع hover للباقات (مرة واحدة لكل باقة)
+  const [hoverTracked, setHoverTracked] = useState({});
+
   const packages = data?.packages || [];
   const displayedPackages = showAllPackages ? packages : packages.slice(0, 4);
 
+  // ============================================
+  // ✅ الحدث الأول: openBooking (نية حجز باقة)
+  // ============================================
   const handleBookNow = (pkg) => {
+    GTMEvents.openBooking(pkg.id, pkg.name, 'p');
+    
     setBookingModal({
       isOpen: true,
       id: pkg.id,
@@ -25,9 +33,45 @@ const PackagesDesktop = ({ data, scrollToSection }) => {
     });
   };
 
+  // ============================================
+  // ✅ حدث نجاح الحجز
+  // ============================================
   const handleBookingSuccess = () => {
+    if (bookingModal.id && bookingModal.name) {
+      GTMEvents.bookingSuccess(bookingModal.id, bookingModal.name, 'p');
+    }
     console.log('تم حجز الباقة بنجاح');
   };
+
+  // ============================================
+  // ✅ حدث hover على الباقة (اختياري)
+  // ============================================
+  const handleCardHover = (pkg) => {
+    if (!hoverTracked[pkg.id]) {
+      GTMEvents.viewContent(pkg.id, pkg.name, 'hover');
+      setHoverTracked(prev => ({ ...prev, [pkg.id]: true }));
+    }
+  };
+
+  // ============================================
+  // ✅ حدث عرض/إخفاء جميع الباقات
+  // ============================================
+  const handleTogglePackages = () => {
+    const newShowState = !showAllPackages;
+    setShowAllPackages(newShowState);
+    
+    // ✅ تتبع عرض جميع الباقات
+    GTMEvents.viewContent(
+      newShowState ? 'all_packages' : 'less_packages',
+      newShowState ? 'عرض جميع الباقات' : 'عرض أقل',
+      'toggle_packages'
+    );
+  };
+
+  // إذا لم توجد باقات
+  if (!packages || packages.length === 0) {
+    return null;
+  }
 
   return (
     <section id="packages" className={styles.packages}>
@@ -48,6 +92,7 @@ const PackagesDesktop = ({ data, scrollToSection }) => {
               key={pkg.id}
               className={`${styles.packageCard} ${pkg.popular ? styles.popular : ''}`}
               style={{ animationDelay: `${index * 0.1}s` }}
+              onMouseEnter={() => handleCardHover(pkg)}
             >
               {pkg.popular && <div className={styles.popularBadge}>⭐ الأكثر طلباً</div>}
 
@@ -91,6 +136,7 @@ const PackagesDesktop = ({ data, scrollToSection }) => {
 
                 {/* الجزء الأيسر: زر الحجز */}
                 <div className={styles.leftSection}>
+                  {/* ✅ زر احجزي الآن -> openBooking */}
                   <button
                     className={styles.bookBtn}
                     onClick={() => handleBookNow(pkg)}
@@ -117,7 +163,7 @@ const PackagesDesktop = ({ data, scrollToSection }) => {
           <div className={styles.showMore}>
             <button
               className={styles.showMoreBtn}
-              onClick={() => setShowAllPackages(!showAllPackages)}
+              onClick={handleTogglePackages}
             >
               {showAllPackages ? 'عرض أقل' : 'عرض جميع الباقات'}
               <svg

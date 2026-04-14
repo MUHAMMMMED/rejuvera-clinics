@@ -1,14 +1,15 @@
- 
 import { Briefcase, Calendar, CheckCircle2, MessageCircle, Package, Phone, Sparkles, User, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import AxiosInstance from '../../../../../../components/Authentication/AxiosInstance';
+ 
+import { GTMEvents } from '../../../../../../hooks/useGTM';
 import styles from './BookingModal.module.css';
 
 const BookingModal = ({ 
   isOpen, 
   onClose, 
   itemId, 
-  itemType, // 's' for service, 'p' for package
+  itemType,
   itemName,
   onSuccess 
 }) => {
@@ -26,6 +27,13 @@ const BookingModal = ({
       campaign: params.get('campaign') || '',
     };
   };
+
+  // ✅ GTM: فتح نافذة الحجز
+  useEffect(() => {
+    if (isOpen && itemId && itemName) {
+      GTMEvents.openBooking(itemId, itemName, itemType);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -65,6 +73,7 @@ const BookingModal = ({
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -84,16 +93,13 @@ const BookingModal = ({
     };
   
     try {
-       await AxiosInstance.post(
-        'home/appointments/new/',
-        payload
-      );
+      await AxiosInstance.post('home/appointments/new/', payload);
   
+      // ✅ GTM: نجاح الحجز — Lead
+      GTMEvents.bookingSuccess(itemId, itemName, itemType);
+
       setSubmitted(true);
       setShowSuccessModal(true);
-  
-      // لو محتاج الرد
-      // console.log(res.data);
   
     } catch (err) {
       setError(

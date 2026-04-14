@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Map from '../../../../components/Map/Map';
 import Navbar from '../../../../components/Navbar/Navbar';
 import './HomeDesktop.css';
@@ -15,17 +15,23 @@ import PackagesDesktop from './components/Packages/Packages';
 import Services from './components/Services/Services';
 import WhatsAppFloat from './components/WhatsAppFloat/WhatsAppFloat';
 
-const HomeDesktop = ({data,clinicName}) => {
+const HomeDesktop = ({data, clinicName}) => {
  
-  const [selectedService, setSelectedService] = useState('جراحة التجميل');
- 
+  // ✅ استخدام state ديناميكي يعتمد على البيانات
+  const [selectedService, setSelectedService] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  // ✅ استخراج أول تصنيف كقيمة افتراضية عند تحميل البيانات
+  useEffect(() => {
+    if (data?.categories && data.categories.length > 0 && !selectedService) {
+      setSelectedService(data.categories[0].name);
+    }
+  }, [data, selectedService]);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
-      setMobileMenuOpen(false);
     }
   };
 
@@ -53,11 +59,11 @@ const HomeDesktop = ({data,clinicName}) => {
       <FaqDesktop data={data} />  
       <Contact data={data}  />
       <Map  
-      latitude={data?.info?.latitude}
-      longitude={data?.info?.longitude} 
-       address={data.info.address} 
-       working_hours={data?.info?.working_hours} 
-       site_name={data?.info?.site_name}
+        latitude={data?.info?.latitude}
+        longitude={data?.info?.longitude} 
+        address={data.info?.address} 
+        working_hours={data?.info?.working_hours} 
+        site_name={data?.info?.site_name}
       />
       <Footer data={data} scrollToSection={scrollToSection} setSelectedService={setSelectedService} />
       <WhatsAppFloat data={data} />

@@ -1,6 +1,7 @@
 import { Calendar, CheckCircle2, Sparkles, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import AxiosInstance from '../../../../../../components/Authentication/AxiosInstance';
+import { GTMEvents } from '../../../../../../hooks/useGTM';
 import styles from './FinalCtaSection.module.css';
 
 const FinalCtaSection = ({ data }) => {
@@ -18,7 +19,14 @@ const FinalCtaSection = ({ data }) => {
     };
   };
 
-  // Auto-hide modal after 3 seconds
+  // ✅ GTM: ظهور قسم الحجز (form_view)
+  useEffect(() => {
+    if (data?.id && data?.name) {
+      GTMEvents.viewContent('final_cta_section', 'قسم الحجز النهائي', 'form_view');
+    }
+  }, [data?.id]);
+
+  // Auto-hide modal after 5 seconds
   useEffect(() => {
     if (showModal) {
       const timer = setTimeout(() => {
@@ -39,8 +47,22 @@ const FinalCtaSection = ({ data }) => {
       document.body.style.overflow = 'unset';
     };
   }, [showModal]);
+
+  // ============================================
+  // ✅ GTM: محاولة حجز (viewContent) عند النقر على زر الإرسال
+  // ✅ GTM: نجاح الحجز (bookingSuccess)
+  // ============================================
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // التحقق من صحة البيانات
+    if (!formData.name.trim() || !formData.phone.trim()) {
+      setError('يرجى ملء جميع الحقول المطلوبة');
+      // ✅ GTM: محاولة حجز فاشلة - حقول ناقصة
+      GTMEvents.viewContent('booking_error', 'محاولة حجز - حقول ناقصة', 'form_error');
+      return;
+    }
+    
     setLoading(true);
     setError('');
   
@@ -57,11 +79,11 @@ const FinalCtaSection = ({ data }) => {
     };
   
     try {
-      await AxiosInstance.post(
-        'home/appointments/new/',
-        payload
-      );
+      await AxiosInstance.post('home/appointments/new/', payload);
   
+      // ✅ GTM: نجاح الحجز — Lead
+      GTMEvents.bookingSuccess(data?.id, data?.name, 's');
+
       setSubmitted(true);
       setShowModal(true);
   
@@ -70,6 +92,8 @@ const FinalCtaSection = ({ data }) => {
         err?.response?.data?.error ||
         'تعذر الاتصال بالخادم، حاولي مرة أخرى'
       );
+      // ✅ GTM: خطأ في الخادم أثناء الحجز
+      GTMEvents.viewContent('booking_server_error', 'خطأ في الخادم أثناء الحجز', 'server_error');
     } finally {
       setLoading(false);
     }

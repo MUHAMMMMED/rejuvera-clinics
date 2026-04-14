@@ -1,12 +1,27 @@
 import React, { useState } from 'react';
+ 
+import { GTMEvents } from '../../../../../../hooks/useGTM';
 import styles from './Gallery.module.css';
 
-const GalleryDesktop = ({ data }) => {
+const GalleryDesktop = ({ data, onImageClick }) => {
   const [lightboxImg, setLightboxImg] = useState(null);
 
-  const openLightbox = (img) => {
+  // ✅ GTM: فتح الصورة في الـ Lightbox
+  const openLightbox = (img, imageData) => {
     setLightboxImg(img);
     document.body.style.overflow = 'hidden';
+    
+    // ✅ إرسال حدث GTM عند فتح الصورة
+    if (onImageClick) {
+      onImageClick(imageData);
+    } else {
+      // إذا لم يتم تمرير onImageClick من المكون الأب
+      GTMEvents.viewContent(
+        imageData.id || imageData.alt_text || 'gallery_image',
+        imageData.alt_text || 'صورة من المعرض',
+        'gallery_image'
+      );
+    }
   };
 
   const closeLightbox = () => {
@@ -41,7 +56,7 @@ const GalleryDesktop = ({ data }) => {
             <div
               key={img.id || idx}
               className={styles.item}
-              onClick={() => openLightbox(img.image)}
+              onClick={() => openLightbox(img.image, img)}
             >
               <div className={styles.imageWrapper}>
                 <img

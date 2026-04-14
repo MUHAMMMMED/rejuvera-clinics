@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import AxiosInstance from '../../../../../components/Authentication/AxiosInstance';
 import styles from './FaqSection.module.css';
 
-const FaqSection = ({ faqsData, serviceName, serviceId, onFaqsUpdate }) => {
+const FaqSection = ({ faqsData, serviceName, serviceId, fetchData }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedFaqs, setEditedFaqs] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
@@ -74,8 +74,8 @@ const FaqSection = ({ faqsData, serviceName, serviceId, onFaqsUpdate }) => {
     setShowSuggestions({});
   };
 
-  // فنكشن تحديث البيانات عبر API
-  const updateFaqs = async (faqsDataToUpdate) => {
+  // فنكشن حفظ البيانات (CREATE or UPDATE)
+  const saveFaqs = async (faqsDataToUpdate) => {
     try {
       const promises = [];
       
@@ -111,7 +111,8 @@ const FaqSection = ({ faqsData, serviceName, serviceId, onFaqsUpdate }) => {
       const responses = await Promise.all(promises);
       return responses.filter(r => r && r.data).map(r => r.data);
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'فشل في تحديث الأسئلة');
+      console.error('API Error:', error.response?.data || error.message);
+      throw new Error(error.response?.data?.message || 'فشل في حفظ الأسئلة');
     }
   };
 
@@ -126,20 +127,22 @@ const FaqSection = ({ faqsData, serviceName, serviceId, onFaqsUpdate }) => {
     setError(null);
 
     try {
-      const updatedFaqs = await updateFaqs(editedFaqs);
+      // حفظ البيانات عبر API
+      const savedFaqs = await saveFaqs(editedFaqs);
       
-      if (typeof onFaqsUpdate === 'function') {
-        onFaqsUpdate(updatedFaqs.filter(f => f !== undefined));
+ 
+      if (typeof fetchData === 'function') {
+        await fetchData();
       }
 
       setIsEditing(false);
-      showNotification('✓ تم حفظ الأسئلة الشائعة بنجاح!', 'success');
+      showNotification('  تم حفظ الأسئلة الشائعة بنجاح!', 'success');
       
       // إعادة جلب الاقتراحات بعد الحفظ
       fetchFaqSuggestions();
     } catch (err) {
       setError(err.message);
-      showNotification(`✗ ${err.message}`, 'error');
+      showNotification(`❌ ${err.message}`, 'error');
       console.error('Error saving data:', err);
     } finally {
       setIsSaving(false);
@@ -168,14 +171,14 @@ const FaqSection = ({ faqsData, serviceName, serviceId, onFaqsUpdate }) => {
       const newIndex = editedFaqs.length;
       setShowSuggestions(prev => ({ ...prev, [newIndex]: true }));
     }, 100);
-    showNotification('✓ تم إضافة سؤال جديد، يمكنك اختيار سؤال من الاقتراحات', 'success');
+    showNotification('  تم إضافة سؤال جديد، يمكنك اختيار سؤال من الاقتراحات', 'success');
   };
 
   // حذف سؤال
   const handleDeleteFaq = (index) => {
     if (window.confirm('هل أنت متأكد من حذف هذا السؤال؟')) {
       setEditedFaqs(prev => prev.filter((_, i) => i !== index));
-      showNotification('✓ تم حذف السؤال مؤقتاً، اضغط "حفظ الكل" لتأكيد الحذف', 'success');
+      showNotification('  تم حذف السؤال مؤقتاً، اضغط "حفظ الكل" لتأكيد الحذف', 'success');
     }
   };
 
@@ -238,7 +241,7 @@ const FaqSection = ({ faqsData, serviceName, serviceId, onFaqsUpdate }) => {
                 disabled={isSaving}
               >
                 <Save size={18} />
-                {isSaving ? 'جاري الحفظ...' : '  حفظ الكل'}
+                {isSaving ? 'جاري الحفظ...' : 'حفظ الكل'}
               </button>
               <button 
                 onClick={handleCancelClick} 
@@ -276,6 +279,15 @@ const FaqSection = ({ faqsData, serviceName, serviceId, onFaqsUpdate }) => {
               <Plus size={18} />
               أضف أول سؤال
             </button>
+          </div>
+        )}
+
+        {/* عرض معلومات الحالة */}
+        {!isEditing && hasFaqs && (
+          <div className={styles.statusInfo}>
+            <span className={styles.statusBadge}>
+             {displayFaqs.length} سؤال شائع
+            </span>
           </div>
         )}
 

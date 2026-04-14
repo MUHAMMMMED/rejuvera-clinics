@@ -1,9 +1,30 @@
 import React from 'react';
+ 
+import { GTMEvents } from '../../../../../../hooks/useGTM';
 import styles from './Gallery.module.css';
 
-const GalleryMobile = ({ openLightbox, data }) => {
+const GalleryMobile = ({ openLightbox, data, onImageClick }) => {
   // استخراج الصور من البيانات المستلمة
   const galleryImages = data?.gallery || [];
+
+  // ✅ GTM: فتح الصورة في الـ Lightbox
+  const handleImageClick = (img, imageData) => {
+    // ✅ إرسال حدث GTM عند فتح الصورة
+    if (onImageClick) {
+      onImageClick(imageData);
+    } else {
+      GTMEvents.viewContent(
+        imageData.id || imageData.alt_text || 'gallery_image',
+        imageData.alt_text || 'صورة من المعرض',
+        'gallery_image'
+      );
+    }
+    
+    // فتح الـ Lightbox
+    if (openLightbox) {
+      openLightbox(img);
+    }
+  };
 
   // إذا لم توجد صور
   if (galleryImages.length === 0) {
@@ -56,7 +77,7 @@ const GalleryMobile = ({ openLightbox, data }) => {
             <div 
               key={img.id || idx} 
               className={styles.item} 
-              onClick={() => openLightbox(img.image)}
+              onClick={() => handleImageClick(img.image, img)}
             >
               <div className={styles.imageWrapper}>
                 <img 

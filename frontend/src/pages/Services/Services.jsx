@@ -1,5 +1,3 @@
- 
-
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import AxiosInstance from "../../components/Authentication/AxiosInstance";
@@ -7,10 +5,11 @@ import Navbar from "../../components/Navbar/Navbar";
 import useDevice from "../../hooks/useDevice";
 import ServicesDesktop from "./Desktop/Desktop";
 import ServicesMobile from "./Mobile/Mobile";
- 
+
 import EmptyState from "../../components/EmptyState/EmptyState";
 import ErrorState from "../../components/ErrorState/ErrorState";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import { GTMEvents } from "../../hooks/useGTM";
 import './services.css';
 
 export default function ServicesPage() {
@@ -22,7 +21,6 @@ export default function ServicesPage() {
 
   const clinicName = "Rejuvera Clinics";
 
-  // Get current URL safely (for client-side only)
   const [currentUrl, setCurrentUrl] = useState("");
 
   const fetchData = async () => {
@@ -33,6 +31,10 @@ export default function ServicesPage() {
       const response = await AxiosInstance.get(`/services/list/`);
       const servicesData = Array.isArray(response.data) ? response.data : [];
       setData(servicesData);
+
+      // ✅ GTM: Page View
+      GTMEvents.pageView("services");
+
     } catch (err) {
       console.error("Error fetching services:", err);
       setError(err);
@@ -51,6 +53,29 @@ export default function ServicesPage() {
 
   const handleRetry = () => {
     setRetryCount(prev => prev + 1);
+  };
+
+  // ✅ دالة للتعامل مع النقر على خدمة - إرسال حدث viewContent
+  const handleServiceClick = (service) => {
+    GTMEvents.viewContent(service.id, service.name);
+  };
+
+  // ✅ دالة للتعامل مع فتح نافذة الحجز
+  const handleOpenBooking = (serviceId, serviceName) => {
+    GTMEvents.openBooking(serviceId, serviceName, 's');
+  };
+
+  // ✅ دالة للتعامل مع نجاح الحجز
+  const handleBookingSuccess = (serviceId, serviceName) => {
+    GTMEvents.bookingSuccess(serviceId, serviceName, 's');
+  };
+
+  // تمرير دوال GTM إلى المكونات الفرعية
+  const enhancedData = {
+    services: data,
+    onServiceClick: handleServiceClick,
+    onOpenBooking: handleOpenBooking,
+    onBookingSuccess: handleBookingSuccess
   };
 
   // Loading State
@@ -129,16 +154,13 @@ export default function ServicesPage() {
 
   const safeData = data;
 
-  // Get unique categories from services
   const categories = [...new Set(safeData.map(service => service.category?.name).filter(Boolean))];
   const servicesCount = safeData.length;
   const categoriesCount = categories.length;
 
-  // SEO for Services Page
   const pageTitle = `جميع الخدمات | ${clinicName}`;
   const pageDescription = `استكشف جميع خدماتنا الطبية والتجميلية في ${clinicName}. نقدم أكثر من ${servicesCount} خدمة متنوعة في ${categoriesCount} مجال مختلف بأحدث التقنيات.`;
 
-  // Structured Data (ItemList for services)
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -164,7 +186,6 @@ export default function ServicesPage() {
     }))
   };
 
-  // Breadcrumb structured data
   const breadcrumbData = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -192,7 +213,6 @@ export default function ServicesPage() {
         <meta name="description" content={pageDescription} />
         <meta name="keywords" content={`خدمات طبية, خدمات تجميل, عيادات تجميل, علاجات تجميلية, ${clinicName}, خدمات ${clinicName}`} />
         
-        {/* Open Graph / Social Media */}
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:url" content={currentUrl} />
@@ -200,16 +220,13 @@ export default function ServicesPage() {
         <meta property="og:site_name" content={clinicName} />
         <meta property="og:image" content={safeData[0]?.image || ""} />
         
-        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={pageTitle} />
         <meta name="twitter:description" content={pageDescription} />
         <meta name="twitter:image" content={safeData[0]?.image || ""} />
         
-        {/* Canonical URL */}
         <link rel="canonical" href={currentUrl} />
         
-        {/* Schema.org markup */}
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
@@ -218,7 +235,6 @@ export default function ServicesPage() {
         </script>
       </Helmet>
 
-      {/* Fallback for SEO bots */}
       <noscript>
         <div>
           <h1>{pageTitle}</h1>
@@ -238,12 +254,20 @@ export default function ServicesPage() {
       <Navbar />
       <div className="page-clinic-container" dir="rtl">
         <div className="about-content-wrapper">
-      
-          {/* Render based on device */}
           {device === "mobile" ? (
-            <ServicesMobile data={safeData} />
+            <ServicesMobile 
+              data={safeData}
+              onServiceClick={handleServiceClick}
+              onOpenBooking={handleOpenBooking}
+              onBookingSuccess={handleBookingSuccess}
+            />
           ) : (
-            <ServicesDesktop data={safeData} />
+            <ServicesDesktop 
+              data={safeData}
+              onServiceClick={handleServiceClick}
+              onOpenBooking={handleOpenBooking}
+              onBookingSuccess={handleBookingSuccess}
+            />
           )}
         </div>
       </div>

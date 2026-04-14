@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import AxiosInstance from '../../../../../components/Authentication/AxiosInstance';
 import styles from './DoctorsSection.module.css';
 
-const DoctorsSection = ({ doctorsData, serviceId, onDoctorsUpdate }) => {
+const DoctorsSection = ({ doctorsData, serviceId, fetchData}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedDoctors, setEditedDoctors] = useState([]);
   const [isSaving, setIsSaving] = useState(false);

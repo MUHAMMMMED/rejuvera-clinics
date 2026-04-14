@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+ 
+import { GTMEvents } from '../../../hooks/useGTM';
 import BookingModal from '../../home/components/Mobile/components/BookingModal/BookingModal';
 import { createServiceSlug } from '../../LandingPage/components/utils/slugify';
 import styles from './Services.module.css';
@@ -17,6 +19,9 @@ const ServicesMobile = ({ data }) => {
     name: '' 
   });
 
+  // ✅ تتبع اللمس للخدمات (مرة واحدة لكل خدمة) - للموبايل
+  const [touchTracked, setTouchTracked] = useState({});
+
   // أيقونة ثابتة للخدمات
   const getServiceIcon = () => {
     return (
@@ -27,7 +32,12 @@ const ServicesMobile = ({ data }) => {
     );
   };
 
+  // ============================================
+  // ✅ GTM: فتح نافذة الحجز (openBooking)
+  // ============================================
   const handleBookNow = (service) => {
+    GTMEvents.openBooking(service.id, service.name, 's');
+    
     setBookingModal({
       isOpen: true,
       id: service.id,
@@ -36,13 +46,34 @@ const ServicesMobile = ({ data }) => {
     });
   };
 
+  // ============================================
+  // ✅ GTM: نجاح الحجز (bookingSuccess)
+  // ============================================
   const handleBookingSuccess = () => {
-    console.log('تم حجز الخدمة بنجاح');
+    if (bookingModal.id && bookingModal.name) {
+      GTMEvents.bookingSuccess(bookingModal.id, bookingModal.name, 's');
+    }
+ 
   };
 
+  // ============================================
+  // ✅ GTM: عرض تفاصيل الخدمة (viewContent)
+  // ============================================
   const handleServiceDetails = (service) => {
+    GTMEvents.viewContent(service.id, service.name);
+    
     const slug = createServiceSlug(service.id, service.name, false);
     navigate(`/service/${service.id}/${slug}`);
+  };
+
+  // ============================================
+  // ✅ GTM: لمس الخدمة (touch - للموبايل)
+  // ============================================
+  const handleCardTouch = (service) => {
+    if (!touchTracked[service.id]) {
+      GTMEvents.viewContent(service.id, service.name, 'touch');
+      setTouchTracked(prev => ({ ...prev, [service.id]: true }));
+    }
   };
 
   // إذا لم توجد خدمات
@@ -84,6 +115,7 @@ const ServicesMobile = ({ data }) => {
               key={service.id} 
               className={styles.serviceItem}
               style={{ animationDelay: `${index * 0.05}s` }}
+              onTouchStart={() => handleCardTouch(service)} // ✅ تتبع اللمس للموبايل
             >
               {/* شارة الخدمة المميزة لأول خدمة */}
               {index === 0 && (
@@ -120,6 +152,7 @@ const ServicesMobile = ({ data }) => {
                 
                 {/* Buttons */}
                 <div className={styles.buttonsGroup}>
+                  {/* ✅ زر احجزي الآن -> openBooking */}
                   <button 
                     className={styles.bookBtn}
                     onClick={() => handleBookNow(service)}
@@ -129,6 +162,8 @@ const ServicesMobile = ({ data }) => {
                       <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
                   </button>
+                  
+                  {/* ✅ زر تفاصيل الخدمة -> viewContent */}
                   <button 
                     className={styles.moreBtn}  
                     onClick={() => handleServiceDetails(service)}

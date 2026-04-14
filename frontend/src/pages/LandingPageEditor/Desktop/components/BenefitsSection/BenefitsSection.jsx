@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import AxiosInstance from '../../../../../components/Authentication/AxiosInstance';
 import styles from './BenefitsSection.module.css';
 
-const BenefitsSection = ({ feature, onFeatureUpdate }) => {
+const BenefitsSection = ({ feature, fetchData }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({ ...feature });
   const [isSaving, setIsSaving] = useState(false);
@@ -20,14 +20,23 @@ const BenefitsSection = ({ feature, onFeatureUpdate }) => {
     }, 3000);
   };
 
-  // تحديث البيانات عبر API
-  const updateFeature = async (id, data) => {
+  // فنكشن حفظ البيانات (CREATE or UPDATE)
+  const saveFeature = async (data) => {
     try {
-      const response = await AxiosInstance.put(`/services/feature/${id}/`, data);
+      let response;
+      
+      // إذا كان يوجد id، نقوم بالتحديث (UPDATE)
+      if (feature.id) {
+        response = await AxiosInstance.put(`/services/feature/${feature.id}/`, data);
+      } else {
+        // إذا لم يوجد id، نقوم بالإضافة (CREATE)
+        response = await AxiosInstance.post('/services/feature/', data);
+      }
+      
       return response.data;
     } catch (err) {
       console.error('API Error:', err.response?.data || err.message);
-      throw new Error(err.response?.data?.message || 'فشل في تحديث البيانات');
+      throw new Error(err.response?.data?.message || 'فشل في حفظ البيانات');
     }
   };
 
@@ -40,11 +49,16 @@ const BenefitsSection = ({ feature, onFeatureUpdate }) => {
   const handleSaveClick = async () => {
     setIsSaving(true);
     setError(null);
+    
     try {
-      const updatedData = await updateFeature(feature.id, editedData);
-      if (typeof onFeatureUpdate === 'function') {
-        onFeatureUpdate(updatedData);
+      // حفظ البيانات عبر API (سواء create أو update)
+      const savedData = await saveFeature(editedData);
+      
+      //   استخدام fetchData لإعادة تحميل البيانات بالكامل
+      if (typeof fetchData === 'function') {
+        await fetchData();
       }
+
       setIsEditing(false);
       showNotification('  تم حفظ المميزات بنجاح!', 'success');
     } catch (err) {
@@ -75,27 +89,34 @@ const BenefitsSection = ({ feature, onFeatureUpdate }) => {
       title: displayData.results_title,
       description: displayData.results_description,
       icon: Sparkles,
-      fieldPrefix: 'results'
+      fieldPrefix: 'results',
+      placeholder: 'نتائج مذهلة وفعالة'
     },
     {
       title: displayData.safety_title,
       description: displayData.safety_description,
       icon: Shield,
-      fieldPrefix: 'safety'
+      fieldPrefix: 'safety',
+      placeholder: 'آمن ومعتمد'
     },
     {
       title: displayData.recovery_title,
       description: displayData.recovery_description,
       icon: Clock,
-      fieldPrefix: 'recovery'
+      fieldPrefix: 'recovery',
+      placeholder: 'تعافي سريع'
     },
     {
       title: displayData.care_title,
       description: displayData.care_description,
       icon: Heart,
-      fieldPrefix: 'care'
+      fieldPrefix: 'care',
+      placeholder: 'رعاية شاملة'
     }
   ];
+
+  const hasData = feature.title || feature.subtitle || 
+    benefits.some(b => b.title || b.description);
 
   return (
     <section className={styles.benefitsSection}>
@@ -112,7 +133,7 @@ const BenefitsSection = ({ feature, onFeatureUpdate }) => {
           {!isEditing ? (
             <button onClick={handleEditClick} className={styles.editButton}>
               <Edit2 size={18} /> 
-              تعديل المحتوى
+              {hasData ? 'تعديل المحتوى' : 'إضافة مميزات'}
             </button>
           ) : (
             <div className={styles.editActions}>
@@ -122,7 +143,7 @@ const BenefitsSection = ({ feature, onFeatureUpdate }) => {
                 disabled={isSaving}
               >
                 <Save size={18} /> 
-                {isSaving ? 'جاري الحفظ...' : '  حفظ الكل'}
+                {isSaving ? 'جاري الحفظ...' : 'حفظ الكل'}
               </button>
               <button 
                 onClick={handleCancelClick} 
@@ -168,51 +189,78 @@ const BenefitsSection = ({ feature, onFeatureUpdate }) => {
           ) : (
             <>
               <h2>
-                مميزات <span className={styles.gold}>{displayData.title}</span>
+                مميزات <span className={styles.gold}>{displayData.title || 'الخدمة'}</span>
               </h2>
               <p>{displayData.subtitle}</p>
             </>
           )}
         </div>
 
+        {/* عرض حالة عدم وجود بيانات */}
+        {!isEditing && !hasData && (
+          <div className={styles.emptyState}>
+            <p>📭 لا توجد مميزات مضافة لهذه الخدمة بعد</p>
+            <button onClick={handleEditClick} className={styles.emptyStateButton}>
+              أضف مميزات الخدمة
+            </button>
+          </div>
+        )}
+
+        {/* عرض معلومات الحالة */}
+        {!isEditing && hasData && (
+          <div className={styles.statusInfo}>
+            <span className={styles.statusBadge}>
+              {benefits.filter(b => b.title).length} مميزات
+            </span>
+          </div>
+        )}
+
         {/* شبكة البطاقات */}
-        <div className={styles.benefitsGrid}>
-          {benefits.map((benefit, index) => {
-            const IconComponent = benefit.icon;
-            return (
-              <div key={index} className={styles.benefitCard}>
-                <div className={styles.benefitIcon}>
-                  <IconComponent size={28} />
+        {hasData && (
+          <div className={styles.benefitsGrid}>
+            {benefits.map((benefit, index) => {
+              const IconComponent = benefit.icon;
+              const hasBenefitData = benefit.title || benefit.description;
+              
+              // في وضع التعديل، نظهر كل البطاقات
+              // في وضع العرض، نظهر فقط البطاقات التي تحتوي على بيانات
+              if (!isEditing && !hasBenefitData) return null;
+              
+              return (
+                <div key={index} className={styles.benefitCard}>
+                  <div className={styles.benefitIcon}>
+                    <IconComponent size={28} />
+                  </div>
+                  {isEditing ? (
+                    <>
+                      <input
+                        type="text"
+                        name={`${benefit.fieldPrefix}_title`}
+                        value={editedData[`${benefit.fieldPrefix}_title`] || ''}
+                        onChange={handleChange}
+                        className={styles.editCardTitle}
+                        placeholder={`عنوان الميزة (مثال: ${benefit.placeholder})`}
+                      />
+                      <textarea
+                        name={`${benefit.fieldPrefix}_description`}
+                        value={editedData[`${benefit.fieldPrefix}_description`] || ''}
+                        onChange={handleChange}
+                        className={styles.editCardDescription}
+                        rows="2"
+                        placeholder="وصف الميزة وفوائدها"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <h3>{benefit.title}</h3>
+                      <p>{benefit.description}</p>
+                    </>
+                  )}
                 </div>
-                {isEditing ? (
-                  <>
-                    <input
-                      type="text"
-                      name={`${benefit.fieldPrefix}_title`}
-                      value={editedData[`${benefit.fieldPrefix}_title`] || ''}
-                      onChange={handleChange}
-                      className={styles.editCardTitle}
-                      placeholder="العنوان"
-                    />
-                    <textarea
-                      name={`${benefit.fieldPrefix}_description`}
-                      value={editedData[`${benefit.fieldPrefix}_description`] || ''}
-                      onChange={handleChange}
-                      className={styles.editCardDescription}
-                      rows="2"
-                      placeholder="الوصف"
-                    />
-                  </>
-                ) : (
-                  <>
-                    <h3>{benefit.title}</h3>
-                    <p>{benefit.description}</p>
-                  </>
-                )}
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

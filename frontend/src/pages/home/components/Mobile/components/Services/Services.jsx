@@ -1,9 +1,10 @@
- 
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GTMEvents } from '../../../../../../hooks/useGTM'; // ✅ إضافة GTM
 import { createServiceSlug } from '../../../../../LandingPage/components/utils/slugify';
 import BookingModal from '../BookingModal/BookingModal';
 import styles from './Services.module.css';
+
 const Services = ({ selectedService, setSelectedService, data }) => {
   const navigate = useNavigate();
   const categories = data?.categories || [];
@@ -30,6 +31,9 @@ const Services = ({ selectedService, setSelectedService, data }) => {
   const [showLeftNav, setShowLeftNav] = useState(false);
   const [showRightNav, setShowRightNav] = useState(false);
 
+  // ✅ تتبع hover للخدمات (مرة واحدة لكل خدمة)
+  const [hoverTracked, setHoverTracked] = useState({});
+
   // أيقونة ثابتة للخدمات
   const getServiceIcon = () => {
     return (
@@ -48,7 +52,12 @@ const Services = ({ selectedService, setSelectedService, data }) => {
     return services[activeTab] || [];
   };
 
+  // ============================================
+  // ✅ الحدث الأول: openBooking (نية حجز)
+  // ============================================
   const handleBookNow = (service) => {
+    GTMEvents.openBooking(service.id, service.name, 's');
+    
     setBookingModal({
       isOpen: true,
       id: service.id,
@@ -57,19 +66,69 @@ const Services = ({ selectedService, setSelectedService, data }) => {
     });
   };
 
+  // ============================================
+  // ✅ حدث نجاح الحجز
+  // ============================================
   const handleBookingSuccess = () => {
-    // console.log('تم حجز الخدمة بنجاح');
+    if (bookingModal.id && bookingModal.name) {
+      GTMEvents.bookingSuccess(bookingModal.id, bookingModal.name, 's');
+    }
   };
 
-
+  // ============================================
+  // ✅ الحدث الثاني: viewContent (تفاصيل الخدمة)
+  // ============================================
   const handleServiceDetails = (service) => {
+    GTMEvents.viewContent(service.id, service.name);
+    
     const slug = createServiceSlug(service.id, service.name, false);
     navigate(`/service/${service.id}/${slug}`);
   };
 
+  // ============================================
+  // ✅ حدث hover على البطاقة (اختياري)
+  // ============================================
+  const handleCardHover = (service) => {
+    if (!hoverTracked[service.id]) {
+      GTMEvents.viewContent(service.id, service.name, 'hover');
+      setHoverTracked(prev => ({ ...prev, [service.id]: true }));
+    }
+  };
+
+  // ============================================
+  // ✅ حدث تبديل التبويب (اختياري - تتبع اهتمامات المستخدم)
+  // ============================================
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    setSelectedService(tab === 'الكل' ? Object.keys(services)[0] : tab);
+    setCurrentScrollIndex(0);
+    
+    // ✅ تتبع تغيير التبويب (لفهم اهتمامات المستخدم)
+    GTMEvents.viewContent(tab, `category_${tab}`, 'tab_switch');
+    
+    // Reset auto scroll timer
+    if (autoScrollServicesInterval.current) {
+      clearInterval(autoScrollServicesInterval.current);
+      autoScrollServicesInterval.current = setInterval(() => {
+        setCurrentScrollIndex((prev) => {
+          const nextIndex = (prev + 1) % totalGroups;
+          scrollToServicesGroup(nextIndex);
+          return nextIndex;
+        });
+      }, 3000);
+    }
+  };
+
+  // ============================================
+  // ✅ حدث عرض جميع الخدمات
+  // ============================================
+  const handleViewAllServices = () => {
+    GTMEvents.viewContent('all_services', 'جميع الخدمات', 'view_all');
+    window.location.href = '/services';
+  };
 
   const displayedServices = getDisplayedServices();
-  const servicesPerGroup = 5; // Changed from 2 to 5 cards per group
+  const servicesPerGroup = 5;
   const totalGroups = Math.ceil(displayedServices.length / servicesPerGroup);
 
   // Check if navigation buttons should be shown
@@ -163,33 +222,11 @@ const Services = ({ selectedService, setSelectedService, data }) => {
     }
   };
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-    setSelectedService(tab === 'الكل' ? Object.keys(services)[0] : tab);
-    setCurrentScrollIndex(0);
-    
-    // Reset auto scroll timer
-    if (autoScrollServicesInterval.current) {
-      clearInterval(autoScrollServicesInterval.current);
-      autoScrollServicesInterval.current = setInterval(() => {
-        setCurrentScrollIndex((prev) => {
-          const nextIndex = (prev + 1) % totalGroups;
-          scrollToServicesGroup(nextIndex);
-          return nextIndex;
-        });
-      }, 3000);
-    }
-  };
-
   const scrollTabs = (direction) => {
     if (tabsRef.current) {
       const scrollAmount = 150;
       tabsRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
     }
-  };
-
-  const handleViewAllServices = () => {
-    window.location.href = '/services';
   };
 
   // Create groups of 5 cards (displayed in a grid)
@@ -293,6 +330,7 @@ const Services = ({ selectedService, setSelectedService, data }) => {
                         key={service.id} 
                         className={`${styles.card} ${service.popular ? styles.popular : ''}`}
                         style={{ animationDelay: `${cardIndex * 0.05}s` }}
+                        onMouseEnter={() => handleCardHover(service)}
                       >
                         {service.popular && (
                           <div className={styles.popularBadge}>
@@ -316,13 +354,6 @@ const Services = ({ selectedService, setSelectedService, data }) => {
                           
                           {/* Details */}
                           <div className={styles.details}>
-                            {/* <div className={styles.detailItem}>
-                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <circle cx="12" cy="12" r="10" />
-                                <polyline points="12 6 12 12 16 14" />
-                              </svg>
-                              <span>{service.duration || '٣٠-٦٠ دقيقة'}</span>
-                            </div> */}
                             <div className={styles.detailDivider} />
                             <div className={styles.detailItem}>
                               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -334,6 +365,7 @@ const Services = ({ selectedService, setSelectedService, data }) => {
                           
                           {/* Buttons */}
                           <div className={styles.buttonsGroup}>
+                            {/* ✅ زر احجزي الآن -> openBooking */}
                             <button 
                               className={styles.bookBtn}
                               onClick={() => handleBookNow(service)}
@@ -343,7 +375,11 @@ const Services = ({ selectedService, setSelectedService, data }) => {
                                 <path d="M5 12h14M12 5l7 7-7 7" />
                               </svg>
                             </button>
-                            <button className={styles.moreBtn}  onClick={() => handleServiceDetails(service)}>
+                            {/* ✅ زر تفاصيل -> viewContent */}
+                            <button 
+                              className={styles.moreBtn}  
+                              onClick={() => handleServiceDetails(service)}
+                            >
                               <span>تفاصيل</span>
                               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path d="M5 12h14M12 5l7 7-7 7" />

@@ -7,6 +7,7 @@ import DeviceCard from "./DeviceCard/DeviceCard";
 import EmptyState from "../../components/EmptyState/EmptyState";
 import ErrorState from "../../components/ErrorState/ErrorState";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import { GTMEvents } from "../../hooks/useGTM";
 import styles from "./Devices.module.css";
 
 export default function DevicesList() {
@@ -20,6 +21,11 @@ export default function DevicesList() {
 
   // Get current URL safely
   const [currentUrl, setCurrentUrl] = useState("");
+
+  // ✅ إضافة useEffect لإرسال حدث pageView عند تحميل الصفحة
+  useEffect(() => {
+    GTMEvents.pageView("devices_list");
+  }, []);
 
   useEffect(() => {
     setCurrentUrl(window.location.href);
@@ -45,6 +51,15 @@ export default function DevicesList() {
 
   const handleRetry = () => {
     setRetryCount(prev => prev + 1);
+  };
+
+  // ✅ دالة للتعامل مع النقر على الجهاز - إرسال حدث viewContent
+  const handleDeviceClick = (device) => {
+    // إرسال حدث GTM عند النقر على جهاز
+    GTMEvents.viewContent(device.id, device.name);
+    
+    // يمكنك إضافة أي منطق إضافي هنا مثل التوجيه إلى صفحة التفاصيل
+    // window.location.href = `/devices/${device.slug}`; // أو استخدام react-router Link
   };
 
   const filteredDevices = devices.filter(device =>
@@ -234,8 +249,6 @@ export default function DevicesList() {
             </p>
           </div>
 
-         
-
           <div className={styles.searchWrapper}>
             <div className={styles.searchBar}>
               <input
@@ -276,7 +289,13 @@ export default function DevicesList() {
                 {filteredDevices
                   .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
                   .map((device, index) => (
-                    <DeviceCard key={device.id} device={device} index={index} />
+                    <div 
+                      key={device.id} 
+                      onClick={() => handleDeviceClick(device)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <DeviceCard device={device} index={index} />
+                    </div>
                   ))}
               </div>
             </>

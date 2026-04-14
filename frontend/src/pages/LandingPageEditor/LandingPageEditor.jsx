@@ -149,7 +149,7 @@ export default function LandingPageEditor() {
       />
       
       <div className="landing-editor-container">
-        <DesktopLanding data={safeData} />
+        <DesktopLanding data={safeData} fetchData={fetchData} />
       </div>
     </>
   );

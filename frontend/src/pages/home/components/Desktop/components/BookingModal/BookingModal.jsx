@@ -1,6 +1,8 @@
 import { Briefcase, Calendar, CheckCircle2, MessageCircle, Package, Phone, Sparkles, User, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import AxiosInstance from '../../../../../../components/Authentication/AxiosInstance';
+ 
+import { GTMEvents } from '../../../../../../hooks/useGTM';
 import styles from './BookingModal.module.css';
 
 const BookingModal = ({ 
@@ -26,6 +28,13 @@ const BookingModal = ({
     };
   };
 
+  // ✅ GTM: فتح نافذة الحجز
+  useEffect(() => {
+    if (isOpen && itemId && itemName) {
+      GTMEvents.openBooking(itemId, itemName, itemType);
+    }
+  }, [isOpen]);
+
   // Check screen size for responsive design
   useEffect(() => {
     const handleResize = () => {
@@ -42,7 +51,6 @@ const BookingModal = ({
         setShowSuccessModal(false);
         onClose();
         onSuccess?.();
-        // Reset form after modal closes
         setTimeout(() => {
           setSubmitted(false);
           setFormData({ name: '', phone: '', message: '' });
@@ -68,6 +76,7 @@ const BookingModal = ({
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -87,11 +96,11 @@ const BookingModal = ({
     };
   
     try {
-       await AxiosInstance.post(
-        'home/appointments/new/',
-        payload
-      );
+      await AxiosInstance.post('home/appointments/new/', payload);
   
+      // ✅ GTM: نجاح الحجز — Lead
+      GTMEvents.bookingSuccess(itemId, itemName, itemType);
+
       setSubmitted(true);
       setShowSuccessModal(true);
   
@@ -107,8 +116,6 @@ const BookingModal = ({
 
   if (!isOpen && !showSuccessModal) return null;
 
-  // Desktop: Centered Modal
-  // Mobile: Bottom Sheet
   return (
     <>
       {/* Booking Form Modal */}
@@ -188,7 +195,7 @@ const BookingModal = ({
         </div>
       )}
 
-      {/* Success Modal Popup (Same for both desktop and mobile) */}
+      {/* Success Modal */}
       {showSuccessModal && (
         <div className={styles.successModalOverlay}>
           <div className={styles.successModalContainer}>

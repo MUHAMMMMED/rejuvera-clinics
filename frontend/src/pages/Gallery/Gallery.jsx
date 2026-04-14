@@ -1,15 +1,15 @@
- 
 import React, { useEffect, useState } from 'react';
 import { Helmet } from "react-helmet-async";
 import AxiosInstance from "../../components/Authentication/AxiosInstance";
 import Navbar from '../../components/Navbar/Navbar';
 import useDevice from "../../hooks/useDevice";
-import GalleryDesktop from '../home/components/Desktop/components/Gallery/Gallery';
-import GalleryMobile from '../home/components/Mobile/components/Gallery/Gallery';
- 
+  
 import EmptyState from '../../components/EmptyState/EmptyState';
 import ErrorState from '../../components/ErrorState/ErrorState';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
+import { GTMEvents } from '../../hooks/useGTM';
+import GalleryDesktop from '../home/components/Desktop/components/Gallery/Gallery';
+import GalleryMobile from '../home/components/Mobile/components/Gallery/Gallery';
 import './Gallery.css';
 
 export default function GalleryPage() {
@@ -23,6 +23,11 @@ export default function GalleryPage() {
 
   // Get current URL safely (for client-side only)
   const [currentUrl, setCurrentUrl] = useState("");
+
+  // ✅ GTM: Page View عند تحميل الصفحة
+  useEffect(() => {
+    GTMEvents.pageView("gallery_page");
+  }, []);
 
   const fetchData = async () => {
     setLoading(true);
@@ -49,6 +54,31 @@ export default function GalleryPage() {
 
   const handleRetry = () => {
     setRetryCount(prev => prev + 1);
+  };
+
+  // ✅ GTM: تتبع النقر على صورة في المعرض
+  const handleImageClick = (image, type = 'gallery') => {
+    GTMEvents.viewContent(
+      image.id || image.alt_text || 'gallery_image',
+      image.alt_text || image.title || 'صورة من المعرض',
+      type === 'gallery' ? 'gallery_image' : 'before_after_image'
+    );
+  };
+
+  // ✅ GTM: تتبع فتح صورة قبل/بعد
+  const handleBeforeAfterClick = (item) => {
+    GTMEvents.viewContent(
+      item.id || item.title || 'before_after',
+      item.title || 'نتائج قبل وبعد',
+      'before_after'
+    );
+  };
+
+  // ✅ إضافة دوال GTM إلى البيانات التي ستمرر للمكونات الفرعية
+  const enhancedData = {
+    ...safeData,
+    onImageClick: handleImageClick,
+    onBeforeAfterClick: handleBeforeAfterClick
   };
 
   // Loading State
@@ -151,7 +181,7 @@ export default function GalleryPage() {
       ...(safeData.gallery || []).map(item => ({
         "@type": "ImageObject",
         "contentUrl": item.image,
-        "name": item.title || "صورة من المعرض",
+        "name": item.alt_text || item.title || "صورة من المعرض",
         "description": item.description || "",
         "thumbnailUrl": item.thumbnail || item.image
       })),
@@ -231,7 +261,7 @@ export default function GalleryPage() {
             <div>
               {safeData.gallery?.map((item, index) => (
                 <div key={index}>
-                  <img src={item.image} alt={item.title || "صورة من المعرض"} />
+                  <img src={item.image} alt={item.alt_text || "صورة من المعرض"} />
                   <p>{item.description}</p>
                 </div>
               ))}
@@ -255,13 +285,12 @@ export default function GalleryPage() {
       <Navbar />
       <div className="page-clinic-container" dir="rtl">
         <div className="about-content-wrapper">
-       
-
-          {/* Render based on device */}
+         
+          {/* Render based on device with GTM props */}
           {device === "mobile" ? (
-            <GalleryMobile data={safeData} />
+            <GalleryMobile data={enhancedData} />
           ) : (
-            <GalleryDesktop data={safeData} />
+            <GalleryDesktop data={enhancedData} />
           )}
         </div>
       </div>

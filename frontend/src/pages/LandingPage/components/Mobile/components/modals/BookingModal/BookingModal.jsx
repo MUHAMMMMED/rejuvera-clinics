@@ -1,6 +1,7 @@
 import { Calendar, CheckCircle2, MessageCircle, Phone, Sparkles, User, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import AxiosInstance from '../../../../../../../components/Authentication/AxiosInstance';
+import { GTMEvents } from '../../../../../../../hooks/useGTM';
 import styles from './BookingModal.module.css';
 
 const BookingModal = ({ isOpen, onClose, serviceId, onSuccess }) => {
@@ -18,14 +19,20 @@ const BookingModal = ({ isOpen, onClose, serviceId, onSuccess }) => {
     };
   };
 
+  // ✅ GTM: فتح نافذة الحجز
+  useEffect(() => {
+    if (isOpen && serviceId) {
+      GTMEvents.openBooking(serviceId, document.title, 's');
+    }
+  }, [isOpen]);
+
   // Auto-hide success modal after 3 seconds
   useEffect(() => {
     if (showSuccessModal) {
       const timer = setTimeout(() => {
         setShowSuccessModal(false);
-        onClose(); // Close booking modal after success modal disappears
-        onSuccess?.(); // Callback for parent component
-        // Reset form after modal closes
+        onClose();
+        onSuccess?.();
         setTimeout(() => {
           setSubmitted(false);
           setFormData({ name: '', phone: '', message: '' });
@@ -50,8 +57,6 @@ const BookingModal = ({ isOpen, onClose, serviceId, onSuccess }) => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
- 
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,10 +76,10 @@ const BookingModal = ({ isOpen, onClose, serviceId, onSuccess }) => {
     };
   
     try {
-      await AxiosInstance.post(
-        'home/appointments/new/',
-        payload
-      );
+      await AxiosInstance.post('home/appointments/new/', payload);
+
+      // ✅ GTM: نجاح الحجز — Lead
+      GTMEvents.bookingSuccess(serviceId, document.title, 's');
   
       setSubmitted(true);
       setShowSuccessModal(true);
@@ -88,6 +93,7 @@ const BookingModal = ({ isOpen, onClose, serviceId, onSuccess }) => {
       setLoading(false);
     }
   };
+
   if (!isOpen && !showSuccessModal) return null;
 
   return (

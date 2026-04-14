@@ -1,4 +1,3 @@
- 
 import React, { useEffect, useState } from 'react';
 import { Helmet } from "react-helmet-async";
 import AxiosInstance from "../../components/Authentication/AxiosInstance";
@@ -8,6 +7,7 @@ import ErrorState from '../../components/ErrorState/ErrorState';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import Navbar from '../../components/Navbar/Navbar';
 import useDevice from "../../hooks/useDevice";
+import { GTMEvents } from '../../hooks/useGTM';
 import DoctorsDesktop from '../home/components/Desktop/components/Doctors/Doctors';
 import DoctorsMobile from '../home/components/Mobile/components/Doctors/Doctors';
 import './Doctors.css';
@@ -25,6 +25,11 @@ export default function DoctorsPage() {
 
   // Get current URL safely (for client-side only)
   const [currentUrl, setCurrentUrl] = useState("");
+
+  // ✅ GTM: Page View عند تحميل الصفحة
+  useEffect(() => {
+    GTMEvents.pageView("doctors_page");
+  }, []);
 
   const fetchData = async () => {
     setLoading(true);
@@ -70,6 +75,27 @@ export default function DoctorsPage() {
     
     return matchesSearch && matchesSpecialty;
   });
+
+  // ✅ GTM: تتبع النقر على طبيب
+  const handleDoctorClick = (doctor) => {
+    GTMEvents.viewContent(doctor.id, doctor.name, 'doctor');
+  };
+
+  // ✅ GTM: تتبع البحث
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+    if (value.trim() !== "") {
+      GTMEvents.viewContent('search', value, 'doctor_search');
+    }
+  };
+
+  // ✅ GTM: تتبع التصفية حسب التخصص
+  const handleSpecialtyFilter = (specialty) => {
+    setSelectedSpecialty(specialty);
+    if (specialty !== "all") {
+      GTMEvents.viewContent(specialty, specialty, 'doctor_filter');
+    }
+  };
 
   // Loading State
   if (loading) {
@@ -151,7 +177,7 @@ export default function DoctorsPage() {
   // Calculate statistics
   const totalDoctors = doctors.length;
   const totalSpecialties = specialties.length - 1;
-  const totalExperience = doctors.reduce((sum, doctor) => sum + (doctor.experience || 0), 0);
+  const totalExperience = doctors.reduce((sum, doctor) => sum + (parseInt(doctor.experience) || 0), 0);
   const avgExperience = totalDoctors > 0 ? Math.round(totalExperience / totalDoctors) : 0;
 
   // SEO for Doctors Page
@@ -211,6 +237,13 @@ export default function DoctorsPage() {
     ]
   };
 
+  // ✅ إضافة دوال GTM إلى البيانات التي ستمرر للمكونات الفرعية
+  const enhancedData = {
+    ...data,
+    doctors: filteredDoctors,
+    onDoctorClick: handleDoctorClick
+  };
+
   return (
     <>
       <Helmet>
@@ -266,19 +299,67 @@ export default function DoctorsPage() {
       <Navbar />
       <div className="page-clinic-container" dir="rtl">
         <div className="about-content-wrapper">
-        
+          {/* Search and Filter Section */}
+          <div className="doctors-search-filter">
+            <div className="search-wrapper">
+              <input
+                type="text"
+                placeholder="ابحث عن طبيب..."
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="doctors-search-input"
+              />
+              <svg className="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" />
+              </svg>
+            </div>
 
-         
+            <div className="specialties-filter">
+              {specialties.map((specialty) => (
+                <button
+                  key={specialty}
+                  className={`specialty-btn ${selectedSpecialty === specialty ? 'active' : ''}`}
+                  onClick={() => handleSpecialtyFilter(specialty)}
+                >
+                  {specialty === 'all' ? 'الكل' : specialty}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Results Count */}
+          {searchTerm && (
+            <div className="doctors-results-count">
+              تم العثور على {filteredDoctors.length} {filteredDoctors.length === 1 ? 'طبيب' : 'أطباء'}
+            </div>
+          )}
+
+          {/* No Results */}
+          {noResults && (
+            <div className="doctors-no-results">
+              <div className="no-results-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+              </div>
+              <h3>لا يوجد أطباء</h3>
+              <p>لم نعثر على أطباء تطابق بحثك. حاول بكلمات مختلفة.</p>
+              <button className="clear-search-btn" onClick={() => handleSearch("")}>
+                مسح البحث
+              </button>
+            </div>
+          )}
+
           {/* Render Doctors based on device */}
-          { 
+          {!noResults && (
             device === "mobile" ? (
-              <DoctorsMobile data={{ ...data, doctors: filteredDoctors }} />
+              <DoctorsMobile data={enhancedData} />
             ) : (
-              <DoctorsDesktop data={{ ...data, doctors: filteredDoctors }} />
+              <DoctorsDesktop data={enhancedData} />
             )
-          }
-
-       
+          )}
         </div>
       </div>
     </>

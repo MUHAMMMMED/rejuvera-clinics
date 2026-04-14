@@ -11,6 +11,7 @@ import ServicesMobile from "./Mobile/Mobile";
 import EmptyState from "../../components/EmptyState/EmptyState";
 import ErrorState from "../../components/ErrorState/ErrorState";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import { GTMEvents } from "../../hooks/useGTM";
 import './ServicesByCategory.css';
 
 export default function ServicesByCategory() {
@@ -68,6 +69,12 @@ export default function ServicesByCategory() {
   const handleRetry = () => {
     setRetryCount(prev => prev + 1);
   };
+
+ // ✅ إضافة useEffect لإرسال حدث pageView عند تحميل الصفحة
+ useEffect(() => {
+  GTMEvents.pageView("services_by_category");
+}, []);
+
 
   // Loading State
   if (loading) {

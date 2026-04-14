@@ -1,6 +1,7 @@
- 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+ 
+import { GTMEvents } from '../../../hooks/useGTM';
 import styles from './BlogCard.module.css';
 
 const BlogCard = ({ post, index }) => {
@@ -8,6 +9,10 @@ const BlogCard = ({ post, index }) => {
   const [hovered, setHovered] = useState(false);
 
   const handleReadMore = () => {
+    // ✅ GTM: تتبع النقر على المقال
+    GTMEvents.viewContent(post.id, post.title);
+    
+    // التنقل إلى صفحة التفاصيل
     navigate(`/blog/${post.id}`);
   };
 
@@ -29,7 +34,7 @@ const BlogCard = ({ post, index }) => {
     });
   };
 
-  const formattedDate = formatDate(post.created_at);   // ← التعديل المهم هنا
+  const formattedDate = formatDate(post.created_at);
 
   // أيقونة افتراضية للمقال
   const getBlogIcon = () => {

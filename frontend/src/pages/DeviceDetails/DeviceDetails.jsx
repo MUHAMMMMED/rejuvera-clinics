@@ -7,12 +7,17 @@ import EmptyState from "../../components/EmptyState/EmptyState";
 import ErrorState from "../../components/ErrorState/ErrorState";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import Navbar from "../../components/Navbar/Navbar";
-import BookingModal from "../home/components/Desktop/components/BookingModal/BookingModal";
+import useDevice from "../../hooks/useDevice";
+ 
+import { GTMEvents } from "../../hooks/useGTM";
+import DesktopBookingModal from "../home/components/Desktop/components/BookingModal/BookingModal";
+import MobileBookingModal from "../home/components/Mobile/components/BookingModal/BookingModal";
 import styles from "./DeviceDetails.module.css";
 
 export default function DeviceDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const deviceModal = useDevice();
   const [device, setDevice] = useState(null);
   const [allServices, setAllServices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,6 +30,11 @@ export default function DeviceDetails() {
     type: 's', 
     name: '' 
   });
+
+  // ✅ GTM: Page View عند تحميل الصفحة
+  useEffect(() => {
+    GTMEvents.pageView("device_details");
+  }, []);
 
   // Fetch device data from API
   const fetchDeviceData = async () => {
@@ -46,10 +56,16 @@ export default function DeviceDetails() {
         // Case: API returns { device: {...}, services: [...] }
         setDevice(data.device);
         setAllServices(data.services || []);
+        
+        // ✅ GTM: View Content بعد تحميل بيانات الجهاز بنجاح
+        GTMEvents.viewContent(data.device.id, data.device.name);
       } else {
         // Case: API returns the device object directly
         setDevice(data);
         setAllServices([]);
+        
+        // ✅ GTM: View Content بعد تحميل بيانات الجهاز بنجاح
+        GTMEvents.viewContent(data.id, data.name);
       }
     } catch (err) {
       console.error("Error fetching device:", err);
@@ -67,7 +83,10 @@ export default function DeviceDetails() {
     setRetryCount(prev => prev + 1);
   };
 
+  // ✅ GTM: فتح نافذة الحجز (openBooking)
   const handleBookService = (service) => {
+    GTMEvents.openBooking(service.id, service.name, 's');
+    
     setBookingModal({
       isOpen: true,
       id: service.id,
@@ -76,8 +95,11 @@ export default function DeviceDetails() {
     });
   };
 
+  // ✅ GTM: نجاح الحجز (bookingSuccess)
   const handleBookingSuccess = () => {
-    console.log('تم حجز الخدمة بنجاح');
+    if (bookingModal.id && bookingModal.name) {
+      GTMEvents.bookingSuccess(bookingModal.id, bookingModal.name, 's');
+    }
   };
 
   // Helper to get related services data
@@ -306,15 +328,26 @@ export default function DeviceDetails() {
         </div>
       </article>
 
-      {/* Booking Modal */}
-      <BookingModal
-        isOpen={bookingModal.isOpen}
-        onClose={() => setBookingModal({ isOpen: false, id: null, type: 's', name: '' })}
-        itemId={bookingModal.id}
-        itemType={bookingModal.type}
-        itemName={bookingModal.name}
-        onSuccess={handleBookingSuccess}
-      />
+      {/* Booking Modal - Conditionally render based on device type */}
+      {deviceModal === "mobile" ? (
+        <MobileBookingModal
+          isOpen={bookingModal.isOpen}
+          onClose={() => setBookingModal({ isOpen: false, id: null, type: 's', name: '' })}
+          itemId={bookingModal.id}
+          itemType={bookingModal.type}
+          itemName={bookingModal.name}
+          onSuccess={handleBookingSuccess}
+        />
+      ) : (
+        <DesktopBookingModal
+          isOpen={bookingModal.isOpen}
+          onClose={() => setBookingModal({ isOpen: false, id: null, type: 's', name: '' })}
+          itemId={bookingModal.id}
+          itemType={bookingModal.type}
+          itemName={bookingModal.name}
+          onSuccess={handleBookingSuccess}
+        />
+      )}
     </>
   );
 }

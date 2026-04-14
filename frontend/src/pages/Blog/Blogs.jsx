@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import AxiosInstance from "../../components/Authentication/AxiosInstance";
 import Navbar from "../../components/Navbar/Navbar";
+
+import { GTMEvents } from "../../hooks/useGTM";
 import styles from "./Blog.module.css";
 import BlogCard from "./BlogCard/BlogCard";
 
@@ -11,7 +13,12 @@ export default function BlogList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
- 
+  // ✅ إضافة useEffect لإرسال حدث pageView عند تحميل الصفحة
+  useEffect(() => {
+    // إرسال حدث مشاهدة صفحة المدونة
+    GTMEvents.pageView("blog_list");
+  }, []);
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -33,6 +40,15 @@ export default function BlogList() {
 
     fetchPosts();
   }, []);
+
+  // ✅ دالة للتعامل مع النقر على المقال - إرسال حدث viewContent
+  const handleBlogClick = (post) => {
+    // إرسال حدث GTM عند النقر على مقال
+    GTMEvents.viewContent(post.id, post.title);
+    
+    // يمكنك إضافة أي منطق إضافي هنا مثل التوجيه إلى صفحة التفاصيل
+    // window.location.href = `/blog/${post.slug}`; // أو استخدام react-router Link
+  };
 
   // تصفية المقالات حسب البحث
   const filteredPosts = blogPosts.filter((post) => {
@@ -124,7 +140,13 @@ export default function BlogList() {
               {filteredPosts
                 .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // ترتيب من الأحدث للأقدم
                 .map((post, index) => (
-                  <BlogCard key={post.id} post={post} index={index} />
+                  <div 
+                    key={post.id} 
+                    onClick={() => handleBlogClick(post)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <BlogCard post={post} index={index} />
+                  </div>
                 ))}
             </div>
           ) : searchTerm ? (

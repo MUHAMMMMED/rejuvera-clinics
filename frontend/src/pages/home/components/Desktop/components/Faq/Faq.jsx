@@ -1,9 +1,32 @@
 import React, { useState } from 'react';
+ 
+import { GTMEvents } from '../../../../../../hooks/useGTM';
 import styles from './Faq.module.css';
 
 const FaqDesktop = ({ data }) => {
   // تعيين أول سؤال مفتوح افتراضياً
   const [openFaq, setOpenFaq] = useState(0);
+  
+  // ✅ GTM: تتبع فتح السؤال (مرة واحدة لكل سؤال)
+  const [trackedFaqs, setTrackedFaqs] = useState({});
+
+  // ✅ GTM: دالة معالجة فتح/غلق السؤال
+  const handleFaqToggle = (index, faqItem) => {
+    const isOpening = openFaq !== index;
+    const newOpenState = isOpening ? index : null;
+    
+    setOpenFaq(newOpenState);
+    
+    // ✅ إرسال حدث GTM عند فتح السؤال (مرة واحدة لكل سؤال)
+    if (isOpening && !trackedFaqs[index]) {
+      GTMEvents.viewContent(
+        `faq_${index}`,
+        faqItem.question || `سؤال ${index + 1}`,
+        'faq_open'
+      );
+      setTrackedFaqs(prev => ({ ...prev, [index]: true }));
+    }
+  };
 
   // عرض Loading إذا كانت البيانات لم تُحمّل بعد
   if (!data || !data.faqs) {
@@ -55,7 +78,7 @@ const FaqDesktop = ({ data }) => {
             >
               <button
                 className={styles.question}
-                onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                onClick={() => handleFaqToggle(idx, faq)}
               >
                 <span>{faq.question}</span>
                 <div className={styles.icon}>

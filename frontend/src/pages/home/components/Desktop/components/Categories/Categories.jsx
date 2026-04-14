@@ -1,8 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+ 
+import { GTMEvents } from '../../../../../../hooks/useGTM';
 import styles from './Categories.module.css';
+
 const CategoriesDesktop = ({ setSelectedService, scrollToSection, data }) => {
   const navigate = useNavigate();
+  
   const DefaultServiceIcon = () => (
     <svg 
       width="22" 
@@ -32,6 +36,27 @@ const CategoriesDesktop = ({ setSelectedService, scrollToSection, data }) => {
     return words.slice(0, maxWords).join(' ') + '...';
   };
 
+  // ✅ GTM: تتبع اختيار التصنيف
+  const handleCategorySelect = (category) => {
+    // إرسال حدث GTM عند اختيار التصنيف
+    GTMEvents.viewContent(category.id, category.name, 'category');
+    
+    // تنفيذ الإجراء الأصلي
+    setSelectedService(category.name);
+    scrollToSection('services');
+  };
+
+  // ✅ GTM: تتبع النقر على زر الخدمات
+  const handleExploreClick = (e, category) => {
+    e.stopPropagation(); // Prevent triggering parent onClick
+    
+    // إرسال حدث GTM عند النقر على زر الخدمات
+    GTMEvents.viewContent(category.id, `${category.name} - الخدمات`, 'category_explore');
+    
+    // التنقل إلى صفحة التصنيف
+    navigate(`/category/${category?.id}`);
+  };
+
   return (
     <section id="categories" className={styles.categories}>
       <div className={styles.container}>
@@ -51,10 +76,7 @@ const CategoriesDesktop = ({ setSelectedService, scrollToSection, data }) => {
               key={category.id}
               className={styles.card}
               style={{ animationDelay: `${index * 90}ms` }}
-              onClick={() => {
-                setSelectedService(category.name);
-                scrollToSection('services');
-              }}
+              onClick={() => handleCategorySelect(category)}
             >
               <div className={styles.cardContent}>
                 {/* الجزء الأيمن: الأيقونة + النص */}
@@ -70,14 +92,11 @@ const CategoriesDesktop = ({ setSelectedService, scrollToSection, data }) => {
                   </div>
                 </div>
                 
-         
+                {/* الجزء الأيسر: زر الخدمات */}
                 <div className={styles.leftContent}>
                   <button 
                     className={styles.exploreBtn}
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent triggering parent onClick
-                      navigate(`/category/${category?.id}`);  
-                    }}
+                    onClick={(e) => handleExploreClick(e, category)}
                   >
                     الخدمات
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">

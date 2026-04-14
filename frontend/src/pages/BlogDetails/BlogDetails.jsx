@@ -7,7 +7,11 @@ import EmptyState from "../../components/EmptyState/EmptyState";
 import ErrorState from "../../components/ErrorState/ErrorState";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import Navbar from "../../components/Navbar/Navbar";
-import BookingModal from "../home/components/Desktop/components/BookingModal/BookingModal";
+import useDevice from "../../hooks/useDevice";
+ 
+import { GTMEvents } from "../../hooks/useGTM";
+import DesktopBookingModal from "../home/components/Desktop/components/BookingModal/BookingModal";
+import MobileBookingModal from "../home/components/Mobile/components/BookingModal/BookingModal";
 import styles from "./BlogDetails.module.css";
 
 export default function BlogDetails() {
@@ -18,13 +22,18 @@ export default function BlogDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
-  
+  const deviceModal = useDevice();
   const [bookingModal, setBookingModal] = useState({ 
     isOpen: false, 
     id: null, 
     type: 's', 
     name: '' 
   });
+
+  // ✅ GTM: Page View عند تحميل الصفحة
+  useEffect(() => {
+    GTMEvents.pageView("blog_details");
+  }, []);
 
   // Fetch blog data from API
   const fetchBlogData = async () => {
@@ -63,11 +72,21 @@ export default function BlogDetails() {
     fetchBlogData();
   }, [id, retryCount]);
 
+  // ✅ GTM: View Content عند تحميل المقال بنجاح
+  useEffect(() => {
+    if (blog && blog.id) {
+      GTMEvents.viewContent(blog.id, blog.title);
+    }
+  }, [blog]);
+
   const handleRetry = () => {
     setRetryCount(prev => prev + 1);
   };
 
+  // ✅ GTM: فتح نافذة الحجز (openBooking)
   const handleBookService = (service) => {
+    GTMEvents.openBooking(service.id, service.name, 's');
+    
     setBookingModal({
       isOpen: true,
       id: service.id,
@@ -76,8 +95,11 @@ export default function BlogDetails() {
     });
   };
 
+  // ✅ GTM: نجاح الحجز (bookingSuccess)
   const handleBookingSuccess = () => {
-    console.log('تم حجز الخدمة بنجاح');
+    if (bookingModal.id && bookingModal.name) {
+      GTMEvents.bookingSuccess(bookingModal.id, bookingModal.name, 's');
+    }
   };
 
   // Helper to get related services data
@@ -293,15 +315,26 @@ export default function BlogDetails() {
         </div>
       </article>
 
-      {/* Booking Modal */}
-      <BookingModal
-        isOpen={bookingModal.isOpen}
-        onClose={() => setBookingModal({ isOpen: false, id: null, type: 's', name: '' })}
-        itemId={bookingModal.id}
-        itemType={bookingModal.type}
-        itemName={bookingModal.name}
-        onSuccess={handleBookingSuccess}
-      />
+      {/* Booking Modal - Conditionally render based on device type */}
+      {deviceModal === "mobile" ? (
+        <MobileBookingModal
+          isOpen={bookingModal.isOpen}
+          onClose={() => setBookingModal({ isOpen: false, id: null, type: 's', name: '' })}
+          itemId={bookingModal.id}
+          itemType={bookingModal.type}
+          itemName={bookingModal.name}
+          onSuccess={handleBookingSuccess}
+        />
+      ) : (
+        <DesktopBookingModal
+          isOpen={bookingModal.isOpen}
+          onClose={() => setBookingModal({ isOpen: false, id: null, type: 's', name: '' })}
+          itemId={bookingModal.id}
+          itemType={bookingModal.type}
+          itemName={bookingModal.name}
+          onSuccess={handleBookingSuccess}
+        />
+      )}
     </>
   );
 }

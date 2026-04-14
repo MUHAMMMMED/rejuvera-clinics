@@ -4,7 +4,7 @@ import AxiosInstance from '../../../../../components/Authentication/AxiosInstanc
 import SectionHeader from '../SectionHeader/SectionHeader';
 import styles from './TestimonialsSlider.module.css';
 
-const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
+const TestimonialsSlider = ({ reviews = [], fetchData, serviceId }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -31,9 +31,10 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
   const initializeEditData = () => {
     setEditedReviews(reviews.map(review => ({ ...review })));
     setImageFiles({});
+    setCurrentIndex(0);
   };
 
-  // ✅ تحميل الصورة من الرابط وتحويلها إلى File
+ 
   const urlToFile = async (url, filename) => {
     try {
       const response = await fetch(url);
@@ -45,27 +46,30 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
     }
   };
 
-  // فنكشن تحديث البيانات عبر API
-  const updateReviews = async (reviewsData) => {
+  // فنكشن حفظ البيانات (CREATE or UPDATE)
+  const saveReviews = async (reviewsData) => {
     try {
       const promises = [];
       
       for (const review of reviewsData) {
         if (review.id) {
-          // ✅ للتحديث: لازم نرسل الصورة (سواء قديمة أو جديدة)
+          // تحديث عنصر موجود
           let formData = new FormData();
           formData.append('service', Number(serviceId));
           
           const hasNewImage = imageFiles[`image_${review.id}`];
           
           if (hasNewImage) {
-            // إذا تم اختيار صورة جديدة
             formData.append('image', hasNewImage);
-          } else if (review.image) {
-            // إذا لم تتغير الصورة، نحمل الصورة القديمة ونرسلها
-            const imageFile = await urlToFile(review.image, `review_${review.id}.jpg`);
-            if (imageFile) {
-              formData.append('image', imageFile);
+          } else if (review.image && typeof review.image === 'string' && !review.image.startsWith('data:')) {
+            // الاحتفاظ بالصورة القديمة
+            try {
+              const imageFile = await urlToFile(review.image, `review_${review.id}.jpg`);
+              if (imageFile) {
+                formData.append('image', imageFile);
+              }
+            } catch (err) {
+              console.warn('Could not fetch existing image', err);
             }
           }
           
@@ -101,7 +105,7 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
       return responses.filter(r => r && r.data).map(r => r.data);
     } catch (error) {
       console.error('API Error:', error.response?.data || error.message);
-      throw new Error(error.response?.data?.message || 'فشل في تحديث البيانات');
+      throw new Error(error.response?.data?.message || 'فشل في حفظ البيانات');
     }
   };
 
@@ -116,16 +120,23 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
     setError(null);
 
     try {
-      const updatedReviews = await updateReviews(editedReviews);
+      // حفظ البيانات عبر API
+        await saveReviews(editedReviews);
       
-      if (typeof onReviewsUpdate === 'function') {
-        onReviewsUpdate(updatedReviews.filter(r => r !== undefined));
+ 
+      if (typeof fetchData === 'function') {
+        await fetchData();
       }
 
+      // إعادة تعيين الحالة
       setIsEditing(false);
       setShowModal(false);
       setEditingReview(null);
-      showNotification('✅ تم حفظ التقييمات بنجاح!', 'success');
+      setImageFiles({});
+      setCurrentIndex(0);
+      setEditedReviews([]);
+      
+      showNotification('  تم حفظ التقييمات بنجاح!', 'success');
     } catch (err) {
       setError(err.message);
       showNotification(`❌ ${err.message}`, 'error');
@@ -142,16 +153,18 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
     setError(null);
     setShowModal(false);
     setEditingReview(null);
+    setCurrentIndex(0);
   };
 
   // فتح نافذة إضافة تقييم جديد
   const openAddModal = () => {
+    const tempId = Date.now();
     setEditingReview({
       id: null,
       image: null,
       image_preview: null,
       isNew: true,
-      tempId: Date.now(),
+      tempId: tempId,
       rating: 5
     });
     setEditingIndex(null);
@@ -160,10 +173,12 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
 
   // فتح نافذة تعديل تقييم
   const openEditModal = (index) => {
-    const review = editedReviews[index];
+    const actualReview = editedReviews[index];
+    if (!actualReview) return;
+    
     setEditingReview({
-      ...review,
-      image_preview: review.image
+      ...actualReview,
+      image_preview: actualReview.image
     });
     setEditingIndex(index);
     setShowModal(true);
@@ -171,20 +186,26 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
 
   // حفظ العنصر من المودال
   const handleSaveReview = () => {
+    if (!editingReview.image_preview && !editingReview.image && editingReview.isNew) {
+      showNotification('❌ الرجاء إضافة صورة للتقييم', 'error');
+      return;
+    }
+    
     if (editingIndex !== null) {
       // تحديث عنصر موجود
       setEditedReviews(prev => prev.map((item, i) => 
-        i === editingIndex ? { ...editingReview } : item
+        i === editingIndex ? { ...editingReview, isNew: false } : item
       ));
-      showNotification('✅ تم تحديث التقييم مؤقتاً، اضغط "حفظ الكل" لتأكيد التغييرات', 'success');
+      showNotification('  تم تحديث التقييم مؤقتاً، اضغط "حفظ الكل" لتأكيد التغييرات', 'success');
     } else {
       // إضافة عنصر جديد
-      if (!imageFiles[`image_${editingReview.tempId}`]) {
-        showNotification('❌ الرجاء إضافة صورة للتقييم الجديد', 'error');
-        return;
-      }
-      setEditedReviews(prev => [...prev, { ...editingReview }]);
-      showNotification('✅ تم إضافة التقييم مؤقتاً، اضغط "حفظ الكل" لتأكيد الإضافة', 'success');
+      const newReview = { 
+        ...editingReview, 
+        isNew: true,
+        id: null
+      };
+      setEditedReviews(prev => [...prev, newReview]);
+      showNotification('  تم إضافة التقييم مؤقتاً، اضغط "حفظ الكل" لتأكيد الإضافة', 'success');
     }
     
     setShowModal(false);
@@ -196,7 +217,10 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
   const handleDeleteReview = (index) => {
     if (window.confirm('هل أنت متأكد من حذف هذا التقييم؟')) {
       setEditedReviews(prev => prev.filter((_, i) => i !== index));
-      showNotification('✅ تم حذف التقييم مؤقتاً، اضغط "حفظ الكل" لتأكيد الحذف', 'success');
+      if (currentIndex >= editedReviews.length - 1 && currentIndex > 0) {
+        setCurrentIndex(prev => prev - 1);
+      }
+      showNotification('  تم حذف التقييم مؤقتاً، اضغط "حفظ الكل" لتأكيد الحذف', 'success');
     }
   };
 
@@ -215,78 +239,115 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
     }
   };
 
-  const createInfiniteArray = (arr) => {
-    if (!arr || arr.length === 0) return [];
-    return [...arr, ...arr, ...arr];
+  // إنشاء مصفوفة لانهائية للعرض فقط (وليس للتعديل)
+  const getDisplayReviews = () => {
+    const displayData = isEditing ? editedReviews : reviews;
+    if (!displayData || displayData.length === 0) return [];
+    
+    if (isEditing) {
+      return displayData;
+    }
+    
+    if (displayData.length <= itemsPerPage) {
+      return [...displayData, ...displayData, ...displayData];
+    }
+    return [...displayData, ...displayData, ...displayData];
   };
   
-  const displayReviews = isEditing ? editedReviews : reviews;
-  const infiniteReviews = createInfiniteArray(displayReviews);
-  const originalLength = displayReviews.length;
-  const startIndex = originalLength;
+  const displayReviews = getDisplayReviews();
+  const originalLength = isEditing ? editedReviews.length : reviews.length;
+  const startIndex = isEditing ? 0 : originalLength;
+  
+  const getCurrentIndex = () => {
+    if (isEditing) {
+      return currentIndex;
+    }
+    if (displayReviews.length === 0) return 0;
+    let safeIndex = currentIndex;
+    if (safeIndex >= displayReviews.length) {
+      safeIndex = startIndex;
+    }
+    return safeIndex;
+  };
   
   const getVisibleReviews = () => {
-    if (infiniteReviews.length === 0) return [];
-    return infiniteReviews.slice(currentIndex, currentIndex + itemsPerPage);
+    const displayData = isEditing ? editedReviews : displayReviews;
+    if (!displayData || displayData.length === 0) return [];
+    
+    if (isEditing) {
+      return displayData;
+    }
+    
+    const idx = getCurrentIndex();
+    return displayReviews.slice(idx, idx + itemsPerPage);
   };
   
   const visibleReviews = getVisibleReviews();
 
   const nextSlide = useCallback(() => {
     if (isTransitioning || isEditing) return;
+    if (displayReviews.length === 0) return;
+    
     setIsTransitioning(true);
     
-    setCurrentIndex((prev) => prev + 1);
+    const nextIndex = currentIndex + 1;
+    setCurrentIndex(nextIndex);
     
     setTimeout(() => {
-      if (currentIndex + 1 >= infiniteReviews.length - itemsPerPage) {
+      if (nextIndex >= displayReviews.length - itemsPerPage) {
         setIsTransitioning(false);
         setCurrentIndex(startIndex);
       } else {
         setIsTransitioning(false);
       }
     }, 500);
-  }, [currentIndex, isTransitioning, infiniteReviews.length, itemsPerPage, startIndex, isEditing]);
+  }, [currentIndex, isTransitioning, displayReviews.length, itemsPerPage, startIndex, isEditing]);
 
   const prevSlide = useCallback(() => {
     if (isTransitioning || isEditing) return;
+    if (displayReviews.length === 0) return;
+    
     setIsTransitioning(true);
     
-    setCurrentIndex((prev) => prev - 1);
+    const prevIndex = currentIndex - 1;
+    setCurrentIndex(prevIndex);
     
     setTimeout(() => {
-      if (currentIndex - 1 < 0) {
+      if (prevIndex < 0) {
         setIsTransitioning(false);
-        setCurrentIndex(infiniteReviews.length - itemsPerPage - startIndex);
+        setCurrentIndex(displayReviews.length - itemsPerPage - startIndex);
       } else {
         setIsTransitioning(false);
       }
     }, 500);
-  }, [currentIndex, isTransitioning, infiniteReviews.length, itemsPerPage, startIndex, isEditing]);
+  }, [currentIndex, isTransitioning, displayReviews.length, itemsPerPage, startIndex, isEditing]);
 
-  // Auto-play
+  // Auto-play فقط في وضع العرض العادي
   useEffect(() => {
-    if (!reviews.length || isEditing) return;
+    if (!reviews.length || isEditing || isTransitioning) return;
     
     const interval = setInterval(() => {
       nextSlide();
-    }, 3000);
+    }, 5000);
     
     return () => clearInterval(interval);
-  }, [nextSlide, reviews.length, isEditing]);
+  }, [nextSlide, reviews.length, isEditing, isTransitioning]);
 
+  // إعادة تعيين المؤشر عند تغيير البيانات
   useEffect(() => {
-    if (displayReviews.length > 0) {
+    if (!isEditing && reviews.length > 0) {
       setCurrentIndex(startIndex);
     }
-  }, [displayReviews.length, startIndex]);
+  }, [reviews.length, isEditing, startIndex]);
 
-  // if (!reviews || reviews.length === 0) {
-  //   return null;
-  // }
-
-  const currentPage = ((currentIndex - startIndex) % originalLength + originalLength) % originalLength;
-  const actualPageNumber = Math.floor(currentPage / itemsPerPage) + 1;
+  const getCurrentPageNumber = () => {
+    if (isEditing) return 1;
+    if (originalLength === 0) return 1;
+    const currentPos = (currentIndex - startIndex + originalLength) % originalLength;
+    return Math.floor(currentPos / itemsPerPage) + 1;
+  };
+  
+  const totalPages = Math.ceil(originalLength / itemsPerPage);
 
   return (
     <section className={styles.testimonialsSection}>
@@ -321,9 +382,10 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
                 {editingReview?.image_preview && (
                   <img src={editingReview.image_preview} alt="Review preview" />
                 )}
-                {!editingReview?.image_preview && !editingReview?.isNew && (
+                {!editingReview?.image_preview && !editingReview?.isNew && editingReview?.image && (
                   <div className={styles.modalImagePlaceholder}>
                     <span>الصورة الحالية محفوظة</span>
+                    <img src={editingReview.image} alt="Current" style={{ marginTop: '0.5rem', maxHeight: '150px' }} />
                   </div>
                 )}
               </div>
@@ -358,7 +420,7 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
                 disabled={isSaving}
               >
                 <Save size={18} />
-                {isSaving ? 'جاري الحفظ...' : '  حفظ الكل'}
+                {isSaving ? 'جاري الحفظ...' : 'حفظ الكل'}
               </button>
               <button 
                 onClick={handleCancelClick} 
@@ -391,83 +453,83 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
             className={styles.testimonialSliderBtn} 
             onClick={prevSlide}
             aria-label="السابق"
-            disabled={isTransitioning || isEditing || displayReviews.length === 0}
+            disabled={isTransitioning || isEditing || displayReviews.length === 0 || originalLength === 0}
           >
             <ChevronRight size={24} />
           </button>
           
           <div className={styles.testimonialSlider}>
             <div 
-              className={styles.testimonialsGrid}
+              className={`${styles.testimonialsGrid} ${isEditing ? styles.editMode : ''}`}
               style={{
                 transition: isTransitioning && !isEditing ? 'transform 0.5s ease-in-out' : 'none'
               }}
             >
-              {visibleReviews.map((review, idx) => {
-                const actualIndex = (currentIndex + idx) % originalLength;
-                return (
+              {isEditing ? (
+                visibleReviews.map((review, idx) => (
                   <div key={review.id || review.tempId || idx} className={styles.testimonialCard}>
-                    {isEditing ? (
-                      <>
-                        <div className={styles.screenshotImage}>
-                          <img 
-                            src={review.image_preview || review.image} 
-                            alt={`تقييم العميل`}
-                            onError={(e) => {
-                              e.target.src = 'https://via.placeholder.com/400x800?text=صورة+التقييم';
-                            }}
-                          />
-                        </div>
-                        <div className={styles.reviewInfo}>
-                          <p className={styles.reviewTitle}>تقييم #{actualIndex + 1}</p>
-                        </div>
-                        <div className={styles.editReviewActions}>
-                          <button 
-                            onClick={() => openEditModal(actualIndex)}
-                            className={styles.editReviewBtn}
-                          >
-                            <Edit2 size={14} />
-                            تعديل
-                          </button>
-                          <button 
-                            onClick={() => handleDeleteReview(actualIndex)}
-                            className={styles.deleteReviewBtn}
-                          >
-                            <Trash2 size={14} />
-                            حذف
-                          </button>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className={styles.ratingBadge}>
-                          <div className={styles.stars}>
-                            {[...Array(5)].map((_, i) => (
-                              <span key={i} className={i < (review.rating || 5) ? styles.starFilled : styles.starEmpty}>★</span>
-                            ))}
-                          </div>
-                          <span className={styles.ratingValue}>{review.rating || 5}.0</span>
-                        </div>
-                        
-                        <div className={styles.screenshotImage}>
-                          <img 
-                            src={review.image} 
-                            alt={`تقييم العميل`}
-                            loading="lazy"
-                            onError={(e) => {
-                              e.target.src = 'https://via.placeholder.com/400x800?text=صورة+التقييم';
-                            }}
-                          />
-                        </div>
-                        
-                        <div className={styles.reviewNumber}>
-                          تقييم {actualIndex + 1} من {originalLength}
-                        </div>
-                      </>
-                    )}
+                    <div className={styles.screenshotImage}>
+                      <img 
+                        src={review.image_preview || review.image} 
+                        alt={`تقييم العميل`}
+                        onError={(e) => {
+                          e.target.src = 'https://via.placeholder.com/400x800?text=صورة+التقييم';
+                        }}
+                      />
+                    </div>
+                    <div className={styles.reviewInfo}>
+                      <p className={styles.reviewTitle}>تقييم #{idx + 1}</p>
+                    </div>
+                    <div className={styles.editReviewActions}>
+                      <button 
+                        onClick={() => openEditModal(idx)}
+                        className={styles.editReviewBtn}
+                      >
+                        <Edit2 size={14} />
+                        تعديل
+                      </button>
+                      <button 
+                        onClick={() => handleDeleteReview(idx)}
+                        className={styles.deleteReviewBtn}
+                      >
+                        <Trash2 size={14} />
+                        حذف
+                      </button>
+                    </div>
                   </div>
-                );
-              })}
+                ))
+              ) : (
+                visibleReviews.map((review, idx) => {
+                  const actualIndex = ((currentIndex - startIndex + originalLength) % originalLength) + idx;
+                  return (
+                    <div key={review.id || actualIndex} className={styles.testimonialCard}>
+                      <div className={styles.ratingBadge}>
+                        <div className={styles.stars}>
+                          {[...Array(5)].map((_, i) => (
+                            <span key={i} className={i < (review.rating || 5) ? styles.starFilled : styles.starEmpty}>★</span>
+                          ))}
+                        </div>
+                        <span className={styles.ratingValue}>{review.rating || 5}.0</span>
+                      </div>
+                      
+                      <div className={styles.screenshotImage}>
+                        <img 
+                          src={review.image} 
+                          alt={`تقييم العميل`}
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.src = 'https://via.placeholder.com/400x800?text=صورة+التقييم';
+                          }}
+                        />
+                      </div>
+                      
+                      <div className={styles.reviewNumber}>
+                        تقييم {actualIndex + 1} من {originalLength}
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
           
@@ -475,7 +537,7 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
             className={styles.testimonialSliderBtn} 
             onClick={nextSlide}
             aria-label="التالي"
-            disabled={isTransitioning || isEditing || displayReviews.length === 0}
+            disabled={isTransitioning || isEditing || displayReviews.length === 0 || originalLength === 0}
           >
             <ChevronLeft size={24} />
           </button>
@@ -491,13 +553,13 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
           </div>
         )}
         
-        {!isEditing && (
+        {!isEditing && originalLength > 0 && (
           <>
             <div className={styles.sliderDots}>
-              {Array.from({ length: Math.ceil(originalLength / itemsPerPage) }).map((_, pageIndex) => (
+              {Array.from({ length: totalPages }).map((_, pageIndex) => (
                 <button
                   key={pageIndex}
-                  className={`${styles.dot} ${pageIndex + 1 === actualPageNumber ? styles.active : ''}`}
+                  className={`${styles.dot} ${pageIndex + 1 === getCurrentPageNumber() ? styles.active : ''}`}
                   onClick={() => {
                     if (isTransitioning) return;
                     const targetIndex = startIndex + (pageIndex * itemsPerPage);
@@ -509,7 +571,7 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
             </div>
             
             <div className={styles.counter}>
-              صفحة {actualPageNumber} من {Math.ceil(originalLength / itemsPerPage)} | 
+              صفحة {getCurrentPageNumber()} من {totalPages} | 
               إجمالي {originalLength} تقييم
             </div>
             
@@ -517,7 +579,7 @@ const TestimonialsSlider = ({ reviews = [], onReviewsUpdate, serviceId }) => {
               <div className={styles.progressBar}>
                 <div className={styles.progressFill}></div>
               </div>
-              <span className={styles.autoPlayText}>تغيير تلقائي كل 3 ثواني</span>
+              <span className={styles.autoPlayText}>تغيير تلقائي كل 5 ثواني</span>
             </div>
           </>
         )}

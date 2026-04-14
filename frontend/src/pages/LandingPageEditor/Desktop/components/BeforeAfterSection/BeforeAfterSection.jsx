@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import AxiosInstance from '../../../../../components/Authentication/AxiosInstance';
 import styles from './BeforeAfterSection.module.css';
 
-const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, serviceId }) => {
+const BeforeAfterSection = ({ before_after, resultsData, fetchData, serviceId }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [editedItems, setEditedItems] = useState([]);
@@ -16,13 +16,16 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
   const [editingIndex, setEditingIndex] = useState(null);
   const intervalRef = useRef(null);
 
+  // Helper function to generate unique temp ID
+  const generateTempId = () => Date.now() + Math.random();
+
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
     setTimeout(() => setNotification(null), 3000);
   };
 
   useEffect(() => {
-    if (!isEditing && before_after.length > 1) {
+    if (!isEditing && before_after && before_after.length > 1) {
       intervalRef.current = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % before_after.length);
       }, 5000);
@@ -30,21 +33,24 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
         if (intervalRef.current) clearInterval(intervalRef.current);
       };
     }
-  }, [before_after.length, isEditing]);
+  }, [before_after?.length, isEditing]);
 
   const initializeEditData = () => {
-    setEditedItems(before_after.map(item => ({ ...item })));
+    if (before_after && before_after.length > 0) {
+      setEditedItems(before_after.map(item => ({ ...item })));
+    } else {
+      setEditedItems([]);
+    }
     setImageFiles({});
   };
 
- 
-  const updateBeforeAfterItems = async (items) => {
+  const saveBeforeAfterItems = async (items) => {
     try {
       const promises = [];
       
       for (const item of items) {
         if (item.id) {
- 
+          // Update existing item
           const hasNewBeforeImage = imageFiles[`before_${item.id}`];
           const hasNewAfterImage = imageFiles[`after_${item.id}`];
           
@@ -53,41 +59,52 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
           formData.append('description', item.description || '');
           formData.append('service', Number(serviceId));
           
- 
           if (hasNewBeforeImage) {
             formData.append('before_image', hasNewBeforeImage);
-          } else if (item.before_image) {
- 
-            const response = await fetch(item.before_image);
-            const blob = await response.blob();
-            const file = new File([blob], 'before_image.jpg', { type: blob.type });
-            formData.append('before_image', file);
+          } else if (item.before_image && typeof item.before_image === 'string' && !item.before_image.startsWith('data:')) {
+            try {
+              const response = await fetch(item.before_image);
+              const blob = await response.blob();
+              const file = new File([blob], 'before_image.jpg', { type: blob.type });
+              formData.append('before_image', file);
+            } catch (err) {
+              console.warn('Could not fetch existing before image', err);
+            }
           }
           
           if (hasNewAfterImage) {
             formData.append('after_image', hasNewAfterImage);
-          } else if (item.after_image) {
-            const response = await fetch(item.after_image);
-            const blob = await response.blob();
-            const file = new File([blob], 'after_image.jpg', { type: blob.type });
-            formData.append('after_image', file);
+          } else if (item.after_image && typeof item.after_image === 'string' && !item.after_image.startsWith('data:')) {
+            try {
+              const response = await fetch(item.after_image);
+              const blob = await response.blob();
+              const file = new File([blob], 'after_image.jpg', { type: blob.type });
+              formData.append('after_image', file);
+            } catch (err) {
+              console.warn('Could not fetch existing after image', err);
+            }
           }
           
           promises.push(AxiosInstance.put(`/services/before-after-images/${item.id}/`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
           }));
         } else if (item.isNew) {
-          // للإضافة الجديدة
+          // Add new item
+          const tempId = item.tempId;
           let formData = new FormData();
           formData.append('title', item.title);
           formData.append('description', item.description || '');
           formData.append('service', Number(serviceId));
           
-          const beforeImage = imageFiles[`before_${item.tempId}`];
-          const afterImage = imageFiles[`after_${item.tempId}`];
+          const beforeImage = imageFiles[`before_${tempId}`];
+          const afterImage = imageFiles[`after_${tempId}`];
           
-          if (!beforeImage) throw new Error('الرجاء إضافة صورة "قبل"');
-          if (!afterImage) throw new Error('الرجاء إضافة صورة "بعد"');
+          if (!beforeImage) {
+            throw new Error('الرجاء إضافة صورة "قبل"');
+          }
+          if (!afterImage) {
+            throw new Error('الرجاء إضافة صورة "بعد"');
+          }
           
           formData.append('before_image', beforeImage);
           formData.append('after_image', afterImage);
@@ -98,20 +115,23 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
         }
       }
       
-      // حذف العناصر
-      const deletedIds = before_after.filter(old => 
-        !items.some(newItem => newItem.id === old.id)
-      ).map(old => old.id);
-      
-      for (const id of deletedIds) {
-        promises.push(AxiosInstance.delete(`/services/before-after-images/${id}/`));
+      // Delete items that were removed
+      if (before_after && before_after.length > 0) {
+        const deletedIds = before_after.filter(old => 
+          !items.some(newItem => newItem.id === old.id)
+        ).map(old => old.id);
+        
+        for (const id of deletedIds) {
+          promises.push(AxiosInstance.delete(`/services/before-after-images/${id}/`));
+        }
       }
       
-      const responses = await Promise.all(promises);
-      return responses.map(r => r.data);
+      await Promise.all(promises);
+      
+      return true;
     } catch (error) {
-     
-      throw new Error(error.response?.data?.message || 'فشل في تحديث البيانات');
+      console.error('Save error:', error);
+      throw new Error(error.response?.data?.message || 'فشل في حفظ البيانات');
     }
   };
 
@@ -122,24 +142,54 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
     if (intervalRef.current) clearInterval(intervalRef.current);
   };
 
+  const canSave = () => {
+    if (!isEditing) return false;
+    if (isSaving) return false;
+    
+    const hasInvalidNewItems = editedItems.some(item => {
+      if (item.isNew) {
+        const tempId = item.tempId;
+        return !imageFiles[`before_${tempId}`] || !imageFiles[`after_${tempId}`];
+      }
+      return false;
+    });
+    
+    return !hasInvalidNewItems;
+  };
+
   const handleSaveClick = async () => {
     setIsSaving(true);
     setError(null);
 
     try {
-      const updatedItems = await updateBeforeAfterItems(editedItems);
+      const invalidItems = editedItems.filter(item => {
+        if (item.isNew) {
+          const tempId = item.tempId;
+          return !imageFiles[`before_${tempId}`] || !imageFiles[`after_${tempId}`];
+        }
+        return false;
+      });
       
-      if (typeof onBeforeAfterUpdate === 'function') {
-        onBeforeAfterUpdate(updatedItems.filter(item => item !== undefined));
+      if (invalidItems.length > 0) {
+        throw new Error('يجب إضافة صور "قبل" و "بعد" لجميع العناصر الجديدة');
+      }
+      
+      await saveBeforeAfterItems(editedItems);
+      
+      if (typeof fetchData === 'function') {
+        await fetchData();
       }
 
       setIsEditing(false);
       setShowModal(false);
       setEditingItem(null);
+      setImageFiles({});
+      setEditedItems([]);
+      setCurrentIndex(0);
       showNotification('  تم حفظ المعرض بنجاح!', 'success');
     } catch (err) {
       setError(err.message);
-      showNotification(`  ${err.message}`, 'error');
+      showNotification(`❌ ${err.message}`, 'error');
       console.error('Error saving data:', err);
     } finally {
       setIsSaving(false);
@@ -156,6 +206,7 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
   };
 
   const openAddModal = () => {
+    const tempId = generateTempId();
     setEditingItem({
       title: '',
       description: '',
@@ -164,7 +215,7 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
       before_preview: null,
       after_preview: null,
       isNew: true,
-      tempId: Date.now()
+      tempId: tempId
     });
     setEditingIndex(null);
     setShowModal(true);
@@ -183,26 +234,44 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
 
   const handleSaveItem = () => {
     if (!editingItem.title) {
-      showNotification('  الرجاء إدخال عنوان للعنصر', 'error');
+      showNotification('❌ الرجاء إدخال عنوان للعنصر', 'error');
       return;
+    }
+    
+    if (editingItem.isNew) {
+      if (!editingItem.before_preview) {
+        showNotification('❌ الرجاء إضافة صورة "قبل"', 'error');
+        return;
+      }
+      if (!editingItem.after_preview) {
+        showNotification('❌ الرجاء إضافة صورة "بعد"', 'error');
+        return;
+      }
+    }
+    
+    const itemToSave = { ...editingItem };
+    if (itemToSave.isNew && !itemToSave.tempId) {
+      itemToSave.tempId = generateTempId();
     }
     
     if (editingIndex !== null) {
       setEditedItems(prev => prev.map((item, i) => 
-        i === editingIndex ? { ...editingItem } : item
+        i === editingIndex ? itemToSave : item
       ));
+      showNotification('  تم تحديث العنصر مؤقتاً، اضغط "حفظ الكل" لتأكيد التغييرات', 'success');
     } else {
-      setEditedItems(prev => [...prev, { ...editingItem }]);
+      setEditedItems(prev => [...prev, itemToSave]);
+      showNotification('  تم إضافة العنصر مؤقتاً، اضغط "حفظ الكل" لتأكيد الإضافة', 'success');
     }
     
     setShowModal(false);
     setEditingItem(null);
     setEditingIndex(null);
-    showNotification('  تم حفظ العنصر مؤقتاً، اضغط "حفظ الكل" لتأكيد التغييرات', 'success');
   };
 
   const handleDeleteItem = (index) => {
-    if (window.confirm('هل أنت متأكد من حذف هذا العنصر؟')) {
+    const itemTitle = editedItems[index]?.title || 'العنصر';
+    if (window.confirm(`هل أنت متأكد من حذف "${itemTitle}"؟`)) {
       setEditedItems(prev => prev.filter((_, i) => i !== index));
       if (currentIndex >= editedItems.length - 1 && currentIndex > 0) {
         setCurrentIndex(prev => prev - 1);
@@ -214,7 +283,9 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
   const handleModalImageChange = (e, type) => {
     const file = e.target.files[0];
     if (file && file instanceof File) {
-      const imageKey = `${type}_${editingItem.id || editingItem.tempId}`;
+      const itemId = editingItem.id || editingItem.tempId;
+      const imageKey = `${type}_${itemId}`;
+      
       setImageFiles(prev => ({ ...prev, [imageKey]: file }));
       
       const reader = new FileReader();
@@ -226,28 +297,33 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
   };
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % (isEditing ? editedItems.length : before_after.length));
+    const itemsLength = isEditing ? editedItems.length : (before_after?.length || 0);
+    if (itemsLength === 0) return;
+    setCurrentIndex((prev) => (prev + 1) % itemsLength);
     if (!isEditing) resetInterval();
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + (isEditing ? editedItems.length : before_after.length)) % (isEditing ? editedItems.length : before_after.length));
+    const itemsLength = isEditing ? editedItems.length : (before_after?.length || 0);
+    if (itemsLength === 0) return;
+    setCurrentIndex((prev) => (prev - 1 + itemsLength) % itemsLength);
     if (!isEditing) resetInterval();
   };
 
   const resetInterval = () => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
-      intervalRef.current = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % before_after.length);
-      }, 5000);
+      if (before_after && before_after.length > 1) {
+        intervalRef.current = setInterval(() => {
+          setCurrentIndex((prev) => (prev + 1) % before_after.length);
+        }, 5000);
+      }
     }
   };
 
-  // if ((!before_after || before_after.length === 0) && !isEditing) return null;
-
-  const displayItems = isEditing ? editedItems : before_after;
+  const displayItems = isEditing ? editedItems : (before_after || []);
   const currentItem = displayItems[currentIndex];
+  const hasItems = displayItems && displayItems.length > 0;
 
   return (
     <section className={styles.beforeAfterSection}>
@@ -280,6 +356,11 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
                 {editingItem?.before_preview && (
                   <img src={editingItem.before_preview} alt="Before preview" />
                 )}
+                {!editingItem?.before_preview && editingItem?.isNew && (
+                  <div className={styles.imagePlaceholder}>
+                    <span>⚠️ مطلوب</span>
+                  </div>
+                )}
               </div>
               
               <div className={styles.modalImageSection}>
@@ -293,6 +374,11 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
                 </label>
                 {editingItem?.after_preview && (
                   <img src={editingItem.after_preview} alt="After preview" />
+                )}
+                {!editingItem?.after_preview && editingItem?.isNew && (
+                  <div className={styles.imagePlaceholder}>
+                    <span>⚠️ مطلوب</span>
+                  </div>
                 )}
               </div>
               
@@ -327,17 +413,23 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
       )}
 
       <div className={styles.container}>
+        {/* زر التعديل - يظهر دائماً */}
         <div className={styles.editHeader}>
           {!isEditing ? (
             <button onClick={handleEditClick} className={styles.editButton}>
               <Edit2 size={18} />
-              إدارة المعرض
+              {hasItems ? 'إدارة المعرض' : 'إضافة صور المعرض'}
             </button>
           ) : (
             <div className={styles.editActions}>
-              <button onClick={handleSaveClick} className={styles.saveButton} disabled={isSaving}>
+              <button 
+                onClick={handleSaveClick} 
+                className={styles.saveButton} 
+                disabled={isSaving || !canSave()}
+                title={!canSave() && editedItems.some(i => i.isNew) ? 'يرجى إضافة صور قبل وبعد للعناصر الجديدة' : ''}
+              >
                 <Save size={18} />
-                {isSaving ? 'جاري الحفظ...' : '  حفظ الكل'}
+                {isSaving ? 'جاري الحفظ...' : 'حفظ الكل'}
               </button>
               <button onClick={handleCancelClick} className={styles.cancelButton} disabled={isSaving}>
                 <X size={18} />
@@ -355,21 +447,53 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
           <p>{resultsData?.description || 'صور حقيقية لعملائنا توضح الفرق المبهر'}</p>
         </div>
         
-        {displayItems.length > 0 ? (
+        {/* عرض حالة عدم وجود بيانات - مع زر إضافة واضح */}
+        {!isEditing && !hasItems && (
+          <div className={styles.emptyState}>
+            <p>📭 لا توجد صور في المعرض</p>
+            <button onClick={handleEditClick} className={styles.emptyStateButton}>
+              <Plus size={18} />
+              أضف صور المعرض
+            </button>
+          </div>
+        )}
+        
+        {/* عرض معلومات الحالة */}
+        {!isEditing && hasItems && (
+          <div className={styles.statusInfo}>
+            <span className={styles.statusBadge}>
+                {displayItems.length} صورة قبل وبعد
+            </span>
+          </div>
+        )}
+        
+        {hasItems && (
           <>
             <div className={styles.sliderContainer}>
-              <button className={styles.sliderBtn} onClick={prevSlide}>
+              <button className={styles.sliderBtn} onClick={prevSlide} disabled={displayItems.length <= 1}>
                 <ChevronRight size={32} />
               </button>
               
               <div className={styles.beforeAfterSlider}>
                 <div className={styles.beforeAfterImages}>
                   <div className={styles.beforeImage}>
-                    <img src={currentItem?.before_image} alt="Before" />
+                    <img 
+                      src={currentItem?.before_image || currentItem?.before_preview} 
+                      alt="Before" 
+                      onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/500x400?text=صورة+قبل';
+                      }}
+                    />
                     <span className={styles.label}>قبل</span>
                   </div>
                   <div className={styles.afterImage}>
-                    <img src={currentItem?.after_image} alt="After" />
+                    <img 
+                      src={currentItem?.after_image || currentItem?.after_preview} 
+                      alt="After" 
+                      onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/500x400?text=صورة+بعد';
+                      }}
+                    />
                     <span className={styles.label}>بعد</span>
                   </div>
                 </div>
@@ -379,23 +503,25 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
                 </div>
               </div>
               
-              <button className={styles.sliderBtn} onClick={nextSlide}>
+              <button className={styles.sliderBtn} onClick={nextSlide} disabled={displayItems.length <= 1}>
                 <ChevronLeft size={32} />
               </button>
             </div>
             
-            <div className={styles.sliderDots}>
-              {displayItems.map((_, idx) => (
-                <button
-                  key={idx}
-                  className={`${styles.dot} ${currentIndex === idx ? styles.active : ''}`}
-                  onClick={() => {
-                    setCurrentIndex(idx);
-                    if (!isEditing) resetInterval();
-                  }}
-                />
-              ))}
-            </div>
+            {displayItems.length > 1 && (
+              <div className={styles.sliderDots}>
+                {displayItems.map((_, idx) => (
+                  <button
+                    key={idx}
+                    className={`${styles.dot} ${currentIndex === idx ? styles.active : ''}`}
+                    onClick={() => {
+                      setCurrentIndex(idx);
+                      if (!isEditing) resetInterval();
+                    }}
+                  />
+                ))}
+              </div>
+            )}
 
             {isEditing && (
               <div className={styles.managementButtons}>
@@ -406,9 +532,9 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
                 
                 <div className={styles.itemsList}>
                   {displayItems.map((item, idx) => (
-                    <div key={idx} className={styles.listItem}>
+                    <div key={item.id || item.tempId || idx} className={styles.listItem}>
                       <div className={styles.listItemInfo}>
-                        <span>{item.title}</span>
+                        <span>{item.title || 'بدون عنوان'}</span>
                         <small>{idx + 1}</small>
                       </div>
                       <div className={styles.listItemActions}>
@@ -425,16 +551,16 @@ const BeforeAfterSection = ({ before_after, resultsData, onBeforeAfterUpdate, se
               </div>
             )}
           </>
-        ) : (
-          <div className={styles.emptyState}>
-            <p>📭 لا توجد صور في المعرض</p>
-
+        )}
         
-              <button onClick={openAddModal} className={styles.addButtonEmpty}>
-                <Plus size={18} />
-                أضف أول صورة
-              </button>
-           
+        {/* في وضع التعديل حتى لو مفيش صور، نعرض زر الإضافة */}
+        {isEditing && !hasItems && (
+          <div className={styles.emptyStateInEdit}>
+            <p>📭 لا توجد صور في المعرض</p>
+            <button onClick={openAddModal} className={styles.addButtonLarge}>
+              <Plus size={24} />
+              أضف أول صورة
+            </button>
           </div>
         )}
       </div>

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import AxiosInstance from '../../../../../components/Authentication/AxiosInstance';
 import styles from './HeroSection.module.css';
 
-const HeroSection = ({ heroData, serviceName, scrollToBooking, onHeroUpdate }) => {
+const HeroSection = ({ heroData, serviceName, scrollToBooking, fetchData }) => {
   const [showVideo, setShowVideo] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({ ...heroData });
@@ -59,8 +59,8 @@ const HeroSection = ({ heroData, serviceName, scrollToBooking, onHeroUpdate }) =
     setShowHint(prev => ({ ...prev, [fieldName]: !prev[fieldName] }));
   };
 
-  // تحديث البيانات عبر API
-  const updateServiceHero = async (id, data, image) => {
+  // فنكشن حفظ البيانات (CREATE or UPDATE)
+  const saveServiceHero = async (data, image) => {
     try {
       const formData = new FormData();
       
@@ -74,15 +74,28 @@ const HeroSection = ({ heroData, serviceName, scrollToBooking, onHeroUpdate }) =
         formData.append('image', image);
       }
       
-      const response = await AxiosInstance.put(`/services/service-hero/${id}/`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      let response;
+      
+      // إذا كان يوجد id، نقوم بالتحديث (UPDATE)
+      if (heroData.id) {
+        response = await AxiosInstance.put(`/services/service-hero/${heroData.id}/`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } else {
+        // إذا لم يوجد id، نقوم بالإضافة (CREATE)
+        response = await AxiosInstance.post('/services/service-hero/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
+      
       return response.data;
     } catch (error) {
       console.error('API Error:', error.response?.data || error.message);
-      throw new Error(error.response?.data?.message || 'فشل في تحديث البيانات');
+      throw new Error(error.response?.data?.message || 'فشل في حفظ البيانات');
     }
   };
 
@@ -110,21 +123,23 @@ const HeroSection = ({ heroData, serviceName, scrollToBooking, onHeroUpdate }) =
         service: editedData.service
       };
       
-      const updatedHero = await updateServiceHero(heroData.id, textData, imageFile);
+      // حفظ البيانات عبر API (سواء create أو update)
+       await saveServiceHero(textData, imageFile);
       
-      if (typeof onHeroUpdate === 'function') {
-        onHeroUpdate(updatedHero);
+    
+      if (typeof fetchData === 'function') {
+        await fetchData();
       }
       
       setIsEditing(false);
       setImageFile(null);
-      showNotification('✓ تم حفظ التغييرات بنجاح!', 'success');
+      showNotification(' تم حفظ التغييرات بنجاح!', 'success');
       
       // إعادة جلب الأمثلة بعد الحفظ
       fetchFieldExamples();
     } catch (err) {
       setError(err.message);
-      showNotification(`✗ ${err.message}`, 'error');
+      showNotification(`❌ ${err.message}`, 'error');
       console.error('Error saving data:', err);
     } finally {
       setIsSaving(false);
@@ -231,6 +246,15 @@ const HeroSection = ({ heroData, serviceName, scrollToBooking, onHeroUpdate }) =
     );
   };
 
+  // فنكشن مساعدة لتحويل رابط يوتيوب
+  const getYouTubeEmbedUrl = (url) => {
+    if (!url) return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    const videoId = (match && match[2].length === 11) ? match[2] : null;
+    return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : url;
+  };
+
   const displayData = isEditing ? editedData : heroData;
 
   return (
@@ -269,7 +293,7 @@ const HeroSection = ({ heroData, serviceName, scrollToBooking, onHeroUpdate }) =
               disabled={isSaving}
             >
               <Save size={18} />
-              {isSaving ? 'جاري الحفظ...' : 'حفظ'}
+              {isSaving ? 'جاري الحفظ...' : 'حفظ الكل'}
             </button>
             <button 
               onClick={handleCancelClick} 
@@ -298,24 +322,27 @@ const HeroSection = ({ heroData, serviceName, scrollToBooking, onHeroUpdate }) =
               {imagePreview && (
                 <img src={imagePreview} alt="Preview" className={styles.imagePreview} />
               )}
+              <div className={styles.fieldNote}>
+                💡 يفضل استخدام صورة عالية الجودة بحجم 1920x1080 بكسل
+              </div>
             </div>
 
             {/* الشارة (Badge) */}
-            {renderFieldWithHint('badge', '  الشارة (مثال: أحدث التقنيات)', 'text')}
+            {renderFieldWithHint('badge', 'الشارة (مثال: أحدث التقنيات)', 'text')}
             
             {/* العنوان الرئيسي */}
-            {renderFieldWithHint('title', '  العنوان الرئيسي', 'text')}
+            {renderFieldWithHint('title', 'العنوان الرئيسي', 'text')}
             
             {/* العنوان الفرعي */}
-            {renderFieldWithHint('subtitle', '  العنوان الفرعي', 'text')}
+            {renderFieldWithHint('subtitle', 'العنوان الفرعي', 'text')}
             
             {/* الوصف */}
-            {renderFieldWithHint('description', '  الوصف', 'textarea', 4)}
+            {renderFieldWithHint('description', 'الوصف', 'textarea', 4)}
             
             {/* النص البديل للصورة */}
             <div className={styles.fieldWrapper}>
               <div className={styles.fieldHeader}>
-                <label className={styles.fieldLabel}>  النص البديل للصورة (SEO)</label>
+                <label className={styles.fieldLabel}>النص البديل للصورة (SEO)</label>
               </div>
               <input
                 type="text"
@@ -349,7 +376,7 @@ const HeroSection = ({ heroData, serviceName, scrollToBooking, onHeroUpdate }) =
             </div>
             
             {/* زر الحث على الإجراء */}
-            {renderFieldWithHint('cta_text', '  زر الحث على الإجراء (CTA)', 'text')}
+            {renderFieldWithHint('cta_text', 'زر الحث على الإجراء (CTA)', 'text')}
           </div>
         ) : (
           <>
@@ -369,6 +396,23 @@ const HeroSection = ({ heroData, serviceName, scrollToBooking, onHeroUpdate }) =
               )}
             </div>
           </>
+        )}
+
+        {/* عرض معلومات الحالة */}
+        {!isEditing && heroData.id && (
+          <div className={styles.statusInfo}>
+            <span className={styles.statusBadge}>
+                تم تحديث آخر مرة
+            </span>
+          </div>
+        )}
+        
+        {!isEditing && !heroData.id && (
+          <div className={styles.statusInfo}>
+            <span className={styles.statusBadgeWarning}>
+              ⚠️ لم تتم إضافة محتوى الهيرو بعد، اضغط تعديل للإضافة
+            </span>
+          </div>
         )}
       </div>
 
@@ -391,15 +435,6 @@ const HeroSection = ({ heroData, serviceName, scrollToBooking, onHeroUpdate }) =
       )}
     </section>
   );
-};
-
-// فنكشن مساعدة لتحويل رابط يوتيوب
-const getYouTubeEmbedUrl = (url) => {
-  if (!url) return null;
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-  const videoId = (match && match[2].length === 11) ? match[2] : null;
-  return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : url;
 };
 
 export default HeroSection;

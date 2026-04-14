@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import AxiosInstance from '../../../../../components/Authentication/AxiosInstance';
 import styles from './ProblemSolution.module.css';
 
-const ProblemSolution = ({ problem_solution, onProblemSolutionUpdate }) => {
+const ProblemSolution = ({ problem_solution, fetchData }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({ ...problem_solution });
   const [isSaving, setIsSaving] = useState(false);
@@ -83,8 +83,8 @@ const ProblemSolution = ({ problem_solution, onProblemSolutionUpdate }) => {
     setShowHint(prev => ({ ...prev, [fieldName]: !prev[fieldName] }));
   };
 
-  // فنكشن تحديث البيانات عبر API مع دعم الصور
-  const updateServiceProblemSolution = async (id, textData, images) => {
+  // فنكشن حفظ البيانات (CREATE or UPDATE)
+  const saveServiceProblemSolution = async (textData, images) => {
     try {
       let formData = new FormData();
       
@@ -104,15 +104,28 @@ const ProblemSolution = ({ problem_solution, onProblemSolutionUpdate }) => {
         formData.append('solution_image', images.solution_image);
       }
       
-      const response = await AxiosInstance.put(`/services/service-problem-solutions/${id}/`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      let response;
+      
+      // إذا كان يوجد id، نقوم بالتحديث (UPDATE)
+      if (problem_solution.id) {
+        response = await AxiosInstance.put(`/services/service-problem-solutions/${problem_solution.id}/`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } else {
+        // إذا لم يوجد id، نقوم بالإضافة (CREATE)
+        response = await AxiosInstance.post('/services/service-problem-solutions/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
+      
       return response.data;
     } catch (error) {
       console.error('API Error:', error.response?.data || error.message);
-      throw new Error(error.response?.data?.message || 'فشل في تحديث البيانات');
+      throw new Error(error.response?.data?.message || 'فشل في حفظ البيانات');
     }
   };
 
@@ -142,30 +155,28 @@ const ProblemSolution = ({ problem_solution, onProblemSolutionUpdate }) => {
         service: editedData.service
       };
       
-      const updatedData = await updateServiceProblemSolution(
-        problem_solution.id, 
-        textData, 
-        imageFiles
-      );
-
-      if (typeof onProblemSolutionUpdate === 'function') {
-        onProblemSolutionUpdate(updatedData);
+      // حفظ البيانات عبر API (سواء create أو update)
+      const savedData = await saveServiceProblemSolution(textData, imageFiles);
+      
+      // ✅ استخدام fetchData لإعادة تحميل البيانات بالكامل
+      if (typeof fetchData === 'function') {
+        await fetchData();
       }
 
       setImagePreviews({
-        problem_image: updatedData.problem_image,
-        solution_image: updatedData.solution_image
+        problem_image: savedData.problem_image,
+        solution_image: savedData.solution_image
       });
 
       setIsEditing(false);
       setImageFiles({ problem_image: null, solution_image: null });
-      showNotification('✓ تم حفظ المشكلة والحل بنجاح!', 'success');
+      showNotification('  تم حفظ المشكلة والحل بنجاح!', 'success');
       
       // إعادة جلب الأمثلة بعد الحفظ
       fetchFieldExamples();
     } catch (err) {
       setError(err.message);
-      showNotification(`✗ ${err.message}`, 'error');
+      showNotification(`❌ ${err.message}`, 'error');
       console.error('Error saving data:', err);
     } finally {
       setIsSaving(false);
@@ -310,7 +321,7 @@ const ProblemSolution = ({ problem_solution, onProblemSolutionUpdate }) => {
                 disabled={isSaving}
               >
                 <Save size={18} />
-                {isSaving ? 'جاري الحفظ...' : 'حفظ'}
+                {isSaving ? 'جاري الحفظ...' : 'حفظ الكل'}
               </button>
               <button 
                 onClick={handleCancelClick} 
@@ -456,6 +467,23 @@ const ProblemSolution = ({ problem_solution, onProblemSolutionUpdate }) => {
             </div>
           </div>
         </div>
+
+        {/* عرض معلومات الحالة */}
+        {!isEditing && problem_solution.id && (
+          <div className={styles.statusInfo}>
+            <span className={styles.statusBadge}>
+               تم تحديث آخر مرة
+            </span>
+          </div>
+        )}
+        
+        {!isEditing && !problem_solution.id && (
+          <div className={styles.statusInfo}>
+            <span className={styles.statusBadgeWarning}>
+              ⚠️ لم تتم إضافة مشكلة وحل بعد، اضغط تعديل للإضافة
+            </span>
+          </div>
+        )}
 
         {/* نصائح إضافية في وضع التعديل */}
         {isEditing && (

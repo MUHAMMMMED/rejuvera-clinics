@@ -1,6 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+ 
+import { GTMEvents } from '../../../../../../hooks/useGTM';
 import styles from './Categories.module.css';
+
 const CategoriesMobile = ({ setSelectedService, scrollToSection, data }) => {
   const navigate = useNavigate();
   const categories = data?.categories || [];
@@ -30,9 +33,30 @@ const CategoriesMobile = ({ setSelectedService, scrollToSection, data }) => {
   // دالة لتقصير النص بعدد كلمات
   const truncateWords = (text, maxWords) => {
     if (!text) return '';
-    const words = text.trim().split(/\s+/); // أفضل تقسيم للكلمات
+    const words = text.trim().split(/\s+/);
     if (words.length <= maxWords) return text;
     return words.slice(0, maxWords).join(' ') + '...';
+  };
+
+  // ✅ GTM: تتبع اختيار التصنيف
+  const handleCategorySelect = (category) => {
+    // إرسال حدث GTM عند اختيار التصنيف
+    GTMEvents.viewContent(category.id, category.name, 'category');
+    
+    // تنفيذ الإجراء الأصلي
+    setSelectedService(category.name);
+    scrollToSection('services');
+  };
+
+  // ✅ GTM: تتبع النقر على زر الخدمات
+  const handleExploreClick = (e, category) => {
+    e.stopPropagation(); // Prevent triggering parent onClick
+    
+    // إرسال حدث GTM عند النقر على زر الخدمات
+    GTMEvents.viewContent(category.id, `${category.name} - الخدمات`, 'category_explore');
+    
+    // التنقل إلى صفحة التصنيف
+    navigate(`/category/${category?.id}`);
   };
 
   // لو مفيش بيانات
@@ -73,10 +97,7 @@ const CategoriesMobile = ({ setSelectedService, scrollToSection, data }) => {
               key={category.id}
               className={styles.card}
               style={{ animationDelay: `${index * 90}ms` }}
-              onClick={() => {
-                setSelectedService(category.name);
-                scrollToSection('services');
-              }}
+              onClick={() => handleCategorySelect(category)}
             >
               <div className={styles.cardContent}>
                 
@@ -99,10 +120,7 @@ const CategoriesMobile = ({ setSelectedService, scrollToSection, data }) => {
                 <div className={styles.leftContent}>
                   <button 
                     className={styles.exploreBtn}
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent triggering parent onClick
-                      navigate(`/category/${category?.id}`);  
-                    }}
+                    onClick={(e) => handleExploreClick(e, category)}
                   >
                     الخدمات
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
