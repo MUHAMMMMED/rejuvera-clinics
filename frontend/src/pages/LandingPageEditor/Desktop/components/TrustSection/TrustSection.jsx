@@ -70,7 +70,7 @@ const TrustSection = ({ trust, fetchData, onTrustUpdate }) => {
       setEditedData({ ...savedTrust });
       
       setIsEditing(false);
-      showNotification('✅ تم حفظ إحصائيات الثقة بنجاح!', 'success');
+      showNotification('  تم حفظ إحصائيات الثقة بنجاح!', 'success');
     } catch (err) {
       setError(err.message);
       showNotification(`❌ ${err.message}`, 'error');
@@ -234,7 +234,7 @@ const TrustSection = ({ trust, fetchData, onTrustUpdate }) => {
         {!isEditing && trust.id && (
           <div className={styles.statusInfo}>
             <span className={styles.statusBadge}>
-              ✅ تم تحديث آخر مرة
+             تم تحديث آخر مرة
             </span>
           </div>
         )}

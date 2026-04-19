@@ -36,25 +36,36 @@ const CategoriesDesktop = ({ setSelectedService, scrollToSection, data }) => {
     return words.slice(0, maxWords).join(' ') + '...';
   };
 
-  // ✅ GTM: تتبع اختيار التصنيف
+  // ✅ GTM: تتبع اختيار التصنيف (للتمرير إلى الخدمات في نفس الصفحة)
   const handleCategorySelect = (category) => {
     // إرسال حدث GTM عند اختيار التصنيف
     GTMEvents.viewContent(category.id, category.name, 'category');
     
-    // تنفيذ الإجراء الأصلي
+    // تنفيذ الإجراء الأصلي (التمرير إلى قسم الخدمات في نفس الصفحة)
     setSelectedService(category.name);
     scrollToSection('services');
   };
 
-  // ✅ GTM: تتبع النقر على زر الخدمات
-  const handleExploreClick = (e, category) => {
-    e.stopPropagation(); // Prevent triggering parent onClick
+  // ✅ GTM: التنقل إلى صفحة التصنيف كاملة
+  const handleNavigateToCategory = (e, category) => {
+    e.stopPropagation(); // منع تنشيط الحدث الأصلي للكارد
     
-    // إرسال حدث GTM عند النقر على زر الخدمات
-    GTMEvents.viewContent(category.id, `${category.name} - الخدمات`, 'category_explore');
+    // إرسال حدث GTM عند النقر على أيقونة التصنيف أو زر الخدمات
+    GTMEvents.viewContent(category.id, `${category.name} - صفحة التصنيف`, 'category_navigation');
     
     // التنقل إلى صفحة التصنيف
-    navigate(`/category/${category?.id}`);
+    navigate(`/category/${category.id}`);
+  };
+
+  // ✅ GTM: التنقل إلى صفحة الخدمات داخل التصنيف
+  const handleNavigateToServices = (e, category) => {
+    e.stopPropagation(); // منع تنشيط الحدث الأصلي للكارد
+    
+    // إرسال حدث GTM عند النقر على زر الخدمات
+    GTMEvents.viewContent(category.id, `${category.name} - الخدمات`, 'category_services');
+    
+    // التنقل إلى صفحة الخدمات الخاصة بالتصنيف
+    navigate(`/category/${category.id}/services`);
   };
 
   return (
@@ -76,12 +87,19 @@ const CategoriesDesktop = ({ setSelectedService, scrollToSection, data }) => {
               key={category.id}
               className={styles.card}
               style={{ animationDelay: `${index * 90}ms` }}
-              onClick={() => handleCategorySelect(category)}
+       
             >
               <div className={styles.cardContent}>
                 {/* الجزء الأيمن: الأيقونة + النص */}
                 <div className={styles.rightContent}>
-                  <div className={styles.icon}>
+                  <div 
+                    className={styles.icon}
+                    onClick={(e) => handleNavigateToServices(e, category)}
+               
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`انتقال إلى صفحة ${category.name}`}
+                  >
                     <DefaultServiceIcon />
                   </div>
                   <div className={styles.textWrapper}>
@@ -96,7 +114,7 @@ const CategoriesDesktop = ({ setSelectedService, scrollToSection, data }) => {
                 <div className={styles.leftContent}>
                   <button 
                     className={styles.exploreBtn}
-                    onClick={(e) => handleExploreClick(e, category)}
+                    onClick={(e) => handleNavigateToCategory(e, category)}
                   >
                     الخدمات
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">

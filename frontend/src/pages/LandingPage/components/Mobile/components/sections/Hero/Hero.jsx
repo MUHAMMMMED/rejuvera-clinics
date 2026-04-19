@@ -2,7 +2,7 @@ import { Calendar, Play } from 'lucide-react';
 import React from 'react';
 import styles from './Hero.module.css';
 
-const Hero = ({ data, serviceName, onBook, onPlayVideo }) => {
+const Hero = ({ data, serviceName, onBook, onPlayVideo, showButtons=true }) => {
   return (
     <section id="hero" className={styles.hero}>
       <div className={styles.heroCard}>
@@ -38,6 +38,10 @@ const Hero = ({ data, serviceName, onBook, onPlayVideo }) => {
           </div>
         )}
 
+   {showButtons && (
+       
+        
+
         <div className={styles.heroButtons}>
           <button onClick={onBook} className={styles.heroCta}>
             <Calendar size={16} />
@@ -50,6 +54,7 @@ const Hero = ({ data, serviceName, onBook, onPlayVideo }) => {
             </button>
           )} */}
         </div>
+          )}
       </div>
     </section>
   );

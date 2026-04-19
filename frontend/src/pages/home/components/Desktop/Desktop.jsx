@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Map from '../../../../components/Map/Map';
 import Navbar from '../../../../components/Navbar/Navbar';
+  
+import WhatsAppFloat from '../../../../components/WhatsAppFloat/WhatsAppFloat';
 import './HomeDesktop.css';
 import AboutDesktop from './components/About/About';
 import CategoriesDesktop from './components/Categories/Categories';
@@ -13,8 +15,7 @@ import Hero from './components/Hero/Hero';
 import Lightbox from './components/Lightbox/Lightbox';
 import PackagesDesktop from './components/Packages/Packages';
 import Services from './components/Services/Services';
-import WhatsAppFloat from './components/WhatsAppFloat/WhatsAppFloat';
-
+ 
 const HomeDesktop = ({data, clinicName}) => {
  
   // ✅ استخدام state ديناميكي يعتمد على البيانات
@@ -66,7 +67,8 @@ const HomeDesktop = ({data, clinicName}) => {
         site_name={data?.info?.site_name}
       />
       <Footer data={data} scrollToSection={scrollToSection} setSelectedService={setSelectedService} />
-      <WhatsAppFloat data={data} />
+      <WhatsAppFloat phone={data?.info?.phone} whatsapp={data?.info?.whatsapp} />
+
     </div>
   );
 };

@@ -10,6 +10,7 @@ import EmptyState from '../../components/EmptyState/EmptyState';
 import ErrorState from '../../components/ErrorState/ErrorState';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
  
+import WhatsAppFloat from '../../components/WhatsAppFloat/WhatsAppFloat';
 import { GTMEvents } from '../../hooks/useGTM';
 import './Packages.css';
 
@@ -243,6 +244,7 @@ export default function PackagesPage() {
           )}
         </div>
       </div>
+      <WhatsAppFloat phone={data?.info?.phone} whatsapp={data?.info?.whatsapp} />
     </>
   );
 }

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import VideoModal from '../VideoModal/VideoModal';
 import styles from './HeroSection.module.css';
 
-const HeroSection = ({ heroData, serviceName, scrollToBooking }) => {
+const HeroSection = ({ heroData, serviceName, scrollToBooking,showButtons = true}) => {
   const [showVideo, setShowVideo] = useState(false);
 
   const getYouTubeEmbedUrl = (url) => {
@@ -25,11 +25,11 @@ const HeroSection = ({ heroData, serviceName, scrollToBooking }) => {
         <h1 className={styles.heroTitle}>{heroData.title || serviceName}</h1>
         <p className={styles.heroSubtitle}>{heroData.subtitle}</p>
         <p className={styles.heroDescription}>{heroData.description}</p>
-        
+        {showButtons && (
         <div className={styles.heroButtons}>
           <button onClick={scrollToBooking} className={styles.heroCta}>
             <Calendar size={18} />
-            احجزي استشارتك المجانية
+            احجزي استشارتك  
           </button>
           {heroData.video_url && (
             <button onClick={() => setShowVideo(true)} className={styles.heroSecondary}>
@@ -38,6 +38,7 @@ const HeroSection = ({ heroData, serviceName, scrollToBooking }) => {
             </button>
           )}
         </div>
+       )}
       </div>
       
       {showVideo && heroData.video_url && (

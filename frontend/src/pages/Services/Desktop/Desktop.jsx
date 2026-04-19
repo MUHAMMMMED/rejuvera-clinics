@@ -144,14 +144,14 @@ const ServicesDesktop = ({ data }) => {
                   <p className={styles.description}>{service.description}</p>
                 </div>
                 
-                <div className={styles.details}>
+                {/* <div className={styles.details}>
                   <div className={styles.price}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                     </svg>
                     <span>استشارة مجانية</span>
                   </div>
-                </div>
+                </div> */}
                 
                 {/* ✅ زر احجزي الآن -> openBooking */}
                 <button 

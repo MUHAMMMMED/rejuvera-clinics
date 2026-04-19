@@ -169,6 +169,7 @@ export default function BlogList() {
           )}
         </div>
       </div>
+      {/* <WhatsAppFloat phone={safeData?.info?.phone} whatsapp={safeData?.info?.whatsapp} /> */}
     </>
   );
 }

@@ -27,7 +27,7 @@ urlpatterns = [
      path('dashboard/service/<int:id>/details/', DashboardServiceAPIView.as_view(), name='service-details'),
  
 
- 
+    path('category/<int:category_id>/details/', CategoryDetailsView.as_view(), name='category-details'),
     path('category/<int:category_id>/services/', ServicesByCategoryView.as_view(), name='service-category-details'),
  
 ]

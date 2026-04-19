@@ -118,6 +118,88 @@ export default function BlogDetails() {
 
   const relatedServices = getRelatedServices();
 
+  // ============================================
+  // SANITIZE AND PROCESS HTML CONTENT
+  // ============================================
+  
+  // تكوين DOMPurify للأمان
+  const sanitizeConfig = {
+    ALLOWED_TAGS: [
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'p', 'br', 'hr',
+      'strong', 'b', 'em', 'i', 'u', 'span',
+      'a', 'img',
+      'ul', 'ol', 'li',
+      'table', 'thead', 'tbody', 'tr', 'th', 'td',
+      'blockquote', 'pre', 'code',
+      'div', 'section',
+      'figure', 'figcaption',
+      'iframe', 'video', 'source',
+      'button',
+      'del', 'ins', 'mark'
+    ],
+    ALLOWED_ATTR: [
+      'href', 'src', 'alt', 'title', 'class',
+      'id', 'style', 'width', 'height',
+      'target', 'rel', 'loading',
+      'controls', 'autoplay', 'loop', 'muted',
+      'allow', 'allowfullscreen', 'frameborder'
+    ],
+    ALLOW_DATA_ATTR: false,
+    ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp|data):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i
+  };
+
+  // معالجة المحتوى HTML
+  const processContent = (content) => {
+    if (!content) return '<p>لا يوجد محتوى متاح حالياً.</p>';
+    
+    // تنظيف الـ HTML من أي أكواد ضارة
+    let cleanContent = DOMPurify.sanitize(content, sanitizeConfig);
+    
+    // إضافة الكلاسات للصور لجعلها responsive
+    cleanContent = cleanContent.replace(
+      /<img(.*?)>/gi,
+      (match, attrs) => {
+        // إضافة كلاس responsive للصورة
+        if (!attrs.includes('class=')) {
+          return `<img${attrs} class="responsive-image" loading="lazy">`;
+        }
+        return match.replace(/class="([^"]*)"/, 'class="$1 responsive-image"');
+      }
+    );
+    
+    // إضافة كلاس للفيديو
+    cleanContent = cleanContent.replace(
+      /<iframe(.*?)>/gi,
+      (match) => {
+        // إضافة كلاس responsive للفيديو
+        return match.replace(/<iframe/i, '<iframe class="responsive-video"');
+      }
+    );
+    
+    // إضافة wrapper للفيديو لجعله responsive
+    cleanContent = cleanContent.replace(
+      /<iframe(.*?)<\/iframe>/gi,
+      (match) => {
+        return `<div class="video-wrapper">${match}</div>`;
+      }
+    );
+    
+    // معالجة الجداول لجعلها responsive
+    cleanContent = cleanContent.replace(
+      /<table(.*?)>(.*?)<\/table>/gis,
+      (match) => {
+        return `<div class="table-wrapper">${match}</div>`;
+      }
+    );
+    
+    return cleanContent;
+  };
+
+  // ============================================
+  // RENDER FUNCTIONS
+  // ============================================
+
   // Loading State
   if (loading) {
     return (
@@ -199,12 +281,23 @@ export default function BlogDetails() {
     day: 'numeric',
   });
 
+  // معالجة المحتوى النهائي
+  const sanitizedContent = processContent(blog.content);
+
   return (
     <>
       <Helmet>
         <title>{blog.title} | ريجوفيرا كلينك</title>
         <meta name="description" content={blog.summary} />
         <meta name="keywords" content={blog.tags?.join(', ') || ''} />
+        <meta property="og:title" content={blog.title} />
+        <meta property="og:description" content={blog.summary} />
+        <meta property="og:type" content="article" />
+        <meta property="article:published_time" content={blog.created_at} />
+        {blog.author && <meta property="article:author" content={blog.author} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={blog.title} />
+        <meta name="twitter:description" content={blog.summary} />
       </Helmet>
 
       <Navbar />
@@ -242,16 +335,12 @@ export default function BlogDetails() {
             </div>
           </div>
 
-          {/* Content */}
+          {/* Content - معالجة الـ HTML الداخلي */}
           <div className={styles.blogContentWrapperUnique}>
             <div className={styles.blogMainContentUnique}>
               <div 
                 className={styles.blogContentUnique}
-                dangerouslySetInnerHTML={{ 
-                  __html: DOMPurify.sanitize(
-                    blog.content || '<p>لا يوجد محتوى متاح حالياً.</p>'
-                  )
-                }}
+                dangerouslySetInnerHTML={{ __html: sanitizedContent }}
               />
               
               {/* Tags */}

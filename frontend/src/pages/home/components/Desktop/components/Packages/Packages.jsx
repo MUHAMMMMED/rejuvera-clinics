@@ -104,7 +104,11 @@ const PackagesDesktop = ({ data, scrollToSection }) => {
                   </div>
                   <div className={styles.infoWrapper}>
                     <h3 className={styles.name}>{pkg.name}</h3>
-                    <div className={styles.price}>{pkg.price} جنيه</div>
+                    {pkg.price && (
+  <div className={styles.price}>
+    {pkg.price}
+  </div>
+)}
                   </div>
                 </div>
 

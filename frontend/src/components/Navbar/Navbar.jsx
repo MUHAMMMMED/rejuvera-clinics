@@ -11,22 +11,21 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   
-  // تحديد إذا كنا في الصفحة الرئيسية أم لا
   const isHomePage = location.pathname === '/';
   
+  // تعريف العناصر مع إضافة خاصية new 'type' للتمييز بين الـ sections والـ links
   const navItems = [
-    { id: 'home', label: 'الرئيسية', path: '/' },
-    { id: 'about', label: 'من نحن', path: '/about' },
-    { id: 'categories', label: 'الأقسام', path: '/categories' },
-    { id: 'services', label: 'خدماتنا', path: '/services' },
-    { id: 'packages', label: 'الباقات', path: '/packages' },
-    { id: 'gallery', label: 'النتائج', path: '/gallery' },
-    { id: 'doctors', label: 'أطباؤنا', path: '/doctors' },
-    { id: 'faq', label: 'الأسئلة الشائعة', path: '/faq' },
-    { id: 'device', label: 'الأجهزة', path: '/devices' },
-    { id: 'blog', label: 'المدونة', path: '/blog' }
+    { id: 'home', label: 'الرئيسية', path: '/', type: 'section' },
+    { id: 'about', label: 'من نحن', path: '/about', type: 'section' },
+    { id: 'categories', label: 'الأقسام', path: '/categories', type: 'section' },
+    { id: 'services', label: 'خدماتنا', path: '/services', type: 'section' },
+    { id: 'packages', label: 'الباقات', path: '/packages', type: 'section' },
+    { id: 'gallery', label: 'النتائج', path: '/gallery', type: 'section' },
+    { id: 'doctors', label: 'أطباؤنا', path: '/doctors', type: 'section' },
+    { id: 'faq', label: 'الأسئلة الشائعة', path: '/faq', type: 'section' },
+    { id: 'device', label: 'الأجهزة', path: '/devices', type: 'link' },      // نوع مختلف
+    { id: 'blog', label: 'المدونة', path: '/blog', type: 'link' }            // نوع مختلف
   ];
-
 
   // دالة التمرير السلس للأقسام في الصفحة الرئيسية
   const scrollToSection = (sectionId) => {
@@ -37,24 +36,35 @@ const Navbar = () => {
     }
   };
 
-  // معالج الضغط على الرابط
+  // معالج الضغط على الرابط - منطق جديد
   const handleNavClick = (item) => {
+    // إذا كان العنصر من نوع link (مدونة أو أجهزة)
+    if (item.type === 'link') {
+      // دائماً نذهب إلى المسار المحدد باستخدام React Router
+      navigate(item.path);
+      setMobileMenuOpen(false);
+      return;
+    }
+
+    // باقي الكود للعناصر من نوع section
     if (isHomePage) {
       // في الصفحة الرئيسية: نمرر إلى القسم المطلوب
       scrollToSection(item.id);
     } else {
       // في الصفحات الأخرى: ننتقل باستخدام React Router
-      if (item.id === 'home') {
-        navigate('/');
-      } else {
-        navigate(item.path);
-      }
+      navigate(item.path);
     }
     setMobileMenuOpen(false);
   };
 
-  // التحقق من الرابط النشط
+  // التحقق من الرابط النشط - منطق جديد
   const isActive = (item) => {
+    // للمدونة والأجهزة: نتحقق من المسار الحالي فقط
+    if (item.type === 'link') {
+      return location.pathname === item.path;
+    }
+    
+    // للعناصر العادية (sections)
     if (isHomePage) {
       // في الصفحة الرئيسية: نتحقق من activeSection
       return activeSection === item.id;
@@ -73,8 +83,9 @@ const Navbar = () => {
       // تغيير مظهر الـ Navbar عند التمرير
       setScrolled(window.scrollY > 50);
       
-      // فقط في الصفحة الرئيسية نحدد الأقسام النشطة
+      // فقط في الصفحة الرئيسية نحدد الأقسام النشطة (وليس للمدونة والأجهزة)
       if (isHomePage) {
+        // الأقسام التي لها sections فقط (نستثني device و blog)
         const sections = ['home', 'about', 'categories', 'services', 'packages', 'gallery', 'doctors', 'faq'];
         const scrollPosition = window.scrollY + 100;
         

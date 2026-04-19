@@ -5,6 +5,7 @@ import EmptyState from '../../components/EmptyState/EmptyState';
 import ErrorState from '../../components/ErrorState/ErrorState';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import Navbar from '../../components/Navbar/Navbar';
+import WhatsAppFloat from '../../components/WhatsAppFloat/WhatsAppFloat';
 import useDevice from "../../hooks/useDevice";
 import { GTMEvents } from '../../hooks/useGTM';
 import CategoriesDesktop from '../home/components/Desktop/components/Categories/Categories';
@@ -251,6 +252,7 @@ export default function CategoriesPage() {
           }
         </div>
       </div>
+      <WhatsAppFloat phone={data?.info?.phone} whatsapp={data?.info?.whatsapp} />
     </>
   );
 }

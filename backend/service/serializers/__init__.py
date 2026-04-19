@@ -1,4 +1,4 @@
-from .service_category import ServiceCategoryWriteSerializer,ServiceCategoryReadSerializer
+from .service_category import ServiceCategoryWriteSerializer,ServiceCategoryReadSerializer,CategoryDetailsReadSerializer
 from .service import ServiceWriteSerializer,ServiceReadSerializer,ServiceDetailsSerializer
 from .service_hero import ServiceHeroWriteSerializer,ServiceHeroReadSerializer
 from .process_step import ProcessStepsReadSerializer,ProcessStepsWriteSerializer
@@ -14,6 +14,7 @@ __all__ = [
 
     "ServiceCategoryWriteSerializer",
     "ServiceCategoryReadSerializer",
+    "CategoryDetailsReadSerializer",
 
     "ServiceWriteSerializer",
     "ServiceReadSerializer",

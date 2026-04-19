@@ -79,6 +79,7 @@ const DesktopLanding = ({ data }) => {
         heroData={heroData} 
         serviceName={service.name} 
         scrollToBooking={scrollToBooking} 
+        showButtons ={true}
       />
       <TrustSection trust={trust} />
       <ProblemSolution problem_solution={problem_solution}/>

@@ -16,6 +16,7 @@ import DoctorsPage from './pages/Doctors/Doctors';
 import FaqsPage from './pages/Faq/Faq';
 import GalleryPage from './pages/Gallery/Gallery';
 import Home from "./pages/home/Home";
+import LandingCategory from "./pages/LandingCategory/LandingCategory";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import LandingPageEditor from './pages/LandingPageEditor/LandingPageEditor';
 import PackagesPage from './pages/Packages/Packages';
@@ -34,6 +35,8 @@ const App = () => {
         <Route path="/service/:id/edit/" element={<LandingPageEditor />} />
 
         <Route path="/category/:id/" element={<ServicesByCategory />} />
+        <Route path="/category/:id/services" element={<LandingCategory />} />
+        
         <Route path="/categories" element={<CategoriesPage/>} />
 
         <Route path="/about" element={<AboutPage/>} />
@@ -50,6 +53,8 @@ const App = () => {
         <Route path="/device/:id" element={<DeviceDetails/>} />
         <Route path="/device/:id/edit" element={<DeviceDashboard/>} />
 
+       
+        
         <Route path="/dashboard" element={<Dashboard />} />
 
         {/* 404 Page - Must be the last route */}

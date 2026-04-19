@@ -1,7 +1,6 @@
 import { Calendar } from 'lucide-react';
 import React, { useState } from 'react';
 import Map from '../../../../components/Map/Map';
- 
 import { GTMEvents } from '../../../../hooks/useGTM';
 import styles from './MobileLanding.module.css';
 import LoadingSpinner from './components/common/LoadingSpinner/LoadingSpinner';
@@ -159,6 +158,7 @@ const MobileLanding = ({ data }) => {
           serviceName={service.name}
           onBook={handleOpenBooking}
           onPlayVideo={handleOpenVideo}
+          showButtons ={true}
         />
 
         <Stats data={trustData} />

@@ -38,7 +38,7 @@ const Hero = ({ scrollToSection ,data}) => {
         
         {/* Badge */}
         <div className={styles.heroBadge}>
-          <span>عيادة ريجوفيرا  </span>
+        <span>مركز ريجوفيرا الطبي </span>
         </div>
 
         {/* Title */}

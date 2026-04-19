@@ -1,0 +1,755 @@
+.finalCtaSection {
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.02));
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.finalCtaWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.finalCtaContent h2 {
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.finalCtaContent p {
+  color: #b0b0b0;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.finalCtaBenefits {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+}
+
+.finalCtaBenefits div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #c0c0c0;
+  font-size: 0.85rem;
+}
+
+.finalCtaBenefits svg {
+  color: #d4af37;
+  flex-shrink: 0;
+}
+
+.bookingForm {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 24px;
+  padding: 2rem;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.formGroup input,
+.formGroup textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  color: #fff;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #d4af37;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.formGroup input::placeholder,
+.formGroup textarea::placeholder {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+/* Custom Select Dropdown Styles */
+.customSelect {
+  position: relative;
+  width: 100%;
+}
+
+.selectTrigger {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  color: #fff;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.selectTrigger:hover {
+  border-color: rgba(212, 175, 55, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.placeholder {
+  color: #888;
+}
+
+.selectedValue {
+  color: #fff;
+}
+
+.selectIcon {
+  transition: transform 0.3s ease;
+  color: #d4af37;
+  flex-shrink: 0;
+}
+
+.selectIcon.rotated {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  animation: dropdownFadeIn 0.2s ease;
+}
+
+/* Search Wrapper Styles */
+.searchWrapper {
+  padding: 0.8rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  position: sticky;
+  top: 0;
+  background: inherit;
+  z-index: 1;
+}
+
+.searchInput {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  color: #fff;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #d4af37;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.searchInput::placeholder {
+  color: #666;
+}
+
+.dropdownItem {
+  padding: 0.8rem 1rem;
+  color: #c0c0c0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  font-size: 0.9rem;
+}
+
+.dropdownItem:last-child {
+  border-bottom: none;
+}
+
+.dropdownItem:hover {
+  background: rgba(212, 175, 55, 0.1);
+  color: #d4af37;
+  padding-right: 1.2rem;
+}
+
+.noResults {
+  padding: 1rem;
+  text-align: center;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+/* Custom scrollbar for dropdown */
+.dropdownMenu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdownMenu::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.dropdownMenu::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.4);
+  border-radius: 3px;
+}
+
+.dropdownMenu::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.6);
+}
+
+.submitBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  color: #0a0a0a;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  box-sizing: border-box;
+}
+
+.submitBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+}
+
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.successMessage {
+  text-align: center;
+  padding: 2rem;
+}
+
+.successMessage svg {
+  color: #d4af37;
+  margin-bottom: 1rem;
+}
+
+.successMessage h3 {
+  color: #d4af37;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.successMessage p {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Error message style */
+.errorMsg {
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  margin: 0.5rem 0 0;
+  text-align: center;
+}
+
+/* Centered Modal Popup - Professional with Animation */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modalContainer {
+  animation: modalPopIn 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+  max-width: 90%;
+  width: 450px;
+  margin: 20px;
+}
+
+.modalContent {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 28px;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.2);
+}
+
+.modalClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #888;
+  transition: all 0.2s ease;
+}
+
+.modalClose:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+.modalIcon {
+  margin-bottom: 1.5rem;
+}
+
+.checkmarkCircle {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulseCheckmark 0.6s ease-out;
+}
+
+.checkmarkCircle svg {
+  color: #d4af37;
+  animation: scaleIn 0.4s cubic-bezier(0.34, 1.2, 0.64, 1) 0.2s both;
+}
+
+.modalTitle {
+  color: #d4af37;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  animation: slideUp 0.4s ease 0.1s both;
+}
+
+.modalMessage {
+  color: #c0c0c0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  animation: slideUp 0.4s ease 0.2s both;
+}
+
+.modalMessage strong {
+  color: #d4af37;
+  font-weight: 600;
+}
+
+.modalDetails {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  animation: slideUp 0.4s ease 0.3s both;
+}
+
+.modalDetailItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(212, 175, 55, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  color: #d4af37;
+}
+
+.modalDetailItem svg {
+  color: #d4af37;
+  flex-shrink: 0;
+}
+
+.modalButton {
+  background: linear-gradient(135deg, #d4af37, #b8941f);
+  color: #0a0a0a;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;
+  animation: slideUp 0.4s ease 0.4s both;
+}
+
+.modalButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(-50px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pulseCheckmark {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================ */
+/* RESPONSIVE DESIGN - MOBILE FIRST APPROACH */
+/* ============================================ */
+
+/* للتابلت */
+@media (max-width: 968px) {
+  .finalCtaWrapper {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .finalCtaContent {
+    text-align: center;
+  }
+  
+  .finalCtaBenefits {
+    justify-content: center;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .bookingForm {
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+/* للموبايل */
+@media (max-width: 768px) {
+  .finalCtaSection {
+    padding: 2rem 0.75rem;
+  }
+  
+  .container {
+    padding: 0 0.75rem;
+  }
+  
+  .finalCtaWrapper {
+    gap: 1.5rem;
+  }
+  
+  .finalCtaContent h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .finalCtaContent p {
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .finalCtaBenefits {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    max-width: 280px;
+  }
+  
+  .finalCtaBenefits div {
+    font-size: 0.8rem;
+    justify-content: center;
+  }
+  
+  .bookingForm {
+    padding: 1.25rem;
+    border-radius: 20px;
+  }
+  
+  .formGroup {
+    margin-bottom: 0.875rem;
+  }
+  
+  .formGroup input,
+  .formGroup textarea,
+  .selectTrigger {
+    padding: 0.7rem 0.875rem;
+    font-size: 0.85rem;
+  }
+  
+  .formGroup input::placeholder,
+  .formGroup textarea::placeholder {
+    font-size: 0.8rem;
+  }
+  
+  .dropdownItem {
+    padding: 0.7rem 0.875rem;
+    font-size: 0.85rem;
+  }
+  
+  .submitBtn {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  .submitBtn svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .successMessage {
+    padding: 1.5rem;
+  }
+  
+  .successMessage svg {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .successMessage h3 {
+    font-size: 1.2rem;
+  }
+  
+  .successMessage p {
+    font-size: 0.85rem;
+  }
+}
+
+/* للموبايل الصغير جداً */
+@media (max-width: 480px) {
+  .finalCtaSection {
+    padding: 1.75rem 0.5rem;
+  }
+  
+  .container {
+    padding: 0 0.5rem;
+  }
+  
+  .finalCtaContent h2 {
+    font-size: 1.35rem;
+  }
+  
+  .finalCtaContent p {
+    font-size: 0.85rem;
+  }
+  
+  .finalCtaBenefits div {
+    font-size: 0.75rem;
+  }
+  
+  .bookingForm {
+    padding: 1rem;
+    border-radius: 16px;
+  }
+  
+  .formGroup {
+    margin-bottom: 0.75rem;
+  }
+  
+  .formGroup input,
+  .formGroup textarea,
+  .selectTrigger {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 10px;
+  }
+  
+  .formGroup input::placeholder,
+  .formGroup textarea::placeholder {
+    font-size: 0.75rem;
+  }
+  
+  .dropdownMenu {
+    max-height: 200px;
+  }
+  
+  .dropdownItem {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  .submitBtn {
+    padding: 0.7rem;
+    font-size: 0.85rem;
+    border-radius: 10px;
+  }
+  
+  .errorMsg {
+    font-size: 0.75rem;
+  }
+  
+  /* تحسين المودال للموبايل */
+  .modalContent {
+    padding: 1.25rem;
+    border-radius: 20px;
+  }
+  
+  .modalTitle {
+    font-size: 1.2rem;
+  }
+  
+  .modalMessage {
+    font-size: 0.8rem;
+  }
+  
+  .modalDetails {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .modalDetailItem {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .checkmarkCircle {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .checkmarkCircle svg {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .modalButton {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+    max-width: 160px;
+  }
+}
+
+/* تحسين الـ touch targets للموبايل */
+@media (max-width: 768px) {
+  .selectTrigger,
+  .submitBtn,
+  .dropdownItem,
+  .modalClose,
+  .modalButton {
+    min-height: 44px; /* Apple's recommended minimum touch target size */
+  }
+  
+  .selectTrigger {
+    min-height: 44px;
+  }
+  
+  .dropdownItem {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* تحسين التمرير للقائمة المنسدلة */
+  .dropdownMenu {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* منع zoom على الـ input في iOS */
+  @media (max-width: 768px) {
+    .formGroup input,
+    .formGroup textarea,
+    .selectTrigger {
+      font-size: 16px; /* Prevent zoom on iOS */
+    }
+  }
+}

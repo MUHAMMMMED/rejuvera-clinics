@@ -98,17 +98,192 @@
   padding: 2rem;
   border: 1px solid rgba(212, 175, 55, 0.2);
   margin-bottom: 2rem;
+  overflow-x: hidden; /* منع التمرير الأفقي */
 }
 
 .blogMainContentUnique {
   width: 100%;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .blogContentUnique {
   font-size: 1rem;
   line-height: 1.8;
   color: #ccc;
+  overflow-x: hidden;
+  word-wrap: break-word;
 }
+
+/* ============================================ */
+/* IMAGE RESPONSIVE STYLES - IMPORTANT */
+/* ============================================ */
+
+/* جميع الصور داخل المحتوى */
+.blogContentUnique img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+/* منع الصور من الخروج عن الحاوية */
+.blogContentUnique figure {
+  max-width: 100%;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+/* صور داخل figure */
+.blogContentUnique figure img {
+  margin: 0 auto;
+}
+
+/* تسميات الصور (figcaption) */
+.blogContentUnique figcaption {
+  font-size: 0.8rem;
+  color: #888;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* الصور المضمنة (inline images) */
+.blogContentUnique .aligncenter,
+.blogContentUnique .alignnone {
+  display: block;
+  margin: 1.5rem auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.blogContentUnique .alignleft {
+  float: left;
+  margin: 0.5rem 1rem 1rem 0;
+  max-width: 50%;
+  height: auto;
+}
+
+.blogContentUnique .alignright {
+  float: right;
+  margin: 0.5rem 0 1rem 1rem;
+  max-width: 50%;
+  height: auto;
+}
+
+/* ============================================ */
+/* VIDEO RESPONSIVE STYLES */
+/* ============================================ */
+
+/* حاوية الفيديو لجعلها responsive */
+.blogContentUnique iframe,
+.blogContentUnique video,
+.blogContentUnique embed {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 300px;
+  border-radius: 16px;
+  margin: 1.5rem 0;
+}
+
+/* حاوية خاصة بالفيديو للحفاظ على النسبة */
+.blogContentUnique .video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  margin: 1.5rem 0;
+}
+
+.blogContentUnique .video-wrapper iframe,
+.blogContentUnique .video-wrapper video,
+.blogContentUnique .video-wrapper embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+/* ============================================ */
+/* TABLE RESPONSIVE STYLES */
+/* ============================================ */
+
+/* جعل الجداول responsive */
+.blogContentUnique table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.blogContentUnique table th,
+.blogContentUnique table td {
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  padding: 0.8rem;
+  text-align: right;
+}
+
+.blogContentUnique table th {
+  background: rgba(212, 175, 55, 0.1);
+  color: #d4af37;
+  font-weight: 600;
+}
+
+.blogContentUnique table td {
+  color: #ccc;
+}
+
+/* ============================================ */
+/* BLOCKQUOTE STYLES */
+/* ============================================ */
+
+.blogContentUnique blockquote {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.02));
+  border-right: 4px solid #d4af37;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 16px;
+  font-style: italic;
+  color: #e0e0e0;
+}
+
+.blogContentUnique blockquote p {
+  margin-bottom: 0;
+}
+
+/* ============================================ */
+/* CODE BLOCK STYLES */
+/* ============================================ */
+
+.blogContentUnique pre {
+  background: #1a1a1a;
+  padding: 1rem;
+  border-radius: 12px;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  font-size: 0.85rem;
+  color: #d4af37;
+}
+
+.blogContentUnique code {
+  background: rgba(212, 175, 55, 0.1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #d4af37;
+}
+
+/* ============================================ */
+/* HEADINGS INSIDE CONTENT */
+/* ============================================ */
 
 .blogContentUnique h2 {
   font-size: 1.6rem;
@@ -120,6 +295,12 @@
   font-size: 1.3rem;
   margin: 1.5rem 0 1rem;
   color: #ffffff;
+}
+
+.blogContentUnique h4 {
+  font-size: 1.1rem;
+  margin: 1rem 0;
+  color: #e0e0e0;
 }
 
 .blogContentUnique p {
@@ -138,6 +319,17 @@
 
 .blogContentUnique strong {
   color: #d4af37;
+}
+
+.blogContentUnique a {
+  color: #d4af37;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.blogContentUnique a:hover {
+  color: #e8c547;
+  text-decoration: underline;
 }
 
 /* ============================================ */
@@ -218,7 +410,7 @@
 }
 
 /* ============================================ */
-/* SERVICE CARD - DESIGN UNIQUE (مستطيل أنيق) */
+/* SERVICE CARD - DESIGN UNIQUE */
 /* ============================================ */
 
 .blogServiceCardUnique {
@@ -239,7 +431,6 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* محتوى الكارد (أيقونة + معلومات) */
 .blogServiceCardContentUnique {
   display: flex;
   align-items: center;
@@ -282,7 +473,6 @@
   margin: 0;
 }
 
-/* زر الحجز */
 .blogServiceCardActionUnique {
   flex-shrink: 0;
 }
@@ -333,7 +523,43 @@
 }
 
 /* ============================================ */
-/* RESPONSIVE DESIGN - LIKE A MOBILE APP */
+/* GALLERY / MULTIPLE IMAGES STYLES */
+/* ============================================ */
+
+/* معرض الصور (إذا وجد) */
+.blogContentUnique .gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.blogContentUnique .gallery-item {
+  margin: 0;
+  padding: 0;
+}
+
+.blogContentUnique .gallery-icon {
+  margin: 0;
+}
+
+.blogContentUnique .gallery-icon img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  margin: 0;
+  border-radius: 12px;
+}
+
+.blogContentUnique .gallery-caption {
+  font-size: 0.75rem;
+  color: #888;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* ============================================ */
+/* RESPONSIVE DESIGN - MOBILE FIRST */
 /* ============================================ */
 
 /* للشاشات المتوسطة (تابلت) */
@@ -371,6 +597,41 @@
     align-items: center;
   }
   
+  /* تحسين الصور على التابلت */
+  .blogContentUnique img {
+    border-radius: 12px;
+    margin: 1rem auto;
+  }
+  
+  .blogContentUnique .alignleft,
+  .blogContentUnique .alignright {
+    float: none;
+    max-width: 100%;
+    margin: 1rem auto;
+    display: block;
+  }
+  
+  .blogContentUnique iframe,
+  .blogContentUnique video,
+  .blogContentUnique embed {
+    min-height: 220px;
+    border-radius: 12px;
+  }
+  
+  .blogContentUnique table {
+    font-size: 0.8rem;
+  }
+  
+  .blogContentUnique table th,
+  .blogContentUnique table td {
+    padding: 0.5rem;
+  }
+  
+  .blogContentUnique blockquote {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+  
   .blogRelatedServicesUnique {
     padding: 1.5rem;
     border-radius: 20px;
@@ -389,7 +650,7 @@
     gap: 0.8rem;
   }
   
-  /* تحويل الكارد إلى ترتيب عمودي على الموبايل */
+  /* تحويل الكارد إلى ترتيب عمودي على التابلت */
   .blogServiceCardUnique {
     flex-direction: column;
     align-items: stretch;
@@ -431,9 +692,19 @@
     padding: 0.6rem 1rem;
     font-size: 0.8rem;
   }
+  
+  /* معرض الصور على التابلت */
+  .blogContentUnique .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.8rem;
+  }
+  
+  .blogContentUnique .gallery-icon img {
+    height: 160px;
+  }
 }
 
-/* للشاشات الصغيرة جداً */
+/* للشاشات الصغيرة (موبايل) */
 @media (max-width: 600px) {
   .blogServiceCardContentUnique {
     flex-direction: column;
@@ -453,6 +724,17 @@
   
   .blogServiceInfoUnique p {
     text-align: center;
+  }
+  
+  /* تحسين الصور على الموبايل */
+  .blogContentUnique .gallery {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+  
+  .blogContentUnique .gallery-icon img {
+    height: auto;
+    max-height: 250px;
   }
 }
 
@@ -488,6 +770,43 @@
     flex-direction: column;
     gap: 0.3rem;
     align-items: center;
+  }
+  
+  /* تحسين الصور على الموبايل الصغير */
+  .blogContentUnique img {
+    border-radius: 10px;
+    margin: 0.8rem auto;
+  }
+  
+  .blogContentUnique iframe,
+  .blogContentUnique video,
+  .blogContentUnique embed {
+    min-height: 180px;
+    border-radius: 10px;
+  }
+  
+  .blogContentUnique table {
+    font-size: 0.7rem;
+  }
+  
+  .blogContentUnique table th,
+  .blogContentUnique table td {
+    padding: 0.4rem;
+  }
+  
+  .blogContentUnique blockquote {
+    padding: 0.8rem;
+    font-size: 0.85rem;
+    border-right-width: 3px;
+  }
+  
+  .blogContentUnique pre {
+    font-size: 0.7rem;
+    padding: 0.8rem;
+  }
+  
+  .blogContentUnique code {
+    font-size: 0.7rem;
   }
   
   .blogTagsUnique h4 {
@@ -585,4 +904,31 @@
     width: auto;
     white-space: nowrap;
   }
+  
+  /* تحسين الصور في الوضع الأفقي */
+  .blogContentUnique img {
+    max-width: 50%;
+  }
+  
+  .blogContentUnique .alignleft,
+  .blogContentUnique .alignright {
+    float: left;
+    max-width: 40%;
+  }
+}
+
+/* ============================================ */
+/* UTILITY CLASSES */
+/* ============================================ */
+
+/* منع التمرير الأفقي للصفحة بأكملها */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* تحسين الـ scroll behavior */
+* {
+  -webkit-tap-highlight-color: transparent;
 }

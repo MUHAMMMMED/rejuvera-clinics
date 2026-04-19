@@ -7,6 +7,7 @@ import ErrorState from "../../components/ErrorState/ErrorState";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import useDevice from "../../hooks/useDevice";
   
+import WhatsAppFloat from "../../components/WhatsAppFloat/WhatsAppFloat";
 import { GTMEvents } from "../../hooks/useGTM";
 import DesktopLanding from "./components/Desktop/Desktop";
 import MobileLanding from "./components/Mobile/Mobile";
@@ -177,6 +178,8 @@ export default function LandingPage() {
       ) : (
         <DesktopLanding data={safeData} clinicName={clinicName} />
       )}
+
+<WhatsAppFloat phone={safeData?.site_info?.phone} whatsapp={safeData?.site_info?.whatsapp} />
     </>
   );
 }

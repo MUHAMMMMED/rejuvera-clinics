@@ -1,10 +1,16 @@
-from .service import ServiceDetailsAPIView ,ServiceViewSet,ServicesByCategoryView,ServicesListView,DashboardServiceAPIView
+from .service import (
+    ServiceDetailsAPIView ,
+    ServiceViewSet,
+    ServicesByCategoryView,
+    ServicesListView,
+    DashboardServiceAPIView,
+    )
 from .before_after_image import BeforeAfterImageViewSet 
 from .doctor import  DoctorViewSet
 from .problem_solution import ServiceProblemSolutionViewSet 
 
 from .review import  ReviewViewSet
-from .service_category import ServiceCategoryViewSet
+from .service_category import ServiceCategoryViewSet,CategoryDetailsView
 from .service_doctor import  ServiceDoctorViewSet
 from .service_faq import  ServiceFAQViewSet
 
@@ -18,6 +24,7 @@ __all__ = [
 
     'ServiceDetailsAPIView',
     'ServicesByCategoryView',
+    'CategoryDetailsView',
     'ServiceViewSet',
     'ServicesListView',
     'ServiceCategoryViewSet',

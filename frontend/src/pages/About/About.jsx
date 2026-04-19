@@ -5,6 +5,7 @@ import EmptyState from '../../components/EmptyState/EmptyState';
 import ErrorState from '../../components/ErrorState/ErrorState';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import Navbar from '../../components/Navbar/Navbar';
+import WhatsAppFloat from '../../components/WhatsAppFloat/WhatsAppFloat';
 import useDevice from "../../hooks/useDevice";
 import AboutDesktop from '../home/components/Desktop/components/About/About';
 import AboutMobile from '../home/components/Mobile/components/About/About';
@@ -196,6 +197,8 @@ export default function AboutPage() {
           )}
         </div>
       </div>
+      <WhatsAppFloat phone={safeData?.info?.phone} whatsapp={safeData?.info?.whatsapp} />
+
     </>
   );
 }
