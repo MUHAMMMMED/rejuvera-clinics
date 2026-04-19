@@ -44,14 +44,16 @@
   width: 100%;
 }
 
+
+
+
 /* Badge */
 .heroBadge {
   display: inline-block;
   padding: 0.3rem 0.8rem;
   border-radius: 50px;
-  font-size: 1rem;
+  font-size: 0.7rem;
   color: #d4af37;
-  font-weight: 700;
   border: 1px solid rgba(212, 175, 55, 0.3);
   margin-bottom: 1rem;
 }
@@ -96,13 +98,14 @@
   color: #000;
   font-weight: 600;
   cursor: pointer;
+  font-size: 8px;
 }
 
 /* Secondary */
 .heroApp {
   flex: 1;
   max-width: 180px;
-  padding: 0.6rem;
+  padding: 0.3rem;
   border-radius: 50px;
   border: 1px solid rgba(212, 175, 55, 0.4);
   background: rgba(255,255,255,0.08);
@@ -110,6 +113,7 @@
   font-weight: 600;
   cursor: pointer;
   backdrop-filter: blur(6px);
+  font-size: 8px;
 }
 
 /* Hover */
