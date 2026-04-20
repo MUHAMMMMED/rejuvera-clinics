@@ -58,6 +58,7 @@ export default function GalleryPage() {
 
   // ✅ GTM: تتبع النقر على صورة في المعرض
   const handleImageClick = (image, type = 'gallery') => {
+    if (!image) return;
     GTMEvents.viewContent(
       image.id || image.alt_text || 'gallery_image',
       image.alt_text || image.title || 'صورة من المعرض',
@@ -67,18 +68,12 @@ export default function GalleryPage() {
 
   // ✅ GTM: تتبع فتح صورة قبل/بعد
   const handleBeforeAfterClick = (item) => {
+    if (!item) return;
     GTMEvents.viewContent(
       item.id || item.title || 'before_after',
       item.title || 'نتائج قبل وبعد',
       'before_after'
     );
-  };
-
-  // ✅ إضافة دوال GTM إلى البيانات التي ستمرر للمكونات الفرعية
-  const enhancedData = {
-    ...safeData,
-    onImageClick: handleImageClick,
-    onBeforeAfterClick: handleBeforeAfterClick
   };
 
   // Loading State
@@ -155,10 +150,18 @@ export default function GalleryPage() {
     );
   }
 
+  // Define safeData BEFORE using it
   const safeData = {
     gallery: data.gallery || [],
     before_after: data.before_after || [],
     ...data
+  };
+
+  // ✅ Add GTM functions to data AFTER safeData is defined
+  const enhancedData = {
+    ...safeData,
+    onImageClick: handleImageClick,
+    onBeforeAfterClick: handleBeforeAfterClick
   };
 
   const totalImages = (safeData.gallery?.length || 0) + (safeData.before_after?.length || 0);

@@ -1,7 +1,7 @@
-import React from 'react'
-import BeforeAfterSection from '../LandingPage/components/Desktop/components/BeforeAfterSection/BeforeAfterSection'
-import BenefitsSection from '../LandingPage/components/Desktop/components/BenefitsSection/BenefitsSection'
-import HeroSection from '../LandingPage/components/Desktop/components/HeroSection/HeroSection'
+import React from 'react';
+import BeforeAfterSection from '../LandingPage/components/Desktop/components/BeforeAfterSection/BeforeAfterSection';
+import BenefitsSection from '../LandingPage/components/Desktop/components/BenefitsSection/BenefitsSection';
+import HeroSection from '../LandingPage/components/Desktop/components/HeroSection/HeroSection';
 
 export default function Desktop({ service }) {
   // Extract data from the service prop
