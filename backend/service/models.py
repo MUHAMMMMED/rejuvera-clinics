@@ -1,8 +1,6 @@
 import re
 from django.db import models
- 
-
-
+  
 class ServiceCategory(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -10,10 +8,7 @@ class ServiceCategory(models.Model):
 
     def __str__(self):
         return self.name
-
-
  
-
 def arabic_slugify(text):
  
     if not text:
@@ -60,10 +55,10 @@ class ServiceHero(models.Model):
     subtitle = models.CharField(max_length=255)
     description = models.TextField()
     image = models.ImageField(upload_to='gallery/', blank=True, null=True)  
-    alt_text = models.CharField(max_length=255, help_text="وصف الصورة لتحسين SEO", blank=True)
+    alt_text = models.TextField( help_text="وصف الصورة لتحسين SEO", blank=True)
     video_url = models.URLField(blank=True, null=True)   
     badge = models.CharField(max_length=100, blank=True, null=True)
-    cta_text = models.CharField(max_length=100, default="احجزي استشارتك المجانية") 
+    cta_text = models.CharField(max_length=100,default="احجز  استشارتك ") 
  
     def __str__(self):
         return self.title
@@ -115,7 +110,7 @@ class Feature(models.Model):
         on_delete=models.CASCADE,
         related_name='feature'
     )
-    title = models.CharField(max_length=200,  default= 'خدمة نحت الجسم')
+    title = models.CharField(max_length=200,  default= 'خدمة ')
     subtitle = models.CharField(max_length=200,default='نقدم لك تجربة تجميلية استثنائية بأحدث التقنيات وأعلى معايير الجودة')
  
     # العنوان الرئيسي للميزة
@@ -171,23 +166,23 @@ class ProcessSteps(models.Model):
  
 
     # الخطوة 1: استشارة مجانية
-    consultation_title = models.CharField(max_length=100, default="استشارة مجانية")
+    consultation_title = models.CharField(max_length=100, default="استشارة ")
     consultation_description = models.TextField(default="تقييم شامل ووضع خطة مخصصة")
-    consultation_duration = models.CharField(max_length=100, default="30-45 دقيقة")
+    consultation_duration = models.CharField(max_length=100, default=".")
 
     # الخطوة 2: تحضير مسبق
     preparation_title = models.CharField(max_length=100, default="تحضير مسبق")
     preparation_description = models.TextField(default="فحوصات طبية وتجهيز المنطقة")
-    preparation_duration = models.CharField(max_length=100,default="15-30 دقيقة")
+    preparation_duration = models.CharField(max_length=100,default=".")
     # الخطوة 3: الإجراء
     procedure_title = models.CharField(max_length=100, default="الإجراء")
-    procedure_description = models.TextField(default="نحت الجسم باستخدام أحدث التقنيات")
-    procedure_duration = models.CharField(max_length=100, default="60-180 دقيقة")
+    procedure_description = models.TextField(default="  باستخدام أحدث التقنيات")
+    procedure_duration = models.CharField(max_length=100, default=".")
 
     # الخطوة 4: متابعة ونتائج
     followup_title = models.CharField(max_length=100, default="متابعة ونتائج")
     followup_description = models.TextField(default="رعاية متكاملة ونتائج مذهلة")
-    followup_duration = models.CharField(max_length=100,default="متابعة مستمرة")
+    followup_duration = models.CharField(max_length=100,default='.')
 
     def __str__(self):
         return self.title
