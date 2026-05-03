@@ -188,7 +188,7 @@ const Contact = ({ data, onBookingSuccess }) => {
         <div className={styles.wrapper}>
           <div className={styles.formArea}>
             <div className={styles.formHeader}>
-              <span className={styles.sectionBadge}>احجزي موعدك</span>
+              <span className={styles.sectionBadge}>احجز موعدك</span>
               <h2>تواصلي <span className={styles.goldText}>معنا</span></h2>
               <p>نحن هنا لمساعدتك في رحلة جمالك</p>
             </div>
