@@ -104,7 +104,7 @@ const BookingModal = ({ isOpen, onClose, serviceId, onSuccess }) => {
           <div className={styles.bookingSheet} onClick={e => e.stopPropagation()}>
             <div className={styles.sheetHandle} />
             <div className={styles.sheetHeader}>
-              <h3>احجزي استشارتك المجانية</h3>
+              <h3>احجزي استشارتك </h3>
               <button onClick={onClose} className={styles.closeBtn}>
                 <X size={20} />
               </button>

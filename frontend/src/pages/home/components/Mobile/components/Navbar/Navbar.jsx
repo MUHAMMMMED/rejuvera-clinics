@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Navbar.module.css';
-import logo from './logo.png';
+import logo from './logo2.png';
 // استيراد Link من react-router-dom (أو next/link إذا كنت تستخدم Next.js)
 // للتوضيح: هذا الكود يفترض أنك تستخدم react-router-dom
 import { Link } from 'react-router-dom';
