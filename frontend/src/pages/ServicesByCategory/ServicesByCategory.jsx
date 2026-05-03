@@ -3,15 +3,14 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import AxiosInstance from "../../components/Authentication/AxiosInstance";
-import Navbar from "../../components/Navbar/Navbar";
-import useDevice from "../../hooks/useDevice";
-import ServicesDesktop from "./Desktop/Desktop";
-import ServicesMobile from "./Mobile/Mobile";
- 
 import EmptyState from "../../components/EmptyState/EmptyState";
 import ErrorState from "../../components/ErrorState/ErrorState";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import Navbar from "../../components/Navbar/Navbar";
+import useDevice from "../../hooks/useDevice";
 import { GTMEvents } from "../../hooks/useGTM";
+import ServicesDesktop from "./Desktop/Desktop";
+import ServicesMobile from "./Mobile/Mobile";
 import './ServicesByCategory.css';
 
 export default function ServicesByCategory() {
