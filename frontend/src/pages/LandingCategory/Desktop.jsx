@@ -1,6 +1,5 @@
 import React from 'react';
 import BeforeAfterSection from '../LandingPage/components/Desktop/components/BeforeAfterSection/BeforeAfterSection';
-import BenefitsSection from '../LandingPage/components/Desktop/components/BenefitsSection/BenefitsSection';
 import HeroSection from '../LandingPage/components/Desktop/components/HeroSection/HeroSection';
 
 export default function Desktop({ service }) {
@@ -37,8 +36,8 @@ export default function Desktop({ service }) {
       {/* {trust && <TrustSection trust={trust} />}
        */}
       {/* Benefits Section */}
-      {feature && <BenefitsSection feature={feature} />}
-      
+      {/* {feature && <BenefitsSection feature={feature} />}
+       */}
       {/* Before/After Section */}
       {before_after && before_after.length > 0 && (
         <BeforeAfterSection before_after={before_after} />

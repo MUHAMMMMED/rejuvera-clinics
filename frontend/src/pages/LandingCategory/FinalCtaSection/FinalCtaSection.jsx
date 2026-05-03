@@ -289,7 +289,7 @@ const FinalCtaSection = ({ data }) => {
 
               <button type="submit" className={styles.submitBtn} disabled={loading}>
                 <Calendar size={18} />
-                {loading ? 'جاري الإرسال...' : 'احجزي استشارتك الآن'}
+                {loading ? 'جاري الإرسال...' :  'احجز استشارتك الآن'}
               </button>
             </form>
           ) : (

@@ -1,0 +1,111 @@
+.floatingButton {
+    /* Positioning - Center Bottom */
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* Design */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #d4af37, #b8941f);
+    color: #0a0a0a;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 60px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: inherit;
+    
+    /* Shadow & Effects */
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(212, 175, 55, 0.4);
+    transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+    
+    /* Animation */
+    animation: slideUpFadeIn 0.4s ease;
+    
+    /* Text */
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+  
+  .floatingButton:hover {
+    transform: translateX(-50%) translateY(-4px);
+    box-shadow: 0 12px 28px rgba(212, 175, 55, 0.35);
+    background: linear-gradient(135deg, #e0c04a, #c4a32a);
+  }
+  
+  .floatingButton:active {
+    transform: translateX(-50%) translateY(1px);
+  }
+  
+  .floatingButton svg {
+    flex-shrink: 0;
+  }
+  
+  /* Tablet */
+  @media (max-width: 768px) {
+    .floatingButton {
+      bottom: 20px;
+      padding: 11px 24px;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+    
+    .floatingButton svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  
+  /* Mobile - النص يبقى ظاهر */
+  @media (max-width: 640px) {
+    .floatingButton {
+      bottom: 16px;
+      padding: 10px 20px;
+      gap: 8px;
+      font-size: 0.9rem;
+      border-radius: 50px;
+    }
+    
+    .floatingButton svg {
+      width: 18px;
+      height: 18px;
+    }
+    
+    /* النص يبقى موجود في الموبايل */
+    .floatingButton span {
+      display: inline-block;
+    }
+  }
+  
+  /* Small Mobile (less than 400px) - نقلل padding بس النص يبقى */
+  @media (max-width: 400px) {
+    .floatingButton {
+      padding: 8px 16px;
+      gap: 6px;
+      font-size: 0.85rem;
+      bottom: 12px;
+    }
+    
+    .floatingButton svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  /* Animations */
+  @keyframes slideUpFadeIn {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }

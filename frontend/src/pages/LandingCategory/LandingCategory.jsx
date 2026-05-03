@@ -13,6 +13,7 @@ import WhatsAppFloat from "../../components/WhatsAppFloat/WhatsAppFloat";
 import { GTMEvents } from "../../hooks/useGTM";
 import Desktop from "./Desktop";
 import FinalCtaSection from "./FinalCtaSection/FinalCtaSection";
+import FloatingButton from "./FloatingButton/FloatingButton";
 import './LandingCategory.css';
 import Mobile from "./Mobile";
 
@@ -288,6 +289,8 @@ export default function LandingCategory() {
             )
           ))}
 
+   
+          <FloatingButton targetSectionId="booking" />
           {/* Final CTA Section - Pass categoryData which contains services array */}
           <FinalCtaSection data={categoryData} />
 

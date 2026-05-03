@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import BeforeAfter from '../LandingPage/components/Mobile/components/sections/BeforeAfter/BeforeAfter';
-import Benefits from '../LandingPage/components/Mobile/components/sections/Benefits/Benefits';
 import Hero from '../LandingPage/components/Mobile/components/sections/Hero/Hero';
 
 export default function Mobile({ service }) {
@@ -59,7 +58,7 @@ export default function Mobile({ service }) {
       {/* {trust && <Stats data={trust} />} */}
 
       {/* Benefits Section */}
-      {feature && <Benefits feature={feature} />}
+      {/* {feature && <Benefits feature={feature} />} */}
 
       {/* Before/After Section */}
       {before_after && before_after.length > 0 && (
