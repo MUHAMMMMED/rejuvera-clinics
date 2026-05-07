@@ -29,7 +29,7 @@ const HeroSection = ({ heroData, serviceName, scrollToBooking,showButtons = true
         <div className={styles.heroButtons}>
           <button onClick={scrollToBooking} className={styles.heroCta}>
             <Calendar size={18} />
-            احجزي استشارتك  
+            {heroData.cta_text || 'احجز  استشارتك المجانية'}
           </button>
           {heroData.video_url && (
             <button onClick={() => setShowVideo(true)} className={styles.heroSecondary}>
