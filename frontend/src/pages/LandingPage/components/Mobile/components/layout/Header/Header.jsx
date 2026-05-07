@@ -3,20 +3,25 @@ import React from 'react';
 import styles from './Header.module.css';
 import logo from './logo.png';
 const Header = () => {
+
+
   const handleBack = () => {
-    window.history.back();
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/';   
+    }
   };
   return (
     <div className={styles.appHeader}>
-  {/* Back Button */}
-  <button 
-          onClick={handleBack}
-          className={styles.backButton}
-          aria-label="عودة"
-        >
-          <ArrowLeft size={24} />
-          <span>عودة</span>
-        </button>
+      <button 
+        className={styles.menuBtn} 
+        onClick={handleBack}
+      >
+          <span className={styles.backText}>عودة</span>
+        <ArrowLeft size={22} />
+        
+      </button>
       <img 
         src={logo} 
         alt="Logo-rejuveraclinics" 
