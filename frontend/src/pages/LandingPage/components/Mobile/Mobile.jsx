@@ -216,7 +216,7 @@ const MobileLanding = ({ data }) => {
         onClick={handleOpenBooking}
       >
         <Calendar size={20} />
-        <span>احجزي</span>
+        <span>احجز</span>
       </button>
 
       {showVideo && heroData.video_url && (

@@ -157,7 +157,7 @@ const ServicesMobile = ({ data }) => {
                     className={styles.bookBtn}
                     onClick={() => handleBookNow(service)}
                   >
-                    <span>احجزي الآن</span>
+                    <span>احجز  الآن</span>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
