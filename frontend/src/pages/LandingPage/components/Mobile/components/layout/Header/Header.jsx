@@ -20,7 +20,7 @@ const Header = () => {
     <header className={styles.appHeader}>
       <button 
         onClick={handleBack} 
-        className={styles.backBtn}  {/* 👈 استخدام الـ class الجديد */}
+        className={styles.backBtn}  
         aria-label="عودة للخلف"
       >
         <ArrowLeft size={20} />
