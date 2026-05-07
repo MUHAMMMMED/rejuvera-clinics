@@ -1,4 +1,4 @@
-// MenuDrawer.jsx - النسخة المحسنة
+ 
 import {
   Camera,
   Clipboard,
@@ -93,7 +93,7 @@ const MenuDrawer = ({ isOpen, onClose, onNavigate }) => {
               key={item.id}
               onClick={() => {
                 onNavigate(item.id);
-                onClose(); // إغلاق القائمة بعد النقر
+                onClose();  
               }}
             >
               <span className={styles.menuIcon}>{item.icon}</span>

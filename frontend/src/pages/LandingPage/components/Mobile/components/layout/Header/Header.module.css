@@ -1,5 +1,4 @@
-/* Header.module.css - تحديث */
-
+ 
 .appHeader {
   display: flex;
   justify-content: space-between;
@@ -9,11 +8,11 @@
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
-  z-index: 1100; /* 👈 رفع القيمة لتكون أعلى من MenuDrawer */
+  z-index: 1100; 
   border-bottom: 1px solid rgba(212, 175, 55, 0.2);
 }
 
-/* إضافة class جديد لزر العودة */
+ 
 .backBtn {
   background: none;
   border: none;

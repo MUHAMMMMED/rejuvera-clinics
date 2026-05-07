@@ -1,13 +1,12 @@
-/* MenuDrawer.module.css - النسخة المعدلة */
-
+ 
 .menuDrawer {
   position: fixed;
-  top: 60px; /* 👈 أهم تعديل: يبدأ من تحت الهيدر */
+  top: 60px; 
   right: -100%;
   width: 280px;
-  height: calc(100vh - 60px); /* 👈 الارتفاع بعد طرح الهيدر */
+  height: calc(100vh - 60px);  
   background: linear-gradient(135deg, #0a0515, #0f081f);
-  z-index: 1000; /* 👈 رفع القيمة لكن أقل من الهيدر الجديد */
+  z-index: 1000; 
   transition: right 0.3s ease;
   border-left: 1px solid rgba(212, 175, 55, 0.2);
   box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
@@ -18,7 +17,7 @@
   right: 0;
 }
 
-/* إضافة خلفية شفافة (overlay) لمنع التفاعل مع الخلفية */
+ 
 .menuDrawer::before {
   content: '';
   position: fixed;
