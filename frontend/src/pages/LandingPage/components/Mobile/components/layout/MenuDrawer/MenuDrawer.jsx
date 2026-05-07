@@ -1,3 +1,4 @@
+// MenuDrawer.jsx - النسخة المحسنة
 import {
   Camera,
   Clipboard,
@@ -9,8 +10,7 @@ import {
   UserRound,
   X
 } from 'lucide-react';
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './MenuDrawer.module.css';
 
 const menuItems = [
@@ -25,27 +25,84 @@ const menuItems = [
 ];
 
 const MenuDrawer = ({ isOpen, onClose, onNavigate }) => {
-  return (
-    <div className={`${styles.menuDrawer} ${isOpen ? styles.open : ''}`}>
-      <div className={styles.menuHeader}>
-        <img src="https://rejuvera-clinics.vercel.app/images/logo1.png" alt="Logo" />
-        <button onClick={onClose}>
-          <X size={22} />
-        </button>
-      </div>
+  // منع التمرير في الخلفية عند فتح القائمة
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
 
-      <div className={styles.menuItems}>
-        {menuItems.map((item) => (
-          <button 
-            key={item.id}
-            onClick={() => onNavigate(item.id)}
-          >
-            <span className={styles.menuIcon}>{item.icon}</span>
-            {item.label}
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [isOpen]);
+
+  // إغلاق القائمة بالضغط على ESC
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isOpen, onClose]);
+
+  return (
+    <>
+      {/* خلفية شفافة للإغلاق */}
+      {isOpen && (
+        <div 
+          className={styles.overlay}
+          onClick={onClose}
+          style={{
+            position: 'fixed',
+            top: '60px',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.5)',
+            backdropFilter: 'blur(4px)',
+            zIndex: 999
+          }}
+        />
+      )}
+      
+      <div className={`${styles.menuDrawer} ${isOpen ? styles.open : ''}`}>
+        <div className={styles.menuHeader}>
+          <img 
+            src="https://rejuvera-clinics.vercel.app/images/logo1.png" 
+            alt="Logo" 
+          />
+          <button onClick={onClose} aria-label="إغلاق القائمة">
+            <X size={22} />
           </button>
-        ))}
+        </div>
+
+        <div className={styles.menuItems}>
+          {menuItems.map((item) => (
+            <button 
+              key={item.id}
+              onClick={() => {
+                onNavigate(item.id);
+                onClose(); // إغلاق القائمة بعد النقر
+              }}
+            >
+              <span className={styles.menuIcon}>{item.icon}</span>
+              {item.label}
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
